@@ -1,0 +1,23 @@
+{
+  "name": "web-editor",
+  "version": "1.0.0",
+  "description": "A Python editor web app with a Reactjs frontend and a Python backend",
+  "main": "src/client/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/egrabs/web-editor.git"
+  },
+  "author": "Elyes Graba",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/egrabs/web-editor/issues"
+  },
+  "homepage": "https://github.com/egrabs/web-editor#readme",
+  "dependencies": {
+    "react": "^16.5.2",
+    "webpack": "^4.20.2"
+  }
+}
