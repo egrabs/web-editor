@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Python editor web app with a Reactjs frontend and a Python backend",
   "main": "src/client/index.js",
+  "private": true,
   "scripts": {
     "test": "test"
   },
