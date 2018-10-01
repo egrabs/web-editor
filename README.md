@@ -4,8 +4,8 @@
 
 ## Install
 
-    ### from project directory:
+### from project directory:
 
-        1. `npm install`
-        2. `npm run start`
-        3. navigate to `localhost:8080`
+    1. `npm install`
+    2. `npm run start`
+    3. navigate to `localhost:8080`
