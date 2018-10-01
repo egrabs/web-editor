@@ -25,6 +25,6 @@ module.exports = {
             }
         ]
     },
-    plugins: [htmlPlugin]
+    plugins: [htmlPlugin],
     devtool: eval-source-map
 }
