@@ -26,5 +26,6 @@ module.exports = {
         ]
     },
     plugins: [htmlPlugin],
-    devtool: 'eval-source-map'
+    mode: 'development',
+    devtool: (process.env.NODE_ENV === 'development') ? 'eval-source-map' : false
 }
