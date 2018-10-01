@@ -20,6 +20,7 @@
   "homepage": "https://github.com/egrabs/web-editor#readme",
   "dependencies": {
     "react": "^16.5.2",
+    "react-dom": "^16.5.2",
     "webpack": "^4.20.2"
   },
   "devDependencies": {
