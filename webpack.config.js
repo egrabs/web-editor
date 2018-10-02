@@ -1,5 +1,11 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const cssPlugin = new MiniCssExtractPlugin({
+    filename: '[name].css',
+    chunkFilename: '[id].css'
+});
 
 const htmlPlugin = new HtmlWebPackPlugin({
     template: './src/client/index.html',
@@ -22,8 +28,26 @@ module.exports = {
                 },
                 exclude: /node_modules/,
                 use: ['babel-loader', 'eslint-loader']
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    "style-loader",
+                    "css-loader",
+                    "sass-loader"
+                ]
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
             }
         ]
     },
-    plugins: [htmlPlugin]
+    plugins: [
+        cssPlugin,
+        htmlPlugin
+    ]
 }
