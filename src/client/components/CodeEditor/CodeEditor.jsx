@@ -10,6 +10,17 @@ export default class CodeEditor extends React.Component {
         userCode: '',
     };
 
+    onClick = () => {
+        const { userCode } = this.state;
+        fetch('http://0.0.0.0:1234/execute/', {
+            mode: 'cors',
+            method: 'POST',
+            body: JSON.stringify({ code: userCode }),
+        })
+            .then(res => console.log(res))
+            .catch(err => console.warn(err));
+    };
+
     render() {
         const { userCode } = this.state;
 
@@ -29,6 +40,12 @@ export default class CodeEditor extends React.Component {
                         });
                     }}
                 />
+                <button
+                    onClick={this.onClick}
+                    type="button"
+                >
+                    EXECUTE
+                </button>
             </div>
         );
     }
