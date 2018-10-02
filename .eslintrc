@@ -6,6 +6,7 @@
     },
     "rules": {
         "indent": ["error", 4],
-        "react/jsx-indent": "off"
+        "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": "off"
     }
 }
