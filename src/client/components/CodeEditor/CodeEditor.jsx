@@ -1,7 +1,5 @@
-// eslint-disable
-
 import React from 'react';
-import { Controlled as CCodeMirror } from 'react-codemirror2';
+import { Controlled as CodeMirror } from 'react-codemirror2';
 import 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
@@ -17,7 +15,7 @@ export default class CodeEditor extends React.Component {
 
         return (
             <div>
-                <CCodeMirror
+                <CodeMirror
                     value={userCode}
                     options={{
                         mode: 'python',
