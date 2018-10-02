@@ -2,14 +2,12 @@
 
 import React from 'react';
 
+import CodeEditor from '../components/CodeEditor/CodeEditor';
+
 export default class App extends React.Component {
     render() {
         return (
-            <div>
-                <p>
-                    Ok I guess this technically does something now hehehehuhuh. . .
-                </p>
-            </div>
+            <CodeEditor />
         );
     }
 }
