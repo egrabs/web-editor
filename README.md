@@ -13,4 +13,4 @@
         * then run `python WebServer.py 1234`
     4. navigate to `localhost:8080` in your browser
     5. type some code in the editor (ex `print '5'`)
-    6. Whatever you typed executes in the terminal window where you ran Python from
+    6. Whatever you typed executes in the terminal window where you ran Python from (after you press Execute)
