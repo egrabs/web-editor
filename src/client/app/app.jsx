@@ -1,3 +1,5 @@
+/* eslint-disable react/prefer-stateless-function */
+
 import React from 'react';
 
 export default class App extends React.Component {
@@ -5,7 +7,7 @@ export default class App extends React.Component {
         return (
             <div>
                 <p>
-                    Ok I guess this 'technically' does something now hehehehuhuh. . . 
+                    Ok I guess this technically does something now hehehehuhuh. . .
                 </p>
             </div>
         );
