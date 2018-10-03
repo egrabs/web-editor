@@ -1,7 +1,10 @@
 /* eslint-disable */
 
 export function registerKeyStroke(text) {
-    var prefixeCache = new PrefixStruct(text);
+    var parsedText = text.split(" ");
+    var prefixeCache = new PrefixStruct(parsedText);
+    var deleteMe = prefixeCache.searchPrefix('he') //delete
+    if (deleteMe != null) console.log(deleteMe); //delete
     return
 }
 
@@ -12,38 +15,34 @@ function AlphaNode(values=[]){
 
 function PrefixStruct(words){
     const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz';
-    this.root = new AlphaNode(words);
 
     this.populateStruct = function populate(node, s_idx){
+
         for (let chr of alphaNumerics){
+
             var wordGroup = node.words.filter(function(s){
                 return ((s.length > s_idx) && (s.charAt(s_idx) === chr))
             });
-            if (wordGroup === []) continue;
+            if (wordGroup.length === 0) continue;
 
             node.links.set(chr, new AlphaNode(wordGroup));  
             populate(node.links.get(chr), s_idx+1);
         }
     }
-    this.populateStruct(this.root, 0);
 
     this.searchPrefix = function(prefix){
         var subTreeRoot = this.root;
         for (let chr of prefix){
-            if (!(subTreeRoot.links.keys().includes(chr))){
-                return null;
-            }
+            var nextLinks = Array.from(subTreeRoot.links.keys())
+            if (!nextLinks.includes(chr)) return null;
             subTreeRoot = subTreeRoot.links.get(chr)
         }
         return subTreeRoot.words;
     }
+
+    this.root = new AlphaNode(words);
+    this.populateStruct(this.root, 0);
 }
-
-
-
-
-
-
 
 // function MyObjConstructor(param1, param2) {
 //     this.param1 = param1;
