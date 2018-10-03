@@ -1,9 +1,19 @@
 /* eslint-disable */
 
 export function registerKeyStroke(text) {
-    var parsedText = text.split(" ");
+    var parsedText = [text];
+    const delimiters = ' &|!?()[]{},+-=*/%';
+    for (let delim of delimiters){
+        parsedText = parsedText.map(function(s){
+            return s.split(delim)
+        })
+        parsedText = [].concat.apply([], parsedText);
+    }
+    parsedText = parsedText.filter(function(s){
+        return (s != '' && s != "");
+    })
     var prefixeCache = new PrefixStruct(parsedText);
-    var deleteMe = prefixeCache.searchPrefix('he') //delete
+    var deleteMe = prefixeCache.searchPrefix('he'); //delete
     if (deleteMe != null) console.log(deleteMe); //delete
     return
 }
@@ -21,7 +31,7 @@ function PrefixStruct(words){
         for (let chr of alphaNumerics){
 
             var wordGroup = node.words.filter(function(s){
-                return ((s.length > s_idx) && (s.charAt(s_idx) === chr))
+                return (s.length > s_idx)&&(s.charAt(s_idx) === chr)
             });
             if (wordGroup.length === 0) continue;
 
