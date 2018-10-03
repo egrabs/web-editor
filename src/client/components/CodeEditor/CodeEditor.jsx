@@ -1,5 +1,8 @@
 import React from 'react';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+
+import { registerKeyStroke } from '../../utils/AutoCompleteCache';
+
 import 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
@@ -27,6 +30,13 @@ export default class CodeEditor extends React.Component {
             .catch(err => console.warn(err));
     };
 
+    onType = (editor, data, value) => {
+        this.setState({
+            userCode: value,
+        });
+        registerKeyStroke(value);
+    }
+
     render() {
         const {
             userCode,
@@ -43,11 +53,7 @@ export default class CodeEditor extends React.Component {
                         autoRefresh: true,
                         lineNumbers: true,
                     }}
-                    onBeforeChange={(editor, data, value) => {
-                        this.setState({
-                            userCode: value,
-                        });
-                    }}
+                    onBeforeChange={this.onType}
                 />
                 <hr style={{ margin: '10px 0' }} />
                 {!!executionOutput && (
