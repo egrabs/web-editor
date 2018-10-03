@@ -2,7 +2,8 @@
 
 export function registerKeyStroke(text) {
     var parsedText = [text];
-    const delimiters = ' &|!?()[]{},+-=*/%';
+    const delimiters = ' &|!?()[]{},.+-=*/%';
+
     for (let delim of delimiters){
         parsedText = parsedText.map(function(s){
             return s.split(delim)
@@ -12,9 +13,11 @@ export function registerKeyStroke(text) {
     parsedText = parsedText.filter(function(s){
         return (s != '' && s != "");
     })
+    //console.log(parsedText); //demo
+
     var prefixeCache = new PrefixStruct(parsedText);
-    var deleteMe = prefixeCache.searchPrefix('he'); //delete
-    if (deleteMe != null) console.log(deleteMe); //delete
+    var deleteMe = prefixeCache.searchPrefix('he'); //demo
+    if (deleteMe != null) console.log(deleteMe); //demo
     return
 }
 
@@ -24,7 +27,9 @@ function AlphaNode(values=[]){
 }
 
 function PrefixStruct(words){
-    const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz';
+    const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'+
+                          'ABCDEFGHIJKLMNOPQRSTUVWXYZ'+
+                          '0123456789_';
 
     this.populateStruct = function populate(node, s_idx){
 
@@ -54,25 +59,4 @@ function PrefixStruct(words){
     this.populateStruct(this.root, 0);
 }
 
-// function MyObjConstructor(param1, param2) {
-//     this.param1 = param1;
-//     this.param2 = param2;
-// }
 
-// let stupidObj = new MyObjConstructor('hurr', 'durr');
-
-// let stupidObj = {
-//     param1: 'hurr',
-//     param2: 'durr',
-//     param3: 'duhh',
-//     someMethod: function() {
-//         return this.param3;
-//     }
-// }
-
-// let stupidObj2 = {
-//     param1: 'asdff',
-//     param2: 'booty',
-// }
-
-// stupidObj.someMethod.apply(stupidObj2, []);
