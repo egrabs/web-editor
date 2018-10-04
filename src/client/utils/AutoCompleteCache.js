@@ -24,34 +24,33 @@ function AlphaNode(values=[]){
 }
 
 function PrefixStruct(words){
+    this.root = new AlphaNode(words);
+    populateStruct(this.root, 0);
+}
+
+function searchPrefix(prefix){
+    var subTreeRoot = this.root;
+    for (let chr of prefix){
+        var nextLinks = Array.from(subTreeRoot.links.keys())
+        if (!nextLinks.includes(chr)) return null;
+        subTreeRoot = subTreeRoot.links.get(chr)
+    }
+    return subTreeRoot.words;
+}
+
+function populateStruct(node, s_idx){
     const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz';
 
-    this.populateStruct = function populate(node, s_idx){
+    for (let chr of alphaNumerics){
 
-        for (let chr of alphaNumerics){
+        var wordGroup = node.words.filter(function(s){
+            return (s.length > s_idx)&&(s.charAt(s_idx) === chr)
+        });
+        if (wordGroup.length === 0) continue;
 
-            var wordGroup = node.words.filter(function(s){
-                return (s.length > s_idx)&&(s.charAt(s_idx) === chr)
-            });
-            if (wordGroup.length === 0) continue;
-
-            node.links.set(chr, new AlphaNode(wordGroup));  
-            populate(node.links.get(chr), s_idx+1);
-        }
+        node.links.set(chr, new AlphaNode(wordGroup));  
+        populateStruct(node.links.get(chr), s_idx+1);
     }
-
-    this.searchPrefix = function(prefix){
-        var subTreeRoot = this.root;
-        for (let chr of prefix){
-            var nextLinks = Array.from(subTreeRoot.links.keys())
-            if (!nextLinks.includes(chr)) return null;
-            subTreeRoot = subTreeRoot.links.get(chr)
-        }
-        return subTreeRoot.words;
-    }
-
-    this.root = new AlphaNode(words);
-    this.populateStruct(this.root, 0);
 }
 
 // function MyObjConstructor(param1, param2) {
