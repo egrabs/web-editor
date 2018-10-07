@@ -1,7 +1,10 @@
 import React from 'react';
+// import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
+
+import styles from './CodeEditor.scss';
 
 import 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
@@ -9,6 +12,7 @@ import 'codemirror/theme/material.css';
 import './CodeMirror.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/mode/shell/shell';
+
 
 export default class CodeEditor extends React.Component {
     state = {
@@ -55,7 +59,7 @@ export default class CodeEditor extends React.Component {
                     }}
                     onBeforeChange={this.onType}
                 />
-                <hr style={{ margin: '10px 0' }} />
+                <hr className={styles.divider} />
                 {!!executionOutput && (
                     <CodeMirror
                         className="terminal-output"
