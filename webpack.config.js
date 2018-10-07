@@ -61,6 +61,10 @@ module.exports = {
                     'style-loader',
                     'css-loader'
                 ]
+            },
+            {
+                test: /(\.txt$|\.svg$)/,
+                use: 'raw-loader'
             }
         ]
     },
