@@ -1,8 +1,51 @@
 /* eslint-disable */
 
-export function registerKeyStroke(text) {
+var   root;
+const delimiters    = ' &|!?()[]{},.+-*%/=';
+const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'+
+                      'ABCDEFGHIJKLMNOPQRSTUVWXYZ'+
+                      '0123456789_';
+
+// Node object we use to maintain a persistent and quickly 
+// searchable representation of the words Client has used
+function AlphaNode(values=new Set([])){
+    this.words = values;
+    this.links = new Map();
+}
+
+
+/*
+This function will handle all possible responses to any given
+keystroke, parsing when appropriate and handing off work to 
+a subroutine: insertWord(), searchPrefix(), or cleanUp().
+*/ 
+export function registerKeyStroke(word) {
+    // The first time registerKeyStroke() is called on a space,
+    // it initializes the root of the tree structure 
+    // we use to quickly search for prefixes
+    if (root === undefined){
+        root = new AlphaNode();
+        insertWord(root, word);
+        return;
+    }
+    // If we've previously stored the same word, dont do anything
+    else if (root.words.has(word)) return;
+
+
+    return; 
+}
+
+function insertWord(rt, word){
+    rt.words.push(word);
+    insertHelper(rt, word, 0);
+    return
+}
+function insertHelper(node, word, sIdx){
+    return 'potato'
+}
+
+function parseFileText(text){
     var parsedText = [text];
-    const delimiters = ' &|!?()[]{},.+-=*/%';
 
     for (let delim of delimiters){
         parsedText = parsedText.map(function(s){
@@ -10,26 +53,15 @@ export function registerKeyStroke(text) {
         })
         parsedText = [].concat.apply([], parsedText);
     }
+
     parsedText = parsedText.filter(function(s){
         return (s != '' && s != "");
     })
-    //console.log(parsedText); //demo
-
-    var prefixeCache = new PrefixStruct(parsedText);
-    var deleteMe = prefixeCache.searchPrefix('he'); //demo
-    if (deleteMe != null) console.log(deleteMe); //demo
-    return
+    return parsedText;
 }
 
-function AlphaNode(values=[]){
-    this.words = values;
-    this.links = new Map();
-}
-
+/*
 function PrefixStruct(words){
-    const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'+
-                          'ABCDEFGHIJKLMNOPQRSTUVWXYZ'+
-                          '0123456789_';
 
     this.populateStruct = function populate(node, s_idx){
 
@@ -58,5 +90,6 @@ function PrefixStruct(words){
     this.root = new AlphaNode(words);
     this.populateStruct(this.root, 0);
 }
+*/
 
 
