@@ -14,6 +14,7 @@ const htmlPlugin = new HtmlWebPackPlugin({
 
 module.exports = {
     entry: './src/client/index.jsx',
+    devtool: 'eval-source-map',
     output: {
         path: path.resolve(__dirname, "dist"),
         filename: 'bundle.js',
@@ -31,10 +32,30 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
+                exclude: /node_modules/,
                 use: [
-                    "style-loader",
-                    "css-loader",
-                    "sass-loader"
+                    {
+                        loader: "style-loader",
+                    },
+                    {
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true,
+                            importLoaders: 2,
+                            localIdentName: '[name]_[local]_[hash:base64]',
+                            minimize: true,
+                            modules: true
+                        }
+                    },
+                    {
+                        loader: "postcss-loader"
+                    },
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }
                 ]
             },
             {
