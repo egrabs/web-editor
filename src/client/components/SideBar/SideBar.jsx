@@ -5,7 +5,7 @@ import styles from './SideBar.scss';
 
 export default class SideBar extends React.Component {
     state = {
-        shrunk: false,
+        shrunk: true,
     };
 
     toggleShrinkState = () => {
