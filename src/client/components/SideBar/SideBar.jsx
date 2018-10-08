@@ -33,6 +33,7 @@ export default class SideBar extends React.Component {
                 className={containerClasses}
             >
                 <SVGInline
+                    className={styles.hamburgerButton}
                     onClick={this.toggleShrinkState}
                     svg={hamburgerIcon}
                 />
