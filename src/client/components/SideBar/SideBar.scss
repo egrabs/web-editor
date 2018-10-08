@@ -1,0 +1,13 @@
+@mixin sideBar() {
+    border: 1px solid black;
+}
+
+.sideBarShrunk {
+    @include sideBar();
+    width: 3%;
+}
+
+.sideBarExpanded {
+    @include sideBar();
+    width: 20%;
+}
