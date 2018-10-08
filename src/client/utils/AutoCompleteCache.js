@@ -28,10 +28,12 @@ export function registerKeyStroke(word) {
     return; 
 }
 
-// To be called on space key press
+/* 
+Called on space key press, w/ last word typed by client as argument;
+Modifies the persistent cache of used words 
+*/
 function cacheWord(word){
-    // The first time cacheWord() is called, it initializes the 
-    // root of the tree structure we use to quickly search a prefix
+
     if (root === undefined) root = new AlphaNode();
     else if (root.words.has(word)) return;
     cacheHelper(root, word, 0);
@@ -50,6 +52,23 @@ function cacheHelper(node, word, sIdx){
         node = node.links.get(chr)
     }
     return 
+}
+
+/*
+-Called on any non-space, non-delimiter key press with, 
+the prefix currently being typed by client as argument;
+-Does not modify the persistent cache;
+Performs a very fast search for the prefix and returns
+an array of completion suggestions
+*/
+function searchPrefix(prefix){
+    var subTreeRoot = this.root;
+    for (let chr of prefix){
+        var nextLinks = Array.from(subTreeRoot.links.keys())
+        if (!nextLinks.includes(chr)) return null;
+        subTreeRoot = subTreeRoot.links.get(chr)
+    }
+    return subTreeRoot.words;
 }
 
 function parseFileText(text){
@@ -75,18 +94,7 @@ function PrefixStruct(words){
     populateStruct(this.root, 0);
 }
 const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'+
-                      'ABCDEFGHIJKLMNOPQRSTUVWXYZ'+
-                      '0123456789_';
-
-function searchPrefix(prefix){
-    var subTreeRoot = this.root;
-    for (let chr of prefix){
-        var nextLinks = Array.from(subTreeRoot.links.keys())
-        if (!nextLinks.includes(chr)) return null;
-        subTreeRoot = subTreeRoot.links.get(chr)
-    }
-    return subTreeRoot.words;
-}
+                      'ABCDEFGHIJKLMNOPQ
 
 function populateStruct(node, s_idx){
     const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz';
