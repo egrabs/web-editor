@@ -11,3 +11,9 @@
     @include sideBar();
     width: 20%;
 }
+
+.hamburgerButton {
+    &:hover {
+        cursor: pointer;
+    }
+}

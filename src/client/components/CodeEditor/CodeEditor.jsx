@@ -37,23 +37,44 @@ export default class CodeEditor extends React.Component {
             body: JSON.stringify({ code: userCode }),
         })
             .then(res => res.json())
+            // delay response handling for half a sec
+            // so that we get to see animation if our code run fast fast
+            // also this is FUGLY and really needs cleanup asap
             .then((json) => {
-                const { executionOutput } = json;
-                this.setState({
-                    executionOutput,
-                    error: false,
-                });
-                dispatch(stopExecutionAnimation);
+                const { executionOutput, error } = json;
+                if (error) {
+                    setTimeout(
+                        () => {
+                            this.setState({
+                                executionOutput: error,
+                                error: true,
+                            });
+                            dispatch(stopExecutionAnimation);
+                        },
+                        500,
+                    );
+                } else {
+                    setTimeout(
+                        () => {
+                            this.setState({
+                                executionOutput,
+                                error: false,
+                            });
+                            dispatch(stopExecutionAnimation);
+                        },
+                        500,
+                    );
+                }
             })
             .catch((err) => {
-                this.setState({
-                    executionOutput: `Error!\n>>> ${err}`,
-                    error: true,
-                });
-                // delay the killing of the animation for half a sec
-                // so that we get to see it even if our code run fast fast
                 setTimeout(
-                    () => dispatch(stopExecutionAnimation),
+                    () => {
+                        dispatch(stopExecutionAnimation);
+                        this.setState({
+                            executionOutput: `Error!\n>>> ${err}`,
+                            error: true,
+                        });
+                    },
                     500,
                 );
             });

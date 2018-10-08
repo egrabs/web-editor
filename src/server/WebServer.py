@@ -1,7 +1,9 @@
 import web
 import json
 from utils.OutputRedirector import redirectStdOut
+from utils.ValidateCode import validateCode
 # import pdb
+
 
 class execute:
     def POST(self):
@@ -9,8 +11,12 @@ class execute:
         with redirectStdOut() as sb:
             data = json.loads(web.data())
             code = data['code']
-            exec(code)
-        return json.dumps({'executionOutput': sb.getvalue()})
+            try:
+                validateCode(code)
+                exec(code)
+                return json.dumps({ 'executionOutput': sb.getvalue() })
+            except ValueError as ve:
+                return json.dumps({ 'error': ve.message })
 
 urls = (
     '/execute/', 'execute'
