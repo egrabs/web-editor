@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 let root;
 const delimiters = ' &|!?()[]{},.+-*%/=';
 const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'
