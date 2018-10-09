@@ -17,6 +17,25 @@ function AlphaNode(values = new Set([])) {
     this.links = new Map();
 }
 
+/*
+Handles all possible responses to any given
+keystroke, parsing when appropriate and handing off work to
+a subroutine: cacheWord(), searchPrefix(), or cleanUp().
+*/
+export function registerKeyStroke(data, word) {
+    // cacheWord(word);
+
+    // temporarily return a fake suggested word to test the UI
+    const seggestionEptions = [
+        'serry',
+        'serrier',
+        'serriest',
+        'pseudoserry',
+        'estemeth',
+    ];
+    return seggestionEptions[Math.floor(Math.random()*seggestionEptions.length)]; 
+}
+
 /* 
 Called on space key press, w/ last word typed by client as argument;
 Modifies the persistent cache of used words 
@@ -42,15 +61,6 @@ function cacheWord(word) {
     if (root === undefined) root = new AlphaNode();
     else if (root.words.has(word)) return;
     cacheHelper(root, word, 0);
-}
-
-/*
-Handles all possible responses to any given
-keystroke, parsing when appropriate and handing off work to
-a subroutine: cacheWord(), searchPrefix(), or cleanUp().
-*/
-export function registerKeyStroke(word) {
-    cacheWord(word);
 }
 
 /*
