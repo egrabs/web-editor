@@ -17,9 +17,9 @@ function AlphaNode(values = new Set([])) {
     this.links = new Map();
 }
 
-/*
-- Called on space key press, w/ last word typed by client as argument;
-- Modifies the persistent cache of used words
+/* 
+Called on space key press, w/ last word typed by client as argument;
+Modifies the persistent cache of used words 
 */
 function cacheHelper(word) {
     let node = root;
@@ -57,7 +57,7 @@ export function registerKeyStroke(word) {
 - Called on any non-space, non-delimiter key press, with
 the prefix currently being typed by client as argument;
 - Does not modify the persistent cache;
-Performs a very fast search for the prefix and returns
+- Performs a very fast search for the prefix and returns
 an array of completion suggestions
 */
 function searchPrefix(prefix) {
