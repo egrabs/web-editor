@@ -23,7 +23,7 @@ This function handles all possible responses to any given
 keystroke, parsing when appropriate and handing off work to 
 a subroutine: cacheWord(), searchPrefix(), or cleanUp().
 */ 
-export function registerKeyStroke(word) {
+export function registerKeyStroke(data, word) {
     cacheWord(word);
     return; 
 }

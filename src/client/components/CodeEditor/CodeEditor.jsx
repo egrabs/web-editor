@@ -84,7 +84,7 @@ export default class CodeEditor extends React.Component {
         this.setState({
             userCode: value,
         });
-        // registerKeyStroke(value);
+        registerKeyStroke(data, value);
     }
 
     render() {
