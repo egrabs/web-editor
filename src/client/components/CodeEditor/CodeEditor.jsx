@@ -22,7 +22,10 @@ import 'codemirror/mode/shell/shell';
 export default class CodeEditor extends React.Component {
     state = {
         userCode: '',
+        suggestion: '',
         error: false,
+        top: 0,
+        left: 0,
     };
 
     onClick = () => {
@@ -80,17 +83,30 @@ export default class CodeEditor extends React.Component {
             });
     };
 
+    setAutoCompleteTooltipPosition = (editor) => {
+        const { display: { cursorDiv } } = editor;
+        const { top, left } = cursorDiv.firstChild.getBoundingClientRect();
+        this.setState({
+            top,
+            left,
+        });
+    };
+
     onType = (editor, data, value) => {
+        this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,
+            suggestion: registerKeyStroke(data, value),
         });
-        registerKeyStroke(data, value);
     }
 
     render() {
         const {
             userCode,
             executionOutput,
+            suggestion,
+            top,
+            left,
         } = this.state;
 
         return (
@@ -119,6 +135,12 @@ export default class CodeEditor extends React.Component {
                         }}
                     />)
                 }
+                <div
+                    id={styles.autoCompleteTooltip}
+                    style={{ top: (top + 10), left: (left + 10) }}
+                >
+                    {suggestion}
+                </div>
                 <button
                     onClick={this.onClick}
                     type="button"

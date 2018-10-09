@@ -24,8 +24,17 @@ keystroke, parsing when appropriate and handing off work to
 a subroutine: cacheWord(), searchPrefix(), or cleanUp().
 */ 
 export function registerKeyStroke(data, word) {
-    cacheWord(word);
-    return; 
+    // cacheWord(word);
+
+    // temporarily return a fake suggested word to test the UI
+    const seggestionEptions = [
+        'serry',
+        'serrier',
+        'serriest',
+        'pseudoserry',
+        'estemeth',
+    ];
+    return seggestionEptions[Math.floor(Math.random()*seggestionEptions.length)]; 
 }
 
 /* 
