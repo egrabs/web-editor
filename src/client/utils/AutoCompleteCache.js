@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 let root;
-const delimiters = ' &|!?()[]{},.+-*%/=';
+const delimiters = Array.from(' &|!?()[]{},.+-*%/=');
 const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'
                       + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                       + '0123456789_';
@@ -22,18 +22,23 @@ Handles all possible responses to any given
 keystroke, parsing when appropriate and handing off work to
 a subroutine: cacheWord(), searchPrefix(), or cleanUp().
 */
-export function registerKeyStroke(data, word) {
-    // cacheWord(word);
+export function registerKeyStroke(data, text) {
+    const eventKey = data.text[0];
+    const textByLine = text.split('\n');
+    const lineNum = data.from.line;
+    const charNum = data.from.ch;
+    const backspace = data.origin === '+delete';
+    let word;
 
-    // temporarily return a fake suggested word to test the UI
-    const seggestionEptions = [
-        'serry',
-        'serrier',
-        'serriest',
-        'pseudoserry',
-        'estemeth',
-    ];
-    return seggestionEptions[Math.floor(Math.random()*seggestionEptions.length)]; 
+    if (delimiters.includes(eventKey)){
+        word = getLastWord(textByLine[lineNum], charNum);
+        cacheWord(word);
+        return 'null'
+    }
+    else if (alphaNumerics.includes(eventKey) || backspace) {
+        word = getLastWord(textByLine[lineNum], charNum+1);
+        return searchPrefix(word);
+    }
 }
 
 /* 
@@ -60,7 +65,7 @@ function cacheHelper(word) {
 function cacheWord(word) {
     if (root === undefined) root = new AlphaNode();
     else if (root.words.has(word)) return;
-    cacheHelper(root, word, 0);
+    cacheHelper(word);
 }
 
 /*
@@ -71,31 +76,45 @@ the prefix currently being typed by client as argument;
 an array of completion suggestions
 */
 function searchPrefix(prefix) {
+    if (root === undefined) return null;
+    if (prefix === '') return 'null';
     let node = root;
+
     for (const chr of prefix) {
         const nextLinks = Array.from(node.links.keys());
         if (!nextLinks.includes(chr)) return null;
         node = node.links.get(chr);
     }
-    return node.words;
+    return Array.from(node.words);
 }
+
+
+function getLastWord(line, charN) {
+    let i = charN-1;
+    while (i > 0) {
+        if (delimiters.includes(line.charAt(i))){
+            i++;
+            break;
+        }
+        i--;
+    }
+    const lastWord = line.substring(i, charN);
+    return (lastWord !== '') ? lastWord : 'none';
+}
+
 
 /*
 Repeatedly tokenizes the input string on any of the specified 
 delimeters, flattening the results into a 1-d array of words
-*/
-function parseFileText(text) {
-    let parsedText = [text];
 
-    for (const delim of delimiters) {
-        parsedText = parsedText.map(function (s) {
-            return s.split(delim);
-        });
-        parsedText = [].concat.apply([], parsedText);
-    }
-
-    parsedText = parsedText.filter(function (s) {
-        return (s !== '' && s !== "");
+for (const delim of delimiters) {
+    parsedText = parsedText.map(function (s) {
+        return s.split(delim);
     });
-    return parsedText;
+    parsedText = [].concat.apply([], parsedText);
 }
+
+parsedText = parsedText.filter(function (s) {
+    return (s !== '' && s !== "");
+});
+*/
