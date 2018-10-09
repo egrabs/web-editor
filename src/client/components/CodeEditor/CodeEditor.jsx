@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
-import { registerKeyStroke } from '../../utils/AutoCompleteCache';
+// import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
@@ -84,7 +84,7 @@ export default class CodeEditor extends React.Component {
         this.setState({
             userCode: value,
         });
-        registerKeyStroke(value);
+        // registerKeyStroke(value);
     }
 
     render() {
