@@ -33,7 +33,7 @@ export function registerKeyStroke(data, text) {
     if (delimiters.includes(eventKey)){
         word = getLastWord(textByLine[lineNum], charNum);
         cacheWord(word);
-        return 'null'
+        return null;
     }
     else if (alphaNumerics.includes(eventKey) || backspace) {
         word = getLastWord(textByLine[lineNum], charNum+1);
