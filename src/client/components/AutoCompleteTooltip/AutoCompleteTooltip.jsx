@@ -18,7 +18,6 @@ export default function AutoCompleteTooltip(props) {
         return null;
     }
 
-
     return (
         <div
             id={styles.autoCompleteTooltip}
@@ -30,7 +29,7 @@ export default function AutoCompleteTooltip(props) {
                     { [styles.selected]: selectedSuggestion === sugg },
                 );
                 return (
-                    <span className={spanClass}>
+                    <span key={sugg} className={spanClass}>
                         {sugg}
                     </span>
                 );

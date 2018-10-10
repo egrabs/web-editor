@@ -1,3 +1,5 @@
+/* eslint-disable react/destructuring-assignment, prefer-const */
+
 import React from 'react';
 import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
@@ -104,18 +106,32 @@ export default class CodeEditor extends React.Component {
     };
 
     possiblySelectSuggestion = (editor, event) => {
-        const { suggestions } = this.state;
-        if (suggestions && event.key === 'ArrowDown') {
-            this.setState((prevState) => {
-                let { suggDex } = prevState;
-                const nextDex = suggDex === suggestions.length - 1
-                    ? 0
-                    : ++suggDex;
-                return {
-                    selectedSuggestion: suggestions[nextDex],
-                    suggDex: nextDex,
-                };
-            });
+        if (this.state.suggestions.length > 0) {
+            if (event.key === 'ArrowDown') {
+                this.setState((prevState) => {
+                    let { suggDex, suggestions } = prevState;
+                    const nextDex = suggDex === suggestions.length - 1
+                        ? 0
+                        : ++suggDex;
+                    return {
+                        selectedSuggestion: suggestions[nextDex],
+                        suggDex: nextDex,
+                    };
+                });
+            } else if (event.key === 'Enter') {
+                this.setState((prevState) => {
+                    const { suggDex, selectedSuggestion, userCode } = prevState;
+                    if (suggDex !== -1 && selectedSuggestion !== '') {
+                        return {
+                            userCode: `${userCode} ${selectedSuggestion} `,
+                            suggestions: [],
+                            suggDex: -1,
+                            selectedSuggestion: '',
+                        };
+                    }
+                    return {};
+                });
+            }
         }
     };
 
@@ -128,8 +144,6 @@ export default class CodeEditor extends React.Component {
             top,
             left,
         } = this.state;
-
-        console.log(Array.isArray(suggestions));
 
         return (
             <div>
