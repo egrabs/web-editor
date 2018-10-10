@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
+import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
 
@@ -22,9 +23,11 @@ import 'codemirror/mode/shell/shell';
 export default class CodeEditor extends React.Component {
     state = {
         userCode: '',
-        suggestion: '',
+        suggestions: [],
         error: false,
         top: 0,
+        selectedSuggestion: '',
+        suggDex: -1,
         left: 0,
     };
 
@@ -96,18 +99,37 @@ export default class CodeEditor extends React.Component {
         this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,
-            suggestion: registerKeyStroke(data, value),
+            suggestions: registerKeyStroke(data, value),
         });
-    }
+    };
+
+    possiblySelectSuggestion = (editor, event) => {
+        const { suggestions } = this.state;
+        if (suggestions && event.key === 'ArrowDown') {
+            this.setState((prevState) => {
+                let { suggDex } = prevState;
+                const nextDex = suggDex === suggestions.length - 1
+                    ? 0
+                    : ++suggDex;
+                return {
+                    selectedSuggestion: suggestions[nextDex],
+                    suggDex: nextDex,
+                };
+            });
+        }
+    };
 
     render() {
         const {
             userCode,
             executionOutput,
-            suggestion,
+            suggestions,
+            selectedSuggestion,
             top,
             left,
         } = this.state;
+
+        console.log(Array.isArray(suggestions));
 
         return (
             <div>
@@ -119,6 +141,7 @@ export default class CodeEditor extends React.Component {
                         autoRefresh: true,
                         lineNumbers: true,
                     }}
+                    onKeyDown={this.possiblySelectSuggestion}
                     onBeforeChange={this.onType}
                 />
                 <hr className={styles.divider} />
@@ -135,12 +158,14 @@ export default class CodeEditor extends React.Component {
                         }}
                     />)
                 }
-                <div
-                    id={styles.autoCompleteTooltip}
-                    style={{ top: (top + 10), left: (left + 10) }}
-                >
-                    {suggestion}
-                </div>
+                {suggestions && (
+                    <AutoCompleteTooltip
+                        suggestions={suggestions}
+                        selectedSuggestion={selectedSuggestion}
+                        top={top}
+                        left={left}
+                    />
+                )}
                 <button
                     onClick={this.onClick}
                     type="button"

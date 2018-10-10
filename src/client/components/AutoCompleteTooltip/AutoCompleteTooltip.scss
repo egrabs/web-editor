@@ -1,0 +1,16 @@
+@import '../../styles/colors.scss';
+
+#autoCompleteTooltip {
+    position: absolute;
+    background-color: $white;
+    color: $grayA6;
+    border: 1px solid $grayA6;
+}
+
+.selected {
+    background-color: rgb(151, 226, 123);
+}
+
+.suggestionHolder {
+    display: block;
+}
