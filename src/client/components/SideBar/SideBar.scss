@@ -5,11 +5,17 @@
 .sideBarShrunk {
     @include sideBar();
     width: 3%;
+    transition-duration: 1s;
+    transition-property: width;
+    transition-timing-function: cubic-bezier(0.45, 0.05, 0.24, 1.1);
 }
 
 .sideBarExpanded {
     @include sideBar();
     width: 20%;
+    transition-duration: 1s;
+    transition-property: width;
+    transition-timing-function: cubic-bezier(0.45, 0.05, 0.24, 1.1);
 }
 
 .hamburgerButton {

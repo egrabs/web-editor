@@ -37,7 +37,6 @@ export default class SideBar extends React.Component {
                     onClick={this.toggleShrinkState}
                     svg={hamburgerIcon}
                 />
-                {/* shrunk ? 'expand' : 'collapse' */}
             </div>
         );
     }
