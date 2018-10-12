@@ -1,0 +1,23 @@
+@import '../../styles/colors';
+
+.sexyButton {
+    background-color: $dankGreen;
+    color: $white;
+    width: 100px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    margin: 1px 3px 1px 3px;
+    font-size: 12px;
+    cursor: pointer;
+    &:hover {
+        background-color: $white;
+        color: $dankGreen;
+        border-top: 2px solid $dankGreen;
+        border-bottom: 2px solid $dankGreen;
+        // border-radius: 70%;
+        transition-duration: 400ms;
+        transition-property: background-color color border;
+        transition-timing-function: linear;
+    }
+}

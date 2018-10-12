@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
+import SexyButton from '../SexyButton/SexyButton';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
 
@@ -180,12 +181,10 @@ export default class CodeEditor extends React.Component {
                         left={left}
                     />
                 )}
-                <button
+                <SexyButton
                     onClick={this.onClick}
-                    type="button"
-                >
-                    EXECUTE
-                </button>
+                    text="EXECUTE"
+                />
             </div>
         );
     }
