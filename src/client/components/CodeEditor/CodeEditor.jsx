@@ -7,9 +7,8 @@ import { Controlled as CodeMirror } from 'react-codemirror2';
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import SexyButton from '../SexyButton/SexyButton';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
+import request from '../../utils/requests';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
-
-import config from '../../config/config';
 
 import styles from './CodeEditor.scss';
 
@@ -42,11 +41,8 @@ export default class CodeEditor extends React.Component {
 
         dispatch(startExecutionAnimation);
 
-        fetch('http://0.0.0.0:1234
-            mode: 'cors',
-            method: 'POST',
-            body: JSON.stringify({ code: userCode }),
-        })
+        request('POST', 'execute/')
+            .body({ code: userCode })
             .then(res => res.json())
             // delay response handling for half a sec
             // so that we get to see animation if our code run fast fast
