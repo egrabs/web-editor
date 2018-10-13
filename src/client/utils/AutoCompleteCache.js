@@ -73,7 +73,7 @@ function cacheWord(word) {
 the prefix currently being typed by client as argument;
 - Does not modify the persistent cache;
 - Performs a very fast search for the prefix and returns
-an array of completion suggestions
+an array of suggestion options
 */
 function searchPrefix(prefix) {
     if (root === undefined) return null;
@@ -95,7 +95,6 @@ function searchPrefix(prefix) {
     });
 }
 
-
 function getLastWord(line, charN) {
     let i = charN-1;
     while (i > 0) {
@@ -109,19 +108,21 @@ function getLastWord(line, charN) {
     return (lastWord !== '') ? lastWord : 'none';
 }
 
-
 /*
-Repeatedly tokenizes the input string on any of the specified 
-delimiters, flattening the results into a 1-d array of words
+function cleanUp(text){
+    let parsedText = text
+    for (const delim of delims) {
+        parsedText = parsedText.map(function (s) {
+            return s.split(delim);
+        });
+        parsedText = [].concat.apply([], parsedText);
+    }
 
-for (const delim of delims) {
-    parsedText = parsedText.map(function (s) {
-        return s.split(delim);
+    parsedText = parsedText.filter(function (s) {
+        return (s !== '' && s !== "");
     });
-    parsedText = [].concat.apply([], parsedText);
-}
 
-parsedText = parsedText.filter(function (s) {
-    return (s !== '' && s !== "");
-});
+
+}
 */
+
