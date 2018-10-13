@@ -99,11 +99,10 @@ export default class CodeEditor extends React.Component {
     };
 
     onType = (editor, data, value) => {
-        const { autoComplete } = this.props;
         this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,
-            suggestions: autoComplete ? registerKeyStroke(data, value) : [],
+            suggestions: registerKeyStroke(data, value),
         });
     };
 
@@ -128,7 +127,7 @@ export default class CodeEditor extends React.Component {
                     const { suggDex, selectedSuggestion, userCode } = prevState;
                     if (suggDex !== -1 && selectedSuggestion !== '') {
                         return {
-                            userCode: `${userCode} ${selectedSuggestion} `,
+                            userCode: `${userCode}${selectedSuggestion.remaining} `,
                             suggestions: [],
                             suggDex: -1,
                             selectedSuggestion: '',
