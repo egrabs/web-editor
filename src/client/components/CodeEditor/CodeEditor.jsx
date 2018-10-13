@@ -9,6 +9,8 @@ import SexyButton from '../SexyButton/SexyButton';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
 
+import config from '../../config/config';
+
 import styles from './CodeEditor.scss';
 
 import 'codemirror/lib/codemirror';
@@ -40,7 +42,7 @@ export default class CodeEditor extends React.Component {
 
         dispatch(startExecutionAnimation);
 
-        fetch('http://0.0.0.0:1234/execute/', {
+        fetch('http://0.0.0.0:1234
             mode: 'cors',
             method: 'POST',
             body: JSON.stringify({ code: userCode }),
@@ -147,12 +149,12 @@ export default class CodeEditor extends React.Component {
         } = this.state;
 
         return (
-            <div>
+            <div className={styles.container}>
                 <CodeMirror
                     value={userCode}
                     options={{
                         mode: 'python',
-                        theme: '3024-night',
+                        theme: 'idea',
                         autoRefresh: true,
                         lineNumbers: true,
                     }}

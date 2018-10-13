@@ -1,0 +1,13 @@
+$white: #fff;
+$grayA6: #a6a6a6;
+$dankGreen: #1AAB8A;
+
+$darkGreen: #61892F;
+$lightGreen: #86C232;
+$darkGrey: #222629;
+$medGrey: #474B4F;
+$lightGrey: #6B6E70;
+
+@function colorWithAlpha($color, $alpha) {
+    @return rgba($color, $alpha)
+}

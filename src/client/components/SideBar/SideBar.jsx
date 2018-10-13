@@ -3,13 +3,9 @@ import cx from 'classnames';
 import SVGInline from 'react-svg-inline';
 
 import hamburgerIcon from '../../images/hamburger.svg';
+import closeIcon from '../../images/closeButton.svg';
 import styles from './SideBar.scss';
 
-// <button
-//     type="button"
-//     onClick={this.toggleShrinkState}
-//     style={{ width: '100%' }}
-// >
 
 export default class SideBar extends React.Component {
     state = {
@@ -32,11 +28,20 @@ export default class SideBar extends React.Component {
             <div
                 className={containerClasses}
             >
-                <SVGInline
-                    className={styles.hamburgerButton}
-                    onClick={this.toggleShrinkState}
-                    svg={hamburgerIcon}
-                />
+                {shrunk && (
+                    <SVGInline
+                        className={styles.hamburgerButton}
+                        onClick={this.toggleShrinkState}
+                        svg={hamburgerIcon}
+                    />
+                )}
+                {!shrunk && (
+                    <SVGInline
+                        className={styles.closeButton}
+                        onClick={this.toggleShrinkState}
+                        svg={closeIcon}
+                    />
+                )}
             </div>
         );
     }
