@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 let root;
-const delimiters = Array.from(' &|!?()[]{},.+-*%/=');
+const delims = ' &|!?()[]{},.+-*%/=';
 const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'
                       + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                       + '0123456789_';
@@ -24,20 +24,20 @@ a subroutine: cacheWord(), searchPrefix(), or cleanUp().
 */
 export function registerKeyStroke(data, text) {
     const eventKey = data.text[0];
-    const textByLine = text.split('\n');
-    const lineNum = data.from.line;
-    const charNum = data.from.ch;
+    const txtByLn = text.split('\n');
+    const lnNum = data.from.line;
+    const chNum = data.from.ch;
     const backspace = data.origin === '+delete';
     let word;
 
-    if (delimiters.includes(eventKey)){
-        word = getLastWord(textByLine[lineNum], charNum);
+    if (delims.includes(eventKey)){
+        word = getLastWord(txtByLn[lnNum], chNum);
         cacheWord(word);
         return null;
     }
     else if (alphaNumerics.includes(eventKey) || backspace) {
-        word = getLastWord(textByLine[lineNum], charNum+1);
-        return searchPrefix(word);
+        word = getLastWord(txtByLn[lnNum], chNum+1);
+        return ['UncommentLn40'];//searchPrefix(word);
     }
 }
 
@@ -77,7 +77,7 @@ an array of completion suggestions
 */
 function searchPrefix(prefix) {
     if (root === undefined) return null;
-    if (prefix === '') return 'null';
+    if (prefix === '') return null;
     let node = root;
 
     for (const chr of prefix) {
@@ -85,14 +85,21 @@ function searchPrefix(prefix) {
         if (!nextLinks.includes(chr)) return null;
         node = node.links.get(chr);
     }
-    return Array.from(node.words);
+
+    return [...node.words].map(function (w) {
+        return {
+            remaining: w.substring(prefix.length),
+            typed: prefix,
+            all: w
+        };
+    });
 }
 
 
 function getLastWord(line, charN) {
     let i = charN-1;
     while (i > 0) {
-        if (delimiters.includes(line.charAt(i))){
+        if (delims.includes(line.charAt(i))){
             i++;
             break;
         }
@@ -105,9 +112,9 @@ function getLastWord(line, charN) {
 
 /*
 Repeatedly tokenizes the input string on any of the specified 
-delimeters, flattening the results into a 1-d array of words
+delimiters, flattening the results into a 1-d array of words
 
-for (const delim of delimiters) {
+for (const delim of delims) {
     parsedText = parsedText.map(function (s) {
         return s.split(delim);
     });
