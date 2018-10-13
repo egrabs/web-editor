@@ -10,13 +10,13 @@ function buildUrl(path, queryString = '') {
 }
 
 function addBody(path) {
-    return function (bodyObj, options = {}) {
+    return function (bodyObj, otherOptions = {}) {
         this.options = Object.assign(
             this.options,
             {
                 body: JSON.stringify(bodyObj),
             },
-            options,
+            otherOptions,
         );
         return fetch(buildUrl(path), this.options);
     };
