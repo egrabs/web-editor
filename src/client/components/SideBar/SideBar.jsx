@@ -1,16 +1,33 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 import SVGInline from 'react-svg-inline';
+import Switch from 'react-switch';
+
+import { toggleAutoComplete } from '../../redux/RootActions';
 
 import hamburgerIcon from '../../images/hamburger.svg';
 import closeIcon from '../../images/closeButton.svg';
 import styles from './SideBar.scss';
 
+/* eslint-disable */
 
+@connect(state => ({ autoComplete: state.autoComplete }))
 export default class SideBar extends React.Component {
     state = {
         shrunk: true,
     };
+
+    get sideBarItems() {
+        const { dispatch, autoComplete } = this.props;
+        return [
+            {
+                label: 'Auto Complete',
+                onClick: () => dispatch(toggleAutoComplete),
+                on: autoComplete,
+            },
+        ];
+    }
 
     toggleShrinkState = () => {
         this.setState(prevState => ({
@@ -28,19 +45,38 @@ export default class SideBar extends React.Component {
             <div
                 className={containerClasses}
             >
-                {shrunk && (
-                    <SVGInline
-                        className={styles.hamburgerButton}
-                        onClick={this.toggleShrinkState}
-                        svg={hamburgerIcon}
-                    />
-                )}
+                <div style={{height: '15px', marginBottom: '10px' }}>
+                    {shrunk && (
+                        <SVGInline
+                            className={styles.hamburgerButton}
+                            onClick={this.toggleShrinkState}
+                            svg={hamburgerIcon}
+                        />
+                    )}
+                    {!shrunk && (
+                        <SVGInline
+                            className={styles.closeButton}
+                            onClick={this.toggleShrinkState}
+                            svg={closeIcon}
+                        />
+                    )}
+                </div>
                 {!shrunk && (
-                    <SVGInline
-                        className={styles.closeButton}
-                        onClick={this.toggleShrinkState}
-                        svg={closeIcon}
-                    />
+                    <div>
+                        {this.sideBarItems.map(sbi => (
+                            <label htmlFor="ssst">
+                                <Switch
+                                    height={15}
+                                    width={30}
+                                    className={styles.toggleSwitch}
+                                    onChange={sbi.onClick}
+                                    checked={sbi.on}
+                                    id="ssst"
+                                />
+                                <span className={styles.sideBarItemLabel}>{sbi.label}</span>
+                            </label>
+                        ))}
+                    </div>
                 )}
             </div>
         );
