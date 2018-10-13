@@ -1,8 +1,8 @@
-@import '../../styles/colors';
+@import '../../styles/_colors';
 
 .sexyButton {
-    background-color: $dankGreen;
-    color: $white;
+    background-color: $lightGreen;
+    color: $medGrey;
     width: 100px;
     height: 40px;
     border: none;
@@ -11,10 +11,10 @@
     font-size: 12px;
     cursor: pointer;
     &:hover {
-        background-color: $white;
-        color: $dankGreen;
-        border-top: 2px solid $dankGreen;
-        border-bottom: 2px solid $dankGreen;
+        background-color: $medGrey;
+        color: $lightGreen;
+        border: 2px solid $lightGreen;
+        // border-bottom: 2px solid $lightGreen;
         // border-radius: 70%;
         transition-duration: 400ms;
         transition-property: background-color color border;

@@ -1,25 +1,69 @@
-@mixin sideBar() {
-    border: 1px solid black;
+@import '../../styles/_colors';
+@import '../../styles/_animations';
+
+// I hate that this is necessary but there's some errant pixel
+// underneath the sidebar that can only be covered with z-index
+.bringToTop {
+    z-index: 2;
 }
 
 .sideBarShrunk {
-    @include sideBar();
-    width: 3%;
+    composes: bringToTop;
+    background-color: $medGrey;
+    width: 15px;
     transition-duration: 1s;
-    transition-property: width;
-    transition-timing-function: cubic-bezier(0.45, 0.05, 0.24, 1.1);
+    transition-property: width background-color;
+    transition-timing-function: $smoothTransition;
 }
 
 .sideBarExpanded {
-    @include sideBar();
-    width: 20%;
+    composes: bringToTop;
+    background-color: $darkGrey;
+    width: 150px;
     transition-duration: 1s;
-    transition-property: width;
-    transition-timing-function: cubic-bezier(0.45, 0.05, 0.24, 1.1);
+    transition-property: width background-color;
+    transition-timing-function: $smoothTransition;
 }
 
 .hamburgerButton {
+    fill: $lightGreen;
     &:hover {
         cursor: pointer;
     }
 }
+
+.closeButton {
+    fill: $lightGreen;
+    position: absolute;
+    animation-name: move-close-button;
+    animation-duration: 1s;
+    animation-timing-function: $smoothTransition;
+    left: 140px;
+    top: 10px;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@keyframes move-close-button {
+    from {
+        left: 0px;
+    }
+
+    to {
+        left: 140px;
+    }
+}
+
+.toggleSwitch {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.sideBarItemLabel {
+    font-size: 9px;
+    color: $white;
+}
+

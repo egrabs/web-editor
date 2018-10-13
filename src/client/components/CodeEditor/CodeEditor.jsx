@@ -22,7 +22,7 @@ import 'codemirror/mode/shell/shell';
 
 /* eslint-disable react/no-unused-state */
 
-@connect(() => ({}))
+@connect(state => ({ autoComplete: state.autoComplete }))
 export default class CodeEditor extends React.Component {
     state = {
         userCode: '',
@@ -107,6 +107,9 @@ export default class CodeEditor extends React.Component {
     };
 
     possiblySelectSuggestion = (editor, event) => {
+        const { autoComplete } = this.props;
+        if (!autoComplete) return;
+
         if (this.state.suggestions.length > 0) {
             if (event.key === 'ArrowDown') {
                 this.setState((prevState) => {
@@ -124,7 +127,7 @@ export default class CodeEditor extends React.Component {
                     const { suggDex, selectedSuggestion, userCode } = prevState;
                     if (suggDex !== -1 && selectedSuggestion !== '') {
                         return {
-                            userCode: `${userCode} ${selectedSuggestion} `,
+                            userCode: `${userCode}${selectedSuggestion.remaining} `,
                             suggestions: [],
                             suggDex: -1,
                             selectedSuggestion: '',
@@ -146,8 +149,10 @@ export default class CodeEditor extends React.Component {
             left,
         } = this.state;
 
+        const { autoComplete } = this.props;
+
         return (
-            <div>
+            <div className={styles.container}>
                 <CodeMirror
                     value={userCode}
                     options={{
@@ -173,7 +178,7 @@ export default class CodeEditor extends React.Component {
                         }}
                     />)
                 }
-                {suggestions && (
+                {suggestions && autoComplete && (
                     <AutoCompleteTooltip
                         suggestions={suggestions}
                         selectedSuggestion={selectedSuggestion}

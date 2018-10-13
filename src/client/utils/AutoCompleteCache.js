@@ -37,7 +37,7 @@ export function registerKeyStroke(data, text) {
     }
     else if (alphaNumerics.includes(eventKey) || backspace) {
         word = getLastWord(txtByLn[lnNum], chNum+1);
-        return ['UncommentLn40'];//searchPrefix(word);
+        return searchPrefix(word);
     }
 }
 
