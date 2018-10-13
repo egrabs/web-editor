@@ -24,6 +24,10 @@ function addBody(path) {
 
 function encodeQueryString(body) {
     const keys = Object.getOwnProperties(body);
+    if (keys.length < 1) {
+        return '';
+    }
+
     let queryString = '?';
 
     keys.forEach((prop, index) => {
