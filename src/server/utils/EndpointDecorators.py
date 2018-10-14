@@ -29,7 +29,17 @@ def acceptJSON(*args):
     return _acceptJSON
 
 def returnJSON(endpoint):
-    def _returnJSON(self, *args, **kwargs):
-        retVal = endpoint(self, *args, **kwargs)
+    def _returnJSON(*args, **kwargs):
+        retVal = endpoint(*args, **kwargs)
         return json.dumps(retVal)
     return _returnJSON
+
+# once we have user log-in this will handle authorization headers
+# it's also going to handle misc headers -- and that'll be its sole
+# job for now
+def withAuth(endpoint):
+    def _withAuth(*args, **kwargs):
+        # TODO: origin url should come from request headers
+        web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
+        return endpoint(*args, **kwargs)
+    return _withAuth
