@@ -69,6 +69,8 @@ def _execCode(code, pipe):
         try:
             exec(code)
         except Exception as e:
+            # getting the actual error text as it was printed in the terminal
+            # is gonna be quite the headache . . . TODO
             pipe.send({
                 'out': stdout.getvalue(),
                 'err': str(e)
