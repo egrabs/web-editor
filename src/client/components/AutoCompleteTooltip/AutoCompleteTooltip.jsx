@@ -24,14 +24,19 @@ export default function AutoCompleteTooltip(props) {
             style={{ top: top + TOP_SPACING, left: left + LEFT_SPACING }}
         >
             {suggestions.map((sugg) => {
-                const spanClass = cx(
+                const suggestionClass = cx(
                     styles.suggestionHolder,
-                    { [styles.selected]: selectedSuggestion === sugg },
+                    { [styles.selected]: selectedSuggestion.all === sugg.all },
                 );
                 return (
-                    <span key={sugg} className={spanClass}>
-                        {sugg}
-                    </span>
+                    <div key={sugg.all} className={suggestionClass}>
+                        <span className={styles.typed}>
+                            {sugg.typed}
+                        </span>
+                        <span className={styles.remaining}>
+                            {sugg.remaining}
+                        </span>
+                    </div>
                 );
             })}
         </div>

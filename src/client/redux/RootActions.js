@@ -7,3 +7,7 @@ export const startExecutionAnimation = {
 export const stopExecutionAnimation = {
     type: ActionTypes.STOP_EXECUTION_ANIMATION,
 };
+
+export const toggleAutoComplete = {
+    type: ActionTypes.TOGGLE_AUTO_COMPLETE,
+};
