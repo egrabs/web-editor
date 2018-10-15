@@ -50,12 +50,25 @@ export default class CodeEditor extends React.Component {
             // so that we get to see animation if our code run fast fast
             // also this is FUGLY and really needs cleanup asap
             .then((json) => {
-                const { executionOutput, error } = json;
+                const { executionOutput, error, codeError } = json;
+                console.log(codeError);
+                console.log(json);
                 if (error) {
                     setTimeout(
                         () => {
                             this.setState({
                                 executionOutput: error,
+                                error: true,
+                            });
+                            dispatch(stopExecutionAnimation);
+                        },
+                        500,
+                    );
+                } else if (codeError) {
+                    setTimeout(
+                        () => {
+                            this.setState({
+                                executionOutput: codeError,
                                 error: true,
                             });
                             dispatch(stopExecutionAnimation);
@@ -139,6 +152,24 @@ export default class CodeEditor extends React.Component {
         }
     };
 
+    onAnalyze = () => {
+        const { dispatch } = this.props;
+        const { userCode } = this.state;
+
+        dispatch(startExecutionAnimation);
+
+        fetch('http://0.0.0.0:1234/analyze/', {
+            mode: 'cors',
+            method: 'POST',
+            body: JSON.stringify({ code: userCode }),
+        })
+            .then(res => res.json())
+            .then((res) => {
+                console.log(res);
+                dispatch(stopExecutionAnimation);
+            });
+    }
+
     render() {
         const {
             userCode,
@@ -189,6 +220,10 @@ export default class CodeEditor extends React.Component {
                 <SexyButton
                     onClick={this.onClick}
                     text="EXECUTE"
+                />
+                <SexyButton
+                    onClick={this.onAnalyze}
+                    text="ANALYZE"
                 />
             </div>
         );

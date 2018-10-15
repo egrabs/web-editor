@@ -1,9 +1,7 @@
 import web
-import json
-from utils.OutputRedirector import redirectStdOut
-from utils.ValidateCode import validateCode
-import api.ScriptAnalyzer as ScriptAnalyzer
-import api.Execute as Execute
+
+import api.endpoints.ScriptAnalyzer as ScriptAnalyzer
+import api.endpoints.Execute as Execute
 
 urls = (
     '/execute/', Execute.subapp,
