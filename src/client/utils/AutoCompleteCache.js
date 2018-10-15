@@ -30,26 +30,35 @@ export function registerKeyStroke(data, text) {
     const backspace = data.origin === '+delete';
     let word;
 
-    if (delims.includes(eventKey)){
-        word = getLastWord(txtByLn[lnNum], chNum);
-        cacheWord(word);
-        return null;
+    if (!backspace) {
+        if (delims.includes(eventKey)) {
+            word = getLastWord(txtByLn[lnNum], chNum);
+            if (word !== null) cacheWord(word);
+        }
+        else if (alphaNumerics.includes(eventKey)) {
+            word = getLastWord(txtByLn[lnNum], chNum + 1);
+            return searchPrefix(word);
+        }
     }
-    else if (alphaNumerics.includes(eventKey) || backspace) {
-        word = getLastWord(txtByLn[lnNum], chNum+1);
-        return searchPrefix(word);
+    else {
+        const preCh = (chNum !== 0) ? txtByLn[lnNum].charAt(chNum - 1) : ' ';
+        if (alphaNumerics.includes(preCh)) {
+            word = getLastWord(txtByLn[lnNum], chNum);
+            return searchPrefix(word);
+        }
     }
+    return [];
 }
 
-/* 
+/*
 Called on space key press, w/ last word typed by client as argument;
-Modifies the persistent cache of used words 
+Modifies the persistent cache of used words
 */
 function cacheHelper(word) {
     let node = root;
     let sIdx = 0;
     node.words.add(word);
-    while (sIdx < word.length) {
+    while (sIdx < word.length - 1) {
         const nextLinks = Array.from(node.links.keys());
         const chr = word.charAt(sIdx);
 
@@ -76,13 +85,12 @@ the prefix currently being typed by client as argument;
 an array of suggestion options
 */
 function searchPrefix(prefix) {
-    if (root === undefined) return null;
-    if (prefix === '') return null;
+    if (root === undefined) return [];
     let node = root;
 
     for (const chr of prefix) {
         const nextLinks = Array.from(node.links.keys());
-        if (!nextLinks.includes(chr)) return null;
+        if (!nextLinks.includes(chr)) return [];
         node = node.links.get(chr);
     }
 
@@ -90,22 +98,23 @@ function searchPrefix(prefix) {
         return {
             remaining: w.substring(prefix.length),
             typed: prefix,
-            all: w
+            all: w,
         };
     });
 }
 
 function getLastWord(line, charN) {
     let i = charN-1;
-    while (i > 0) {
-        if (delims.includes(line.charAt(i))){
+    while (i >= 0) {
+        if (delims.includes(line.charAt(i))) {
             i++;
             break;
         }
         i--;
     }
+    if (i < 0) i = 0;
     const lastWord = line.substring(i, charN);
-    return (lastWord !== '') ? lastWord : 'none';
+    return (lastWord !== '') ? lastWord : null;
 }
 
 /*
@@ -121,8 +130,5 @@ function cleanUp(text){
     parsedText = parsedText.filter(function (s) {
         return (s !== '' && s !== "");
     });
-
-
 }
 */
-

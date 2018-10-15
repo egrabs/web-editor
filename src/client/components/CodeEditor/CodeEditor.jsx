@@ -133,7 +133,7 @@ export default class CodeEditor extends React.Component {
                         suggDex: nextDex,
                     };
                 });
-            } else if (event.key === 'Enter') {
+            } else if (event.key === 'Tab') {
                 this.setState((prevState) => {
                     const { suggDex, selectedSuggestion, userCode } = prevState;
                     if (suggDex !== -1 && selectedSuggestion !== '') {
