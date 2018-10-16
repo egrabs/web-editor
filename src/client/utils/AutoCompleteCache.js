@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 let root;
-const delims = ' &|!?()[]{},.+-*%/=';
+const delims = ' &|!?()[]{};,.+-*%/=';
 const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'
                       + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                       + '0123456789_';
@@ -27,23 +27,33 @@ export function registerKeyStroke(data, text) {
     const txtByLn = text.split('\n');
     const lnNum = data.from.line;
     const chNum = data.from.ch;
-    const backspace = data.origin === '+delete';
     let word;
+    console.log(data);
 
-    if (!backspace) {
+    // Handle backspace
+    if (data.origin === '+delete') {
+        const preCh = (chNum !== 0) ? txtByLn[lnNum].charAt(chNum - 1) : ' ';
+        if (alphaNumerics.includes(preCh)) {
+            word = getLastWord(txtByLn[lnNum], chNum);
+            return searchPrefix(word);
+        }
+    }
+    // Handle paste
+    else if (data.origin === 'paste') {
+        let newWords = data.text.join();
+        newWords = parseToWords(newWords);
+        newWords.forEach(function (w) {
+            cacheWord(w);
+        });
+    }
+    // Handle regular char instertion
+    else {
         if (delims.includes(eventKey)) {
             word = getLastWord(txtByLn[lnNum], chNum);
             if (word !== null) cacheWord(word);
         }
         else if (alphaNumerics.includes(eventKey)) {
             word = getLastWord(txtByLn[lnNum], chNum + 1);
-            return searchPrefix(word);
-        }
-    }
-    else {
-        const preCh = (chNum !== 0) ? txtByLn[lnNum].charAt(chNum - 1) : ' ';
-        if (alphaNumerics.includes(preCh)) {
-            word = getLastWord(txtByLn[lnNum], chNum);
             return searchPrefix(word);
         }
     }
@@ -117,9 +127,9 @@ function getLastWord(line, charN) {
     return (lastWord !== '') ? lastWord : null;
 }
 
-/*
-function cleanUp(text){
-    let parsedText = text
+
+function parseToWords(text){
+    let parsedText = [text]
     for (const delim of delims) {
         parsedText = parsedText.map(function (s) {
             return s.split(delim);
@@ -128,7 +138,7 @@ function cleanUp(text){
     }
 
     parsedText = parsedText.filter(function (s) {
-        return (s !== '' && s !== "");
+        return s !== '';
     });
+    return parsedText;
 }
-*/
