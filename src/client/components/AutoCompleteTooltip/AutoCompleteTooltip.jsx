@@ -14,7 +14,7 @@ export default function AutoCompleteTooltip(props) {
         left,
     } = props;
 
-    if (!suggestions) {
+    if (suggestions.length < 1) {
         return null;
     }
 
