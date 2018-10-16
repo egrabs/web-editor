@@ -122,7 +122,6 @@ export default class CodeEditor extends React.Component {
     };
 
     onType = (editor, data, value) => {
-        console.log(value);
         this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,

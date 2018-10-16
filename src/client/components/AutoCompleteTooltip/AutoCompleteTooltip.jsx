@@ -3,8 +3,8 @@ import cx from 'classnames';
 
 import styles from './AutoCompleteTooltip.scss';
 
-const LEFT_SPACING = 10;
-const TOP_SPACING = 10;
+const TOP_DISP = -10;
+const LEFT_DISP = -10;
 
 export default function AutoCompleteTooltip(props) {
     const {
@@ -21,7 +21,7 @@ export default function AutoCompleteTooltip(props) {
     return (
         <div
             id={styles.autoCompleteTooltip}
-            style={{ top: top + TOP_SPACING, left: left + LEFT_SPACING }}
+            style={{ top: top + TOP_DISP, left: left + LEFT_DISP }}
         >
             {suggestions.map((sugg) => {
                 const suggestionClass = cx(
