@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 let root;
-const delims = ' &|!?()[]{};,.+-*%/=';
+const delims = ' ~^&|!?()[]{}:;,.+-*%/=<>`';
 const alphaNumerics = 'abcdefghijklmnopqrstuvwxyz'
                       + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                       + '0123456789_';
@@ -85,7 +85,7 @@ function cacheWord(word) {
 the prefix currently being typed by client as argument;
 - Does not modify the persistent cache;
 - Performs a very fast search for the prefix and returns
-an array of suggestion options
+an array of suggestion objects
 */
 function searchPrefix(prefix) {
     if (root === undefined) return [];
