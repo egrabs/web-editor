@@ -18,46 +18,39 @@ function AlphaNode(values = new Set([])) {
 }
 
 /*
-Handles all possible responses to any given
-keystroke, parsing when appropriate and handing off work to
-a subroutine: cacheWord(), searchPrefix(), or cleanUp().
+Simple helper function to retrieve words for cacheing
+or prefixes for searching
 */
-export function registerKeyStroke(data, text) {
-    const eventKey = data.text[0];
-    const txtByLn = text.split('\n');
-    const lnNum = data.from.line;
-    const chNum = data.from.ch;
-    let word;
-    console.log(data);
+function getLastWord(line, charN) {
+    let i = charN-1;
+    while (i >= 0) {
+        if (delims.includes(line.charAt(i))) {
+            i++;
+            break;
+        }
+        i--;
+    }
+    if (i < 0) i = 0;
+    const lastWord = line.substring(i, charN);
+    return (lastWord !== '') ? lastWord : null;
+}
 
-    // Handle backspace
-    if (data.origin === '+delete') {
-        const preCh = (chNum !== 0) ? txtByLn[lnNum].charAt(chNum - 1) : ' ';
-        if (alphaNumerics.includes(preCh)) {
-            word = getLastWord(txtByLn[lnNum], chNum);
-            return searchPrefix(word);
-        }
-    }
-    // Handle paste
-    else if (data.origin === 'paste') {
-        let newWords = data.text.join();
-        newWords = parseToWords(newWords);
-        newWords.forEach(function (w) {
-            cacheWord(w);
+/*
+Simple helper function that parses editor text on all
+specified delimiters
+*/
+function parseToWords(text){
+    let parsedText = [text]
+    for (const delim of delims) {
+        parsedText = parsedText.map(function (s) {
+            return s.split(delim);
         });
+        parsedText = [].concat.apply([], parsedText);
     }
-    // Handle regular char instertion
-    else {
-        if (delims.includes(eventKey)) {
-            word = getLastWord(txtByLn[lnNum], chNum);
-            if (word !== null) cacheWord(word);
-        }
-        else if (alphaNumerics.includes(eventKey)) {
-            word = getLastWord(txtByLn[lnNum], chNum + 1);
-            return searchPrefix(word);
-        }
-    }
-    return [];
+    parsedText = parsedText.filter(function (s) {
+        return s !== '';
+    });
+    return parsedText;
 }
 
 /*
@@ -68,7 +61,7 @@ function cacheHelper(word) {
     let node = root;
     let sIdx = 0;
     node.words.add(word);
-    while (sIdx < word.length - 1) {
+    while (sIdx < word.length) {
         const nextLinks = Array.from(node.links.keys());
         const chr = word.charAt(sIdx);
 
@@ -113,32 +106,64 @@ function searchPrefix(prefix) {
     });
 }
 
-function getLastWord(line, charN) {
-    let i = charN-1;
-    while (i >= 0) {
-        if (delims.includes(line.charAt(i))) {
-            i++;
-            break;
+/*
+Handles all possible responses to any given
+keystroke, parsing when appropriate and handing off work to
+a subroutine: cacheWord(), searchPrefix(), or cleanUp().
+*/
+export function registerKeyStroke(data, text) {
+    const eventKey = data.text[0];
+    const txtByLn = text.split('\n');
+    const lnNum = data.from.line;
+    const chNum = data.from.ch;
+    let word;
+
+    // Handle backspace
+    if (data.origin === '+delete') {
+        const preCh = (chNum !== 0) ? txtByLn[lnNum].charAt(chNum - 1) : ' ';
+        if (alphaNumerics.includes(preCh)) {
+            word = getLastWord(txtByLn[lnNum], chNum);
+            return searchPrefix(word);
         }
-        i--;
     }
-    if (i < 0) i = 0;
-    const lastWord = line.substring(i, charN);
-    return (lastWord !== '') ? lastWord : null;
+    // Handle paste
+    else if (data.origin === 'paste') {
+        let newWords = data.text.join();
+        newWords = parseToWords(newWords);
+        newWords.forEach(cacheWord);
+    }
+    // Handle regular char instertion
+    else {
+        if (delims.includes(eventKey)) {
+            word = getLastWord(txtByLn[lnNum], chNum);
+            if (word !== null) cacheWord(word);
+        }
+        else if (alphaNumerics.includes(eventKey)) {
+            word = getLastWord(txtByLn[lnNum], chNum + 1);
+            return searchPrefix(word);
+        }
+    }
+    return [];
 }
 
-
-function parseToWords(text){
-    let parsedText = [text]
-    for (const delim of delims) {
-        parsedText = parsedText.map(function (s) {
-            return s.split(delim);
-        });
-        parsedText = [].concat.apply([], parsedText);
+/*
+Cleans the persistent cache, removing any values which
+no longer appear in the file text
+*/
+function removeWord(word) {
+    root.words.delete(word);
+    let node = root
+    for (const ch of word) {
+        node = node.links.get(ch);
+        node.words.delete(word);
     }
-
-    parsedText = parsedText.filter(function (s) {
-        return s !== '';
+}
+export function cleanCache(text) {
+    if (root === undefined) return;
+    const currWords = parseToWords(text);
+    const toRemove = [...root.words].filter(function (w) {
+        return !currWords.includes(w);
     });
-    return parsedText;
+    toRemove.forEach(removeWord);
 }
+

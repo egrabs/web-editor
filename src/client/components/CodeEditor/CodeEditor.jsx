@@ -6,7 +6,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2';
 
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import ButtonBar from '../ButtonBar/ButtonBar';
-import { registerKeyStroke } from '../../utils/AutoCompleteCache';
+import { registerKeyStroke, cleanCache } from '../../utils/AutoCompleteCache';
 import request from '../../utils/requests';
 import annotateWithReactKeys from '../../utils/reactAnnotations';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
@@ -122,7 +122,7 @@ export default class CodeEditor extends React.Component {
     };
 
     onType = (editor, data, value) => {
-        console.log(value);
+        // cleanCache(value);
         this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,
