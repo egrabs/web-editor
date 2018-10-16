@@ -9,7 +9,10 @@ export default function ButtonBar(props) {
 
     return (
         <div className={styles.btnContainer}>
-            {buttons.map(btn => <SexyButton {...btn} />)}
+            {buttons.map((btn) => {
+                const { reactKey, ...rest } = btn;
+                return <SexyButton key={reactKey} {...rest} />;
+            })}
         </div>
     );
 }

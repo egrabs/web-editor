@@ -8,6 +8,7 @@ import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import ButtonBar from '../ButtonBar/ButtonBar';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import request from '../../utils/requests';
+import annotateWithReactKeys from '../../utils/reactAnnotations';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
@@ -35,18 +36,16 @@ export default class CodeEditor extends React.Component {
         left: 0,
     };
 
-    get buttons() {
-        return [
-            {
-                text: 'EXECUTE',
-                onClick: this.onExecute,
-            },
-            {
-                text: 'ANALYZE',
-                onClick: this.onAnalyze,
-            },
-        ];
-    }
+    buttons = annotateWithReactKeys([
+        {
+            text: 'EXECUTE',
+            onClick: this.onExecute,
+        },
+        {
+            text: 'ANALYZE',
+            onClick: this.onAnalyze,
+        },
+    ]);
 
     onExecute = () => {
         const { dispatch } = this.props;
