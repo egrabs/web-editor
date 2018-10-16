@@ -14,7 +14,7 @@ export default function AutoCompleteTooltip(props) {
         left,
     } = props;
 
-    if (suggestions.length === 0) {
+    if (suggestions.length < 1) {
         return null;
     }
 
@@ -40,6 +40,5 @@ export default function AutoCompleteTooltip(props) {
                 );
             })}
         </div>
-
     );
 }
