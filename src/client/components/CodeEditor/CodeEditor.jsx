@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
-import SexyButton from '../SexyButton/SexyButton';
+import ButtonBar from '../ButtonBar/ButtonBar';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import request from '../../utils/requests';
 import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
@@ -35,7 +35,20 @@ export default class CodeEditor extends React.Component {
         left: 0,
     };
 
-    onClick = () => {
+    get buttons() {
+        return [
+            {
+                text: 'EXECUTE',
+                onClick: this.onExecute,
+            },
+            {
+                text: 'ANALYZE',
+                onClick: this.onAnalyze,
+            },
+        ];
+    }
+
+    onExecute = () => {
         const { dispatch } = this.props;
         const { userCode } = this.state;
 
@@ -110,6 +123,7 @@ export default class CodeEditor extends React.Component {
     };
 
     onType = (editor, data, value) => {
+        console.log(value);
         this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,
@@ -215,14 +229,7 @@ export default class CodeEditor extends React.Component {
                         left={left}
                     />
                 )}
-                <SexyButton
-                    onClick={this.onClick}
-                    text="EXECUTE"
-                />
-                <SexyButton
-                    onClick={this.onAnalyze}
-                    text="ANALYZE"
-                />
+                <ButtonBar buttons={this.buttons} />
             </div>
         );
     }
