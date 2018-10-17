@@ -87,7 +87,7 @@ function searchPrefix(prefix) {
     if (root === undefined) return [];
     let node = root;
 
-    for (const chr of prefix) {
+    for (let chr of prefix) {
         const nextLinks = Array.from(node.links.keys());
         if (!nextLinks.includes(chr)) return [];
         node = node.links.get(chr);
