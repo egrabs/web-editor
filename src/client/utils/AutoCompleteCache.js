@@ -2,9 +2,9 @@
 
 let root;
 const delims = new Set(' ~^&|!?()[]{}:;,.+-*%/=<>`');
-const alphaNums = 'abcdefghijklmnopqrstuvwxyz'
+const alphaNums = new Set('abcdefghijklmnopqrstuvwxyz'
                       + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-                      + '0123456789_';
+                      + '0123456789_');
 
 /*
 Node object we leverage to maintain a persistent and quickly
@@ -24,7 +24,7 @@ or prefixes for searching
 function getLastWord(line, charNum) {
     let i = charNum - 1;
     while (i >= 0) {
-        if (delims.includes(line.charAt(i))) {
+        if (delims.has(line.charAt(i))) {
             i++;
             break;
         }
@@ -41,7 +41,7 @@ specified delimiters
 */
 function parseToWords(text) {
     let parsedText = [text];
-    delims.split('').forEach((delim) => {
+    delims.forEach((delim) => {
         parsedText = parsedText.map(s => (s.split(delim)));
         parsedText = [].concat(...parsedText);
     });
@@ -116,8 +116,8 @@ export function registerKeyStroke(data, text) {
     if (data.origin === '+delete') {
         // Handle backspace
         const preCh = (chNum !== 0) ? txtLn.charAt(chNum - 1) : ' ';
-        if (alphaNums.includes(preCh)
-            && (!alphaNums.includes(txtLn.charAt(chNum))
+        if (alphaNums.has(preCh)
+            && (!alphaNums.has(txtLn.charAt(chNum))
                 || chNum === txtLn.length)) {
             word = getLastWord(txtLn, chNum);
             return searchPrefix(word);
@@ -127,14 +127,14 @@ export function registerKeyStroke(data, text) {
         let newWords = data.text.join();
         newWords = parseToWords(newWords);
         newWords.forEach(cacheWord);
-    } else if (delims.includes(eventKey)) {
+    } else if (delims.has(eventKey)) {
         // Handle character insert (delimiter)
         word = getLastWord(txtLn, chNum);
         if (word !== null) cacheWord(word);
-    } else if (alphaNums.includes(eventKey)) {
+    } else if (alphaNums.has(eventKey)) {
         // Handle character instert (valid alpha-numeric)
         if (chNum + 1 === txtLn.length
-            || !alphaNums.includes(txtLn.charAt(chNum + 1))) {
+            || !alphaNums.has(txtLn.charAt(chNum + 1))) {
             word = getLastWord(txtLn, chNum + 1);
             return searchPrefix(word);
         }
