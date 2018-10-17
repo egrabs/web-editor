@@ -1,6 +1,5 @@
-# ehh ya know, maybe it'll do stuff one day
-
-## ok. . .it does stuff
+# Python Web Editor
+## yeah there's already a million of 'em, but this one is _ours_
 
 ## Install
 
@@ -14,3 +13,9 @@
     4. navigate to `localhost:8080` in your browser
     5. type some code in the editor (ex `print '5'`)
     6. Whatever you typed executes in the terminal window where you ran Python from (after you press Execute)
+
+# Shameless Plug
+## Authors:
+    
+    * https://www.linkedin.com/in/adrian-preston/
+    * https://www.linkedin.com/in/elyes-graba-45410ba8/
