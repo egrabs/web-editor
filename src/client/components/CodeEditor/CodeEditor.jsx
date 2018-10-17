@@ -36,16 +36,19 @@ export default class CodeEditor extends React.Component {
         left: 0,
     };
 
-    buttons = annotateWithReactKeys([
-        {
-            text: 'EXECUTE',
-            onClick: this.onExecute,
-        },
-        {
-            text: 'ANALYZE',
-            onClick: this.onAnalyze,
-        },
-    ]);
+    constructor(props) {
+        super(props);
+        this.buttons = annotateWithReactKeys([
+            {
+                text: 'EXECUTE',
+                onClick: this.onExecute,
+            },
+            {
+                text: 'ANALYZE',
+                onClick: this.onAnalyze,
+            },
+        ]);
+    }
 
     onExecute = () => {
         const { dispatch } = this.props;
@@ -61,8 +64,6 @@ export default class CodeEditor extends React.Component {
             // also this is FUGLY and really needs cleanup asap
             .then((json) => {
                 const { executionOutput, error, codeError } = json;
-                console.log(codeError);
-                console.log(json);
                 if (error) {
                     setTimeout(
                         () => {

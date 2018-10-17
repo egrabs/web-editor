@@ -1,7 +1,7 @@
 
 
 def dictset(dic, path, value):
-    if path isinstance list:
+    if isinstance(path, list):
         if len(path) == 1:
             dic[path[0]] = value
         else:

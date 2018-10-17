@@ -1,11 +1,11 @@
 import web
 
-import api.endpoints.ScriptAnalyzer as ScriptAnalyzer
+import api.endpoints.ScriptAnalyze as ScriptAnalyze
 import api.endpoints.Execute as Execute
 
 urls = (
     '/execute/', Execute.subapp,
-    '/analyze/', ScriptAnalyzer.subapp
+    '/analyze/', ScriptAnalyze.subapp
 )
 
 app = web.application(urls, locals())

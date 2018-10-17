@@ -1,5 +1,6 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
+from api.processing.ScriptAnalyzer import analyzeScript
 
 class ScriptStats:
     @acceptJSON('json_blob')
@@ -7,8 +8,7 @@ class ScriptStats:
     @withAuth
     def POST(self, json_blob):
         code = json_blob['code']
-        # trivial stats to test endpoint wrappers for now
-        return { 'codeLength': len(code) }
+        return { 'codeLength': analyzeScript(code) }
 
 urls = (
     '', 'ScriptStats'
