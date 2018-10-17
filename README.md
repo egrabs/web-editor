@@ -17,5 +17,5 @@
 # Shameless Plug
 ## Authors:
     
-    * https://www.linkedin.com/in/adrian-preston/
-    * https://www.linkedin.com/in/elyes-graba-45410ba8/
+* [Adrian Preston](https://www.linkedin.com/in/adrian-preston/ "Baws Man McGhee") 
+* [Elyes Graba] (https://www.linkedin.com/in/elyes-graba "The prime suktemous")
