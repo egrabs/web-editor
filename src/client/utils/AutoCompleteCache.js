@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 
 let root;
-const delims = ' ~^&|!?()[]{}:;,.+-*%/=<>`';
+const delims = new Set(' ~^&|!?()[]{}:;,.+-*%/=<>`');
 const alphaNums = 'abcdefghijklmnopqrstuvwxyz'
                       + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
                       + '0123456789_';
@@ -87,7 +87,7 @@ function searchPrefix(prefix) {
     if (root === undefined) return [];
     let node = root;
 
-    for (let chr of prefix) {
+    for (const chr of prefix) {
         const nextLinks = Array.from(node.links.keys());
         if (!nextLinks.includes(chr)) return [];
         node = node.links.get(chr);
