@@ -113,7 +113,9 @@ export function registerKeyStroke(data, text) {
     const chNum = data.from.ch;
     let word;
 
-    if (data.origin === '+delete') {
+    const { origin } = data;
+
+    if (origin === '+delete') {
         // Handle backspace
         const preCh = (chNum !== 0) ? txtLn.charAt(chNum - 1) : ' ';
         if (alphaNums.has(preCh)
@@ -122,7 +124,7 @@ export function registerKeyStroke(data, text) {
             word = getLastWord(txtLn, chNum);
             return searchPrefix(word);
         }
-    } else if (data.origin === 'paste') {
+    } else if (origin === 'paste') {
         // Handle paste
         let newWords = data.text.join();
         newWords = parseToWords(newWords);
