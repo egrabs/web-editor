@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
+import OutputWindow from '../OutputWindow/OutputWindow';
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import ButtonBar from '../ButtonBar/ButtonBar';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
@@ -17,10 +18,9 @@ import 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
 import 'codemirror/theme/3024-night.css';
-import 'codemirror/theme/idea.css';
-import './CodeMirror.css';
+
 import 'codemirror/mode/python/python';
-import 'codemirror/mode/shell/shell';
+
 
 /* eslint-disable react/no-unused-state */
 
@@ -59,57 +59,35 @@ export default class CodeEditor extends React.Component {
         request('POST', 'execute/')
             .body({ code: userCode })
             .then(res => res.json())
-            // delay response handling for half a sec
-            // so that we get to see animation if our code run fast fast
-            // also this is FUGLY and really needs cleanup asap
+            // TODO: consolidate the error handling blocks into one
             .then((json) => {
                 const { executionOutput, error, codeError } = json;
                 if (error) {
-                    setTimeout(
-                        () => {
-                            this.setState({
-                                executionOutput: error,
-                                error: true,
-                            });
-                            dispatch(stopExecutionAnimation);
-                        },
-                        500,
-                    );
+                    this.setState({
+                        executionOutput: error,
+                        error: true,
+                    });
+                    dispatch(stopExecutionAnimation);
                 } else if (codeError) {
-                    setTimeout(
-                        () => {
-                            this.setState({
-                                executionOutput: codeError,
-                                error: true,
-                            });
-                            dispatch(stopExecutionAnimation);
-                        },
-                        500,
-                    );
+                    this.setState({
+                        executionOutput: codeError,
+                        error: true,
+                    });
+                    dispatch(stopExecutionAnimation);
                 } else {
-                    setTimeout(
-                        () => {
-                            this.setState({
-                                executionOutput,
-                                error: false,
-                            });
-                            dispatch(stopExecutionAnimation);
-                        },
-                        500,
-                    );
+                    this.setState({
+                        executionOutput,
+                        error: false,
+                    });
+                    dispatch(stopExecutionAnimation);
                 }
             })
             .catch((err) => {
-                setTimeout(
-                    () => {
-                        dispatch(stopExecutionAnimation);
-                        this.setState({
-                            executionOutput: `Error!\n>>> ${err}`,
-                            error: true,
-                        });
-                    },
-                    500,
-                );
+                dispatch(stopExecutionAnimation);
+                this.setState({
+                    executionOutput: `Error!\n>>> ${err}`,
+                    error: true,
+                });
             });
     };
 
@@ -170,11 +148,8 @@ export default class CodeEditor extends React.Component {
 
         dispatch(startExecutionAnimation);
 
-        fetch('http://0.0.0.0:1234/analyze/', {
-            mode: 'cors',
-            method: 'POST',
-            body: JSON.stringify({ code: userCode }),
-        })
+        request('POST', 'analyze/')
+            .body({ code: userCode })
             .then(res => res.json())
             .then((res) => {
                 console.log(res);
@@ -208,19 +183,7 @@ export default class CodeEditor extends React.Component {
                     onBeforeChange={this.onType}
                 />
                 <hr className={styles.divider} />
-                {!!executionOutput && (
-                    <CodeMirror
-                        className="terminal-output"
-                        value={executionOutput}
-                        options={{
-                            mode: 'shell',
-                            theme: 'idea',
-                            autoRefresh: true,
-                            lineNumbers: true,
-                            readOnly: true,
-                        }}
-                    />)
-                }
+                <OutputWindow executionOutput={executionOutput} />
                 {suggestions && autoComplete && (
                     <AutoCompleteTooltip
                         suggestions={suggestions}
