@@ -1,4 +1,4 @@
-/* eslint-disable */
+/* eslint-disable no-restricted-syntax */
 
 let root;
 const delims = ' ~^&|!?()[]{}:;,.+-*%/=<>`';
@@ -39,17 +39,13 @@ function getLastWord(line, charNum) {
 Simple helper function that parses editor text on all
 specified delimiters
 */
-function parseToWords(text){
-    let parsedText = [text]
-    for (const delim of delims) {
-        parsedText = parsedText.map(function (s) {
-            return s.split(delim);
-        });
-        parsedText = [].concat.apply([], parsedText);
-    }
-    parsedText = parsedText.filter(function (s) {
-        return s !== '';
+function parseToWords(text) {
+    let parsedText = [text];
+    delims.split('').forEach((delim) => {
+        parsedText = parsedText.map(s => (s.split(delim)));
+        parsedText = [].concat(...parsedText);
     });
+    parsedText = parsedText.filter(s => (s !== ''));
     return parsedText;
 }
 
@@ -97,13 +93,11 @@ function searchPrefix(prefix) {
         node = node.links.get(chr);
     }
 
-    return [...node.words].map(function (w) {
-        return {
-            remaining: w.substring(prefix.length),
-            typed: prefix,
-            all: w,
-        };
-    });
+    return [...node.words].map(w => ({
+        remaining: w.substring(prefix.length),
+        typed: prefix,
+        all: w,
+    }));
 }
 
 /*
@@ -119,34 +113,30 @@ export function registerKeyStroke(data, text) {
     const chNum = data.from.ch;
     let word;
 
-    // Handle backspace
     if (data.origin === '+delete') {
+        // Handle backspace
         const preCh = (chNum !== 0) ? txtLn.charAt(chNum - 1) : ' ';
         if (alphaNums.includes(preCh)
-            && !alphaNums.includes(txtLn.charAt(chNum))) {
-            console.log(txtLn.charAt(chNum));
+            && (!alphaNums.includes(txtLn.charAt(chNum))
+                || chNum === txtLn.length)) {
             word = getLastWord(txtLn, chNum);
             return searchPrefix(word);
         }
-    }
-    // Handle paste
-    else if (data.origin === 'paste') {
+    } else if (data.origin === 'paste') {
+        // Handle paste
         let newWords = data.text.join();
         newWords = parseToWords(newWords);
         newWords.forEach(cacheWord);
-    }
-    // Handle regular char instertion
-    else {
-        if (delims.includes(eventKey)) {
-            word = getLastWord(txtLn, chNum);
-            if (word !== null) cacheWord(word);
-        }
-        else if (alphaNums.includes(eventKey)) {
-            if (chNum + 1 === txtLn.length 
-                || !alphaNums.includes(txtLn.charAt(chNum + 1))){
-                word = getLastWord(txtLn, chNum + 1);
-                return searchPrefix(word);
-            }
+    } else if (delims.includes(eventKey)) {
+        // Handle character insert (delimiter)
+        word = getLastWord(txtLn, chNum);
+        if (word !== null) cacheWord(word);
+    } else if (alphaNums.includes(eventKey)) {
+        // Handle character instert (valid alpha-numeric)
+        if (chNum + 1 === txtLn.length
+            || !alphaNums.includes(txtLn.charAt(chNum + 1))) {
+            word = getLastWord(txtLn, chNum + 1);
+            return searchPrefix(word);
         }
     }
     return [];
@@ -158,18 +148,15 @@ no longer appear in the file text
 */
 function removeWord(word) {
     root.words.delete(word);
-    let node = root
-    for (const ch of word) {
+    let node = root;
+    word.split('').forEach((ch) => {
         node = node.links.get(ch);
         node.words.delete(word);
-    }
+    });
 }
 export function cleanCache(text) {
     if (root === undefined) return;
     const currWords = parseToWords(text);
-    const toRemove = [...root.words].filter(function (w) {
-        return !currWords.includes(w);
-    });
+    const toRemove = [...root.words].filter(w => !currWords.includes(w));
     toRemove.forEach(removeWord);
 }
-
