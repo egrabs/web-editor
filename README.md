@@ -18,4 +18,4 @@
 ## Authors:
     
 * [Adrian Preston](https://www.linkedin.com/in/adrian-preston/ "Baws Man McGhee") 
-* [Elyes Graba] (https://www.linkedin.com/in/elyes-graba "The prime suktemous")
+* [Elyes Graba](https://www.linkedin.com/in/elyes-graba "The prime suktemous")
