@@ -22,14 +22,11 @@ import 'codemirror/theme/3024-night.css';
 import 'codemirror/mode/python/python';
 
 
-/* eslint-disable react/no-unused-state */
-
 @connect(state => ({ autoComplete: state.autoComplete }))
 export default class CodeEditor extends React.Component {
     state = {
         userCode: '',
         suggestions: [],
-        error: false,
         top: 0,
         selectedSuggestion: '',
         suggDex: -1,
@@ -59,34 +56,17 @@ export default class CodeEditor extends React.Component {
         request('POST', 'execute/')
             .body({ code: userCode })
             .then(res => res.json())
-            // TODO: consolidate the error handling blocks into one
             .then((json) => {
-                const { executionOutput, error, codeError } = json;
-                if (error) {
-                    this.setState({
-                        executionOutput: error,
-                        error: true,
-                    });
-                    dispatch(stopExecutionAnimation);
-                } else if (codeError) {
-                    this.setState({
-                        executionOutput: codeError,
-                        error: true,
-                    });
-                    dispatch(stopExecutionAnimation);
-                } else {
-                    this.setState({
-                        executionOutput,
-                        error: false,
-                    });
-                    dispatch(stopExecutionAnimation);
-                }
+                const { executionResults } = json;
+                this.setState({
+                    executionResults,
+                });
+                dispatch(stopExecutionAnimation);
             })
             .catch((err) => {
                 dispatch(stopExecutionAnimation);
                 this.setState({
-                    executionOutput: `Error!\n>>> ${err}`,
-                    error: true,
+                    executionResults: `Error!\n>>> ${err}`,
                 });
             });
     };
@@ -160,7 +140,7 @@ export default class CodeEditor extends React.Component {
     render() {
         const {
             userCode,
-            executionOutput,
+            executionResults,
             suggestions,
             selectedSuggestion,
             top,
@@ -183,7 +163,7 @@ export default class CodeEditor extends React.Component {
                     onBeforeChange={this.onType}
                 />
                 <hr className={styles.divider} />
-                <OutputWindow executionOutput={executionOutput} />
+                <OutputWindow executionResults={executionResults} />
                 {suggestions && autoComplete && (
                     <AutoCompleteTooltip
                         suggestions={suggestions}

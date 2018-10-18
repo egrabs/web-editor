@@ -19,60 +19,73 @@ class Timeout(Exception):
     def __str__(self):
         return self.__repr__()
 
-class CodeError(Exception):
-    def __init__(self, msg):
-        self.msg = msg
-
-    def __repr__(self):
-        return self.msg
-
-    def __str__(self):
-        return self.msg
-
 def execCode(code):
-    # pdb.set_trace()
-    validateCode(code)
+    validateCode(code)  # raises ValueError
 
     listenPipe, sendPipe = mp.Pipe(duplex=False)
 
-    proc = mp.Process(target=_execCode, args=(code, sendPipe))
-    proc.start()
+    with redirectStdOut() as outputChannels:
 
-    if listenPipe.poll(PROCESS_TIMEOUT):
-        execResults = listenPipe.recv()
-    elif proc.is_alive():
-        proc.terminate()
-        raise Timeout
-    else:
-        # try again? maybe it ended just when our timeout hit
-        if listenPipe.poll():
+        proc = mp.Process(target=_execCode, args=(code, sendPipe, outputChannels))
+        proc.start()
+
+        if listenPipe.poll(PROCESS_TIMEOUT):
             execResults = listenPipe.recv()
-        else:
+            while proc.is_alive():
+                pass
+            tp = outputChannels['testPrint']
+            tp(outputChannels['err'].getvalue())
+        elif proc.is_alive():
+            proc.terminate()
+            tp = outputChannels['testPrint']
+            tp(outputChannels['err'].getvalue())
             raise Timeout
+        else:
+            while proc.is_alive():
+                pass
+            tp = outputChannels['testPrint']
+            tp(outputChannels['err'].getvalue())
+            # try again? maybe it ended just when our timeout hit
+            if listenPipe.poll():
+                execResults = listenPipe.recv()
+            else:
+                raise Timeout
 
-    # possibly error should just be returned along with
-    # the stdout in this case? I think if the user's code
-    # throws an unhandled error though that's that. . . 
-    # I guess they'd still want to see whatever printed if anything
-    # before the error hit
-    # TODO
-    if 'err' in execResults:
-        raise CodeError(execResults['out'])
-    else:
-        return execResults['out']
+        if 'err' in execResults:
+            # unfortunate but in the error case we have to wait
+            # for the error to raise and the process to die
+            tp = outputChannels['testPrint']
+            tp(proc.is_alive())
+            while proc.is_alive():
+                pass
+
+            tp('ssst')
+            tp(outputChannels['err'].getvalue())
+            tp(outputChannels['out'].getvalue())
+            return {
+                'executionResults': {
+                    'error': {
+                        'type': 'code_error',
+                        'content': outputChannels['err'].getvalue()
+                    },
+                    'output': execResults['out']
+                }
+            }
+        else:
+            return {
+                'executionResults': {
+                    'output': execResults['out']
+                }
+            }
 
 
-def _execCode(code, pipe):
-    with redirectStdOut() as sb:
-        stdout = sb['out']
-        stderr = sb['err']
-        try:
-            exec(code)
-        except Exception as e:
-            # getting the actual error text as it was printed in the terminal
-            # is gonna be quite the headache . . . TODO
-            pipe.send({
-                'out': stdout.getvalue(),
-                'err': str(e)
-            })
-        pipe.send({ 'out': stdout.getvalue() })
+def _execCode(code, pipe, outputChannels):
+    stdout = outputChannels['out']
+    stderr = outputChannels['err']
+    # try:
+    exec(code)
+    # except Exception as e:
+    #     pipe.send({ 'err': True, 'out': stdout.getvalue() })
+    #     raise e
+
+    pipe.send({ 'out': stdout.getvalue() })

@@ -15,7 +15,11 @@ def redirectStdOut(stdout=None, stderr=None):
     # ANY PRINT STATEMENTS OR ANY UNHANDLED EXCEPTIONS. BEWARE
     sys.stdout = stdout
     sys.stderr = stderr
-    yield { 'out': stdout, 'err': stderr }
+    yield {
+        'out': stdout,
+        'err': stderr,
+        'testPrint': lambda s: oldstdout.write(str(s) + '\n')
+    }
     # restore system stdout to its old value before the context manager closes
     sys.stdout = oldstdout
     sys.stderr = oldstderr

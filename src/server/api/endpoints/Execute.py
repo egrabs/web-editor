@@ -1,6 +1,6 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
-from api.processing.CodeExecutor import execCode, Timeout, CodeError
+from api.processing.CodeExecutor import execCode, Timeout
 from utils.OutputRedirector import redirectStdOut
 
 class Execute:
@@ -10,14 +10,29 @@ class Execute:
     def POST(self, data):
         code = data['code']
         try:
-            out = execCode(code)
-            return { 'executionOutput': out }
-        except CodeError as ce:
-            return { 'codeError': str(ce) }
+            res = execCode(code)
+            print res
+            return res
         except ValueError as ve:
-            return { 'error': str(ve) }
+            # ok I mean really the server should just 500 in this case tbh
+            # TODO
+            return {
+                'executionResults': {
+                    'error': {
+                        'type': 'server_error',
+                        'content': str(ce)
+                    }
+                }
+            }
         except Timeout as te:
-            return { 'error': str(te) }
+            return { 
+                'executionResults': {
+                    'error': {
+                        'type': 'timeout',
+                        'content': str(te)
+                    }
+                }
+            }
 
 urls = (
     '', 'Execute'
