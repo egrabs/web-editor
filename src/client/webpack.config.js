@@ -8,15 +8,19 @@ const cssPlugin = new MiniCssExtractPlugin({
 });
 
 const htmlPlugin = new HtmlWebPackPlugin({
-    template: './src/client/index.html',
+    template: './index.html',
     filename: './index.html'
 })
 
 module.exports = {
-    entry: './src/client/index.jsx',
+    entry: './index.jsx',
     devtool: 'eval-source-map',
     output: {
-        path: path.resolve(__dirname, "dist"),
+        // this path perhaps should change so the build
+        // doesn't go in the client dir but it's
+        // not critical for now
+        // TODO
+        path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
         publicPath: '/'
     },

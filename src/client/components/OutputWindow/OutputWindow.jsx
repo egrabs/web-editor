@@ -12,6 +12,10 @@ import './CodeMirror.css';
 export default function OutputWindow(props) {
     const { executionOutput } = props;
 
+    if (!executionOutput) {
+        return null;
+    }
+
     return (
         <CodeMirror
             className="terminal-output"
