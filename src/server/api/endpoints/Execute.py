@@ -10,20 +10,7 @@ class Execute:
     def POST(self, data):
         code = data['code']
         try:
-            res = execCode(code)
-            print res
-            return res
-        except ValueError as ve:
-            # ok I mean really the server should just 500 in this case tbh
-            # TODO
-            return {
-                'executionResults': {
-                    'error': {
-                        'type': 'server_error',
-                        'content': str(ce)
-                    }
-                }
-            }
+            return execCode(code)
         except Timeout as te:
             return { 
                 'executionResults': {
@@ -33,6 +20,12 @@ class Execute:
                     }
                 }
             }
+        except Exception as e:
+            # TODO: log the error before re-raising
+
+            # server 500s here, we don't know what happened
+            # unexpected error
+            raise e
 
 urls = (
     '', 'Execute'

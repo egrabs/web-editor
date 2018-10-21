@@ -11,23 +11,25 @@ import './CodeMirror.css';
 
 export default class OutputWindow extends React.Component {
     parseValue = () => {
-        const { executionResults: { error, output } } = this.props;
-        if (error) return this.handleError(output, error);
+        const { executionResults: { err, out, exc } } = this.props;
+        if (exc || err) return this.handleExceptionOrError(out, exc, err);
 
-        return output;
+        return out;
     };
 
-    handleError = (output, error) => {
-        // TODO handle differently based on type
-        // ex: CodeErrors should still display whatever code output
-        // successfully happened before the error
+    handleExceptionOrError = (output, exception, error) => {
+        if (!error) {
+            return `${output}${exception}`;
+        }
         const { content, type } = error;
         if (type === 'code_error') {
-            return `${output}${content}`;
+            return `${output}${exception}${content}`;
         }
-        if (type === 'server_error') {
-            return 'There was a problem with the server. Please try again momentarily.';
-        }
+        // Deprecated -- server will actually 500 in this case
+        // so it'll need to be handled differently
+        // if (type === 'server_error') {
+        //     return 'There was a problem with the server. Please try again momentarily.';
+        // }
         if (type === 'timeout') {
             return content;
         }
