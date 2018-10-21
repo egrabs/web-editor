@@ -1,7 +1,6 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
 from api.processing.CodeExecutor import execCode, Timeout
-from utils.OutputRedirector import redirectStdOut
 
 class Execute:
     @acceptJSON('data')
