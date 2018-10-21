@@ -38,8 +38,10 @@ def execCode(code):
             proc.terminate()
         raise Timeout()
 
-
-
+# TODO: restrict this process so it can't do harm
+# may have to use POpen or even a docker container
+# don't let it read/write to filesystem, make network requests or otherwise
+# mess with the host machine
 def _execCode(code, pipe):
     with redirectStdOut() as streams:
         stdout = streams['out']
