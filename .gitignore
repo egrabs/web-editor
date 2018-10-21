@@ -1,5 +1,5 @@
 .DS_Store
-node_modules/*
+src/client/node_modules/*
 *.pyc
 dist
 src/server/webeditorenv/*
