@@ -9,7 +9,7 @@ function buildUrl(path, queryString = '') {
     return `${baseUrl}${sepChar}${path}${queryString}`;
 }
 
-function addBody(path) {
+function addPostBody(path) {
     return function (bodyObj, otherOptions = {}) {
         this.options = Object.assign(
             this.options,
@@ -30,12 +30,16 @@ function encodeQueryString(body) {
 
     let queryString = '?';
 
-    keys.forEach((prop, index) => {
-        queryString += `${encodeURIComponent(prop)}=${encodeURIComponent(body[prop])}`;
-        if (index < keys.length - 1) {
-            queryString += '&';
-        }
-    });
+    // slightly more slick
+    queryString += keys.map(prop => `${encodeURIComponent(prop)}=${encodeURIComponent(body[prop])}`)
+        .join('&');
+
+    // keys.forEach((prop, index) => {
+    //     queryString += `${encodeURIComponent(prop)}=${encodeURIComponent(body[prop])}`;
+    //     if (index < keys.length - 1) {
+    //         queryString += '&';
+    //     }
+    // });
 
     return queryString;
 }
@@ -55,7 +59,7 @@ function POST(path) {
             method: 'POST',
         },
     };
-    pseudoRequest.body = addBody(path).bind(pseudoRequest);
+    pseudoRequest.body = addPostBody(path).bind(pseudoRequest);
     return pseudoRequest;
 }
 
@@ -70,7 +74,7 @@ function GET(path) {
     return pseudoRequest;
 }
 
-// TODO: should probably support PUT too eventually
+// TODO: should probably support PUT too whenever it comes up
 const supportedTypes = ['GET', 'POST'];
 export default function request(type, path) {
     const upperType = type.toUpperCase();

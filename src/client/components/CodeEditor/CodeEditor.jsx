@@ -10,7 +10,7 @@ import ButtonBar from '../ButtonBar/ButtonBar';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import request from '../../utils/requests';
 import annotateWithReactKeys from '../../utils/reactAnnotations';
-import { startExecutionAnimation, stopExecutionAnimation } from '../../redux/RootActions';
+import { startExecutionAnimation, stopExecutionAnimation, startDebugMode } from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
 
@@ -20,7 +20,6 @@ import 'codemirror/theme/material.css';
 import 'codemirror/theme/3024-night.css';
 
 import 'codemirror/mode/python/python';
-
 
 @connect(state => ({ autoComplete: state.autoComplete }))
 export default class CodeEditor extends React.Component {
@@ -43,6 +42,14 @@ export default class CodeEditor extends React.Component {
             {
                 text: 'ANALYZE',
                 onClick: this.onAnalyze,
+            },
+            {
+                text: 'DEBUG',
+                onClick: this.onDebug,
+            },
+            {
+                text: 'COMPILE',
+                onClick: () => window.alert('HA! U thought this did sumthin? 😂'),
             },
         ]);
     }
@@ -135,7 +142,19 @@ export default class CodeEditor extends React.Component {
                 console.log(res);
                 dispatch(stopExecutionAnimation);
             });
-    }
+    };
+
+    onDebug = () => {
+        const { dispatch } = this.props;
+        const { userCode } = this.state;
+        request('POST', 'debug/')
+            .body({ code: userCode })
+            .then(res => res.json())
+            .then((res) => {
+                console.log(res);
+                dispatch(startDebugMode(res.seshId));
+            });
+    };
 
     render() {
         const {

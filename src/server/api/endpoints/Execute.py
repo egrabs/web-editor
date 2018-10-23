@@ -13,7 +13,7 @@ class Execute:
         except Timeout as te:
             return { 
                 'executionResults': {
-                    'error': {
+                    'err': {
                         'type': 'timeout',
                         'content': str(te)
                     }

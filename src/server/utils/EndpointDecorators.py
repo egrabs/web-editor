@@ -1,5 +1,6 @@
 import web
 import json
+import uuid
 
 def acceptJSON(*args):
     def _acceptJSON(endpoint):
@@ -31,7 +32,7 @@ def acceptJSON(*args):
 def returnJSON(endpoint):
     def _returnJSON(*args, **kwargs):
         retVal = endpoint(*args, **kwargs)
-        return json.dumps(retVal)
+        return json.dumps(retVal, cls=CustomJSONEncoder)
     return _returnJSON
 
 # once we have user log-in this will handle authorization headers
@@ -43,3 +44,10 @@ def withAuth(endpoint):
         web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
         return endpoint(*args, **kwargs)
     return _withAuth
+
+# if this gets really big it should go in its own file
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if type(o) == uuid.UUID:
+            return str(o)
+        return json.JSONEncoder.default(self, o)

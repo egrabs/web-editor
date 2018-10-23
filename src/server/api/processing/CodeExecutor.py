@@ -1,8 +1,7 @@
 import multiprocessing as mp
-import time
 import sys
 
-from utils.OutputRedirector import redirectStdOut
+from utils.StreamRedirectors import redirectStdOut
 from utils.ValidateCode import validateCode
 import traceback as tb
 

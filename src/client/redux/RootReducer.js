@@ -4,8 +4,13 @@ import ActionTypes from './RootActionTypes';
 const initialState = Object.freeze({
     executing: false,
     autoComplete: true,
+    debugMode: false,
+    debugSeshId: null,
 });
 
+
+// Ok, it's officially time to split this into subject-matter
+// specific reducers. . . whenever there's time 😓
 export default function rootReducer(state = initialState, action) {
     switch (action.type) {
     case ActionTypes.START_EXECUTION_ANIMATION:
@@ -14,6 +19,11 @@ export default function rootReducer(state = initialState, action) {
         return icepick.setIn(state, ['executing'], false);
     case ActionTypes.TOGGLE_AUTO_COMPLETE:
         return icepick.setIn(state, ['autoComplete'], !state.autoComplete);
+    case ActionTypes.START_DEBUG_MODE:
+        return icepick.chain(state)
+            .setIn(['debugMode'], true)
+            .setIn(['debugSeshId'], action.payload)
+            .value();
     default:
         return state;
     }
