@@ -12,6 +12,7 @@ import StringIO
 from Queue import Queue, Empty
 
 def accumOutput(stdout, queue):
+    # idk why this is necessary but dear lord dont remove it
     queue.put('')
     while True:
         line = stdout.readline()
