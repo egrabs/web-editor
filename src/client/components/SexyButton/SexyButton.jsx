@@ -8,11 +8,13 @@ export default function SexyButton(props) {
         onClick,
         text,
         customClass,
+        disable,
     } = props;
     const buttonClasses = cx(styles.sexyButton, customClass);
     return (
         <div className={styles.container}>
             <button
+                disabled={disable()}
                 onClick={onClick}
                 className={buttonClasses}
                 type="button"

@@ -17,6 +17,10 @@ export const startDebugMode = seshId => ({
     payload: seshId,
 });
 
+export const stopDebugMode = () => ({
+    type: ActionTypes.STOP_DEBUG_MODE,
+});
+
 export const setDebugOutput = debugOutput => ({
     type: ActionTypes.SET_DEBUG_OUTPUT,
     payload: debugOutput,

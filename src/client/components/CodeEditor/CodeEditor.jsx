@@ -26,7 +26,7 @@ import 'codemirror/theme/3024-night.css';
 
 import 'codemirror/mode/python/python';
 
-@connect(state => ({ autoComplete: state.autoComplete }))
+@connect(state => ({ autoComplete: state.autoComplete, debugMode: state.debugMode }))
 export default class CodeEditor extends React.Component {
     state = {
         userCode: '',
@@ -46,21 +46,27 @@ export default class CodeEditor extends React.Component {
             {
                 text: 'EXECUTE',
                 onClick: this.onExecute,
+                disable: this.disable,
             },
             {
                 text: 'ANALYZE',
                 onClick: this.onAnalyze,
+                disable: this.disable,
             },
             {
                 text: 'DEBUG',
                 onClick: this.onDebug,
+                disable: this.disable,
             },
             {
                 text: 'COMPILE',
                 onClick: () => window.alert('HA! U thought this did sumthin? 😂'),
+                disable: this.disable,
             },
         ]);
     }
+
+    disable = () => this.props.debugMode;
 
     onExecute = () => {
         const { dispatch } = this.props;

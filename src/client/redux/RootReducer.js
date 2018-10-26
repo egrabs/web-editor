@@ -25,6 +25,12 @@ export default function rootReducer(state = initialState, action) {
             .setIn(['debugMode'], true)
             .setIn(['debugSeshId'], action.payload)
             .value();
+    case ActionTypes.STOP_DEBUG_MODE:
+        return icepick.chain(state)
+            .setIn(['debugMode'], false)
+            .setIn(['debugSeshId'], null)
+            .setIn(['debugOutput'], '')
+            .value();
     case ActionTypes.SET_DEBUG_OUTPUT:
         return icepick.setIn(
             state,

@@ -5,7 +5,7 @@ import SVGInline from 'react-svg-inline';
 import cx from 'classnames';
 
 import request from '../../../utils/requests';
-import { setDebugOutput } from '../../../redux/RootActions';
+import { setDebugOutput, stopDebugMode } from '../../../redux/RootActions';
 
 import styles from './DebugHeader.scss';
 
@@ -16,6 +16,7 @@ import downArrow from '../../../images/downArrow.svg';
 @connect(state => ({ seshId: state.debugSeshId }))
 export default class DebugHeader extends React.Component {
     get debugOptions() {
+        const { dispatch } = this.props;
         return [
             {
                 src: curvedArrow,
@@ -32,11 +33,12 @@ export default class DebugHeader extends React.Component {
                 src: closeCross,
                 action: 'quit',
                 title: 'quit',
+                additionalAction: () => dispatch(stopDebugMode),
             },
         ];
     }
 
-    makeDebugActionRequest = (action) => {
+    makeDebugActionRequest = (action, additionalAction) => {
         const { seshId, dispatch } = this.props;
         request('POST', 'debug/debug_action/')
             .body({
@@ -46,6 +48,7 @@ export default class DebugHeader extends React.Component {
             .then(res => res.json())
             .then(({ result }) => {
                 dispatch(setDebugOutput(result));
+                if (additionalAction) additionalAction();
             });
     };
 
@@ -54,11 +57,12 @@ export default class DebugHeader extends React.Component {
             <div className={styles.header}>
                 {this.debugOptions.map(({
                     action,
+                    additionalAction,
                     src,
                     additionalClass,
                     title,
                 }) => {
-                    const onClick = () => this.makeDebugActionRequest(action);
+                    const onClick = () => this.makeDebugActionRequest(action, additionalAction);
                     const cName = cx(styles.debugIcon, additionalClass);
                     return (
                         <span title={title} className={styles.svgContainer}>
