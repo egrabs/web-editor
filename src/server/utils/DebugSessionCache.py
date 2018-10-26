@@ -2,9 +2,14 @@ import uuid
 
 _cache = {}
 
-def cacheSession(proc):
+def cacheSession(proc, accumThread, outputQueue, filename):
     seshId = str(uuid.uuid4())
-    _cache[seshId] = proc
+    _cache[seshId] = {
+        'proc': proc,
+        'accumThread': accumThread,
+        'outputQueue': outputQueue,
+        'filename': filename
+    }
     return seshId
 
 def getSession(seshId):

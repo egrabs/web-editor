@@ -10,7 +10,12 @@ import ButtonBar from '../ButtonBar/ButtonBar';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import request from '../../utils/requests';
 import annotateWithReactKeys from '../../utils/reactAnnotations';
-import { startExecutionAnimation, stopExecutionAnimation, startDebugMode } from '../../redux/RootActions';
+import {
+    startExecutionAnimation,
+    stopExecutionAnimation,
+    startDebugMode,
+    setDebugOutput,
+} from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
 
@@ -34,6 +39,9 @@ export default class CodeEditor extends React.Component {
 
     constructor(props) {
         super(props);
+        // TODO: buttons shouldn't be part of CodeEditor
+        // they should be one level up -- code editor should
+        // only be for editing code, not pressing buttons
         this.buttons = annotateWithReactKeys([
             {
                 text: 'EXECUTE',
@@ -150,9 +158,9 @@ export default class CodeEditor extends React.Component {
         request('POST', 'debug/')
             .body({ code: userCode })
             .then(res => res.json())
-            .then((res) => {
-                console.log(res);
-                dispatch(startDebugMode(res.seshId));
+            .then(({ seshId, result }) => {
+                dispatch(startDebugMode(seshId));
+                dispatch(setDebugOutput(result));
             });
     };
 

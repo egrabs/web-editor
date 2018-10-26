@@ -5,6 +5,7 @@ const ActionTypes = keymirror([
     'STOP_EXECUTION_ANIMATION',
     'TOGGLE_AUTO_COMPLETE',
     'START_DEBUG_MODE',
+    'SET_DEBUG_OUTPUT',
 ]);
 
 export default ActionTypes;

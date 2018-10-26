@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
@@ -9,6 +10,10 @@ import 'codemirror/theme/idea.css';
 
 import './CodeMirror.css';
 
+@connect(state => ({
+    debugMode: state.debugMode,
+    debugOutput: state.debugOutput,
+}))
 export default class OutputWindow extends React.Component {
     parseValue = () => {
         const { executionResults: { err, out, exc } } = this.props;
@@ -37,13 +42,13 @@ export default class OutputWindow extends React.Component {
     };
 
     render() {
-        const { executionResults } = this.props;
-        if (!executionResults) return null;
+        const { executionResults, debugMode, debugOutput } = this.props;
+        if (!executionResults && !debugOutput) return null;
 
         return (
             <CodeMirror
                 className="terminal-output"
-                value={this.parseValue()}
+                value={debugMode ? debugOutput : this.parseValue()}
                 options={{
                     mode: 'shell',
                     theme: 'idea',

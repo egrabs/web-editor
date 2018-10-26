@@ -1,0 +1,25 @@
+@import '../../../styles/_colors.scss';
+
+.header {
+    height: 15%;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.debugIcon {
+    cursor: pointer;
+    fill: $lightGreen;
+}
+
+.downArrow {
+    stroke-width: 7;
+    stroke: $lightGreen;
+}
+
+.svgContainer {
+    display: inline;
+    width: 20px;
+    height: 20px;
+}

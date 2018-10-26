@@ -34,6 +34,8 @@
 
 .closeButton {
     fill: $lightGreen;
+    width: 15px;
+    height: 15px;
     position: absolute;
     animation-name: move-close-button;
     animation-duration: 1s;

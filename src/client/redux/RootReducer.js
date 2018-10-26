@@ -6,6 +6,7 @@ const initialState = Object.freeze({
     autoComplete: true,
     debugMode: false,
     debugSeshId: null,
+    debugOutput: '',
 });
 
 
@@ -24,6 +25,12 @@ export default function rootReducer(state = initialState, action) {
             .setIn(['debugMode'], true)
             .setIn(['debugSeshId'], action.payload)
             .value();
+    case ActionTypes.SET_DEBUG_OUTPUT:
+        return icepick.setIn(
+            state,
+            ['debugOutput'],
+            `${state.debugOutput}\n${action.payload}`,
+        );
     default:
         return state;
     }
