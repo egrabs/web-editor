@@ -39,9 +39,6 @@ export default class CodeEditor extends React.Component {
 
     constructor(props) {
         super(props);
-        // TODO: buttons shouldn't be part of CodeEditor
-        // they should be one level up -- code editor should
-        // only be for editing code, not pressing buttons
         this.buttons = annotateWithReactKeys([
             {
                 text: 'EXECUTE',

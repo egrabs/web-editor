@@ -25,3 +25,8 @@ export const setDebugOutput = debugOutput => ({
     type: ActionTypes.SET_DEBUG_OUTPUT,
     payload: debugOutput,
 });
+
+export const setAST = ast => ({
+    type: ActionType.SET_AST,
+    payload: ast,
+});

@@ -7,6 +7,7 @@ const ActionTypes = keymirror([
     'START_DEBUG_MODE',
     'STOP_DEBUG_MODE',
     'SET_DEBUG_OUTPUT',
+    'SET_AST',
 ]);
 
 export default ActionTypes;

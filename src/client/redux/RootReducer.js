@@ -7,6 +7,7 @@ const initialState = Object.freeze({
     debugMode: false,
     debugSeshId: null,
     debugOutput: '',
+    ast: '',
 });
 
 
@@ -37,6 +38,8 @@ export default function rootReducer(state = initialState, action) {
             ['debugOutput'],
             `${state.debugOutput}\n${action.payload}`,
         );
+    case ActionTypes.SET_AST:
+        return icepick.setIn(state, ['ast'], action.payload);
     default:
         return state;
     }
