@@ -5,7 +5,6 @@ import uuid
 from utils.StreamRedirectors import redirectStdOut
 import utils.DebugSessionCache as debugCache
 from utils.ValidateCode import validateCode
-import utils.ProcDebugger as procDebug
 import subprocess as sp
 import threading as thrd
 import StringIO
