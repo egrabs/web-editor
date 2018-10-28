@@ -108,7 +108,7 @@ export default class CodeEditor extends React.Component {
         this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,
-            suggestions: [] // registerKeyStroke(data, value),
+            suggestions: registerKeyStroke(data, value),
         });
     };
 
