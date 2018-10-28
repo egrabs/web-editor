@@ -8,8 +8,8 @@ const initialState = Object.freeze({
     debugSeshId: null,
     debugOutput: '',
     ast: '',
+    editorMode: 'python',
 });
-
 
 // Ok, it's officially time to split this into subject-matter
 // specific reducers. . . whenever there's time 😓
@@ -40,6 +40,8 @@ export default function rootReducer(state = initialState, action) {
         );
     case ActionTypes.SET_AST:
         return icepick.setIn(state, ['ast'], action.payload);
+    case ActionTypes.SET_EDITOR_MODE:
+        return icepick.setIn(state, ['editorMode'], action.payload);
     default:
         return state;
     }

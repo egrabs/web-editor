@@ -25,8 +25,13 @@ import 'codemirror/theme/material.css';
 import 'codemirror/theme/3024-night.css';
 
 import 'codemirror/mode/python/python';
+import 'codemirror/mode/javascript/javascript';
 
-@connect(state => ({ autoComplete: state.autoComplete, debugMode: state.debugMode }))
+@connect(state => ({
+    autoComplete: state.autoComplete,
+    debugMode: state.debugMode,
+    editorMode: state.editorMode,
+}))
 export default class CodeEditor extends React.Component {
     state = {
         userCode: '',
@@ -103,7 +108,7 @@ export default class CodeEditor extends React.Component {
         this.setAutoCompleteTooltipPosition(editor);
         this.setState({
             userCode: value,
-            suggestions: registerKeyStroke(data, value),
+            suggestions: [] // registerKeyStroke(data, value),
         });
     };
 
@@ -177,14 +182,14 @@ export default class CodeEditor extends React.Component {
             left,
         } = this.state;
 
-        const { autoComplete } = this.props;
+        const { autoComplete, editorMode } = this.props;
 
         return (
             <div className={styles.container}>
                 <CodeMirror
                     value={userCode}
                     options={{
-                        mode: 'python',
+                        mode: editorMode,
                         theme: '3024-night',
                         autoRefresh: true,
                         lineNumbers: true,
@@ -194,7 +199,7 @@ export default class CodeEditor extends React.Component {
                 />
                 <hr className={styles.divider} />
                 <OutputWindow executionResults={executionResults} />
-                {suggestions && autoComplete && (
+                {!!suggestions && !!autoComplete && (
                     <AutoCompleteTooltip
                         suggestions={suggestions}
                         selectedSuggestion={selectedSuggestion}

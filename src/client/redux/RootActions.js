@@ -27,6 +27,11 @@ export const setDebugOutput = debugOutput => ({
 });
 
 export const setAST = ast => ({
-    type: ActionType.SET_AST,
+    type: ActionTypes.SET_AST,
     payload: ast,
+});
+
+export const setEditorMode = editorMode => ({
+    type: ActionTypes.SET_EDITOR_MODE,
+    payload: editorMode,
 });
