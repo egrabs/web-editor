@@ -42,10 +42,8 @@ export default class SideBar extends React.Component {
             [styles.sideBarExpanded]: !shrunk,
         });
         return (
-            <div
-                className={containerClasses}
-            >
-                <div style={{height: '15px', marginBottom: '10px' }}>
+            <div className={containerClasses}>
+                <div className={styles.iconContainer}>
                     {shrunk && (
                         <SVGInline
                             className={styles.hamburgerButton}
