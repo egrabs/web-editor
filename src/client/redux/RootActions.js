@@ -1,5 +1,10 @@
 import ActionTypes from './RootActionTypes';
 
+export const setExecutionResults = execResults => ({
+    type: ActionTypes.SET_EXECUTION_RESULTS,
+    payload: execResults,
+});
+
 export const startExecutionAnimation = {
     type: ActionTypes.START_EXECUTION_ANIMATION,
 };
@@ -29,4 +34,9 @@ export const setDebugOutput = debugOutput => ({
 export const setAST = ast => ({
     type: ActionTypes.SET_AST,
     payload: ast,
+});
+
+export const setEditorMode = editorMode => ({
+    type: ActionTypes.SET_EDITOR_MODE,
+    payload: editorMode,
 });

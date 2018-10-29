@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { Controlled as CodeMirror } from 'react-codemirror2';
+import cx from 'classnames';
+
+import styles from './OutputWindow.scss';
 
 import 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
@@ -13,6 +15,7 @@ import './CodeMirror.css';
 @connect(state => ({
     debugMode: state.debugMode,
     debugOutput: state.debugOutput,
+    executionResults: state.executionResults,
 }))
 export default class OutputWindow extends React.Component {
     parseValue = () => {
@@ -47,7 +50,7 @@ export default class OutputWindow extends React.Component {
 
         return (
             <CodeMirror
-                className="terminal-output"
+                className={cx('terminal-output', styles.outputContainer)}
                 value={debugMode ? debugOutput : this.parseValue()}
                 options={{
                     mode: 'shell',

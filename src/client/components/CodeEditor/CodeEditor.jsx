@@ -15,6 +15,7 @@ import {
     stopExecutionAnimation,
     startDebugMode,
     setDebugOutput,
+    setExecutionResults,
 } from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
@@ -25,8 +26,13 @@ import 'codemirror/theme/material.css';
 import 'codemirror/theme/3024-night.css';
 
 import 'codemirror/mode/python/python';
+import 'codemirror/mode/javascript/javascript';
 
-@connect(state => ({ autoComplete: state.autoComplete, debugMode: state.debugMode }))
+@connect(state => ({
+    autoComplete: state.autoComplete,
+    debugMode: state.debugMode,
+    editorMode: state.editorMode,
+}))
 export default class CodeEditor extends React.Component {
     state = {
         userCode: '',
@@ -76,16 +82,16 @@ export default class CodeEditor extends React.Component {
             .then(res => res.json())
             .then((json) => {
                 const { executionResults } = json;
-                this.setState({
-                    executionResults,
-                });
+                dispatch(setExecutionResults(executionResults));
                 dispatch(stopExecutionAnimation);
             })
             .catch((err) => {
                 dispatch(stopExecutionAnimation);
-                this.setState({
-                    executionResults: `Error!\n>>> ${err}`,
-                });
+                dispatch(setExecutionResults({
+                    err: null,
+                    exc: null,
+                    content: `Error!\n>>> ${err}`,
+                }));
             });
     };
 
@@ -170,38 +176,41 @@ export default class CodeEditor extends React.Component {
     render() {
         const {
             userCode,
-            executionResults,
             suggestions,
             selectedSuggestion,
             top,
             left,
         } = this.state;
 
-        const { autoComplete } = this.props;
+        const { autoComplete, editorMode } = this.props;
 
         return (
             <div className={styles.container}>
-                <CodeMirror
-                    value={userCode}
-                    options={{
-                        mode: 'python',
-                        theme: '3024-night',
-                        autoRefresh: true,
-                        lineNumbers: true,
-                    }}
-                    onKeyDown={this.possiblySelectSuggestion}
-                    onBeforeChange={this.onType}
-                />
-                <hr className={styles.divider} />
-                <OutputWindow executionResults={executionResults} />
-                {suggestions && autoComplete && (
-                    <AutoCompleteTooltip
-                        suggestions={suggestions}
-                        selectedSuggestion={selectedSuggestion}
-                        top={top}
-                        left={left}
-                    />
-                )}
+                <div className={styles.codeContainer}>
+                    <div className={styles.inputContainer}>
+                        <CodeMirror
+                            className={styles.codeEditor}
+                            value={userCode}
+                            options={{
+                                mode: editorMode,
+                                theme: '3024-night',
+                                autoRefresh: true,
+                                lineNumbers: true,
+                            }}
+                            onKeyDown={this.possiblySelectSuggestion}
+                            onBeforeChange={this.onType}
+                        />
+                        {!!suggestions && !!autoComplete && (
+                            <AutoCompleteTooltip
+                                suggestions={suggestions}
+                                selectedSuggestion={selectedSuggestion}
+                                top={top}
+                                left={left}
+                            />
+                        )}
+                    </div>
+                    <OutputWindow />
+                </div>
                 <ButtonBar buttons={this.buttons} />
             </div>
         );

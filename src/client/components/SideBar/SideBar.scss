@@ -1,14 +1,7 @@
 @import '../../styles/_colors';
 @import '../../styles/_animations';
 
-// I hate that this is necessary but there's some errant pixel
-// underneath the sidebar that can only be covered with z-index
-.bringToTop {
-    z-index: 2;
-}
-
 .sideBarShrunk {
-    composes: bringToTop;
     background-color: $medGrey;
     width: 15px;
     transition-duration: 1s;
@@ -17,12 +10,17 @@
 }
 
 .sideBarExpanded {
-    composes: bringToTop;
     background-color: $darkGrey;
     width: 150px;
     transition-duration: 1s;
     transition-property: width background-color;
     transition-timing-function: $smoothTransition;
+}
+
+.iconContainer {
+    position: relative;
+    height: 15px;
+    marginBottom: 10px;
 }
 
 .hamburgerButton {
@@ -33,15 +31,15 @@
 }
 
 .closeButton {
+    position: absolute;
     fill: $lightGreen;
     width: 15px;
     height: 15px;
-    position: absolute;
     animation-name: move-close-button;
     animation-duration: 1s;
-    animation-timing-function: $smoothTransition;
-    left: 140px;
-    top: 10px;
+    animation-timing-function: linear;
+    right: 1px;
+    top: 1px;
     &:hover {
         cursor: pointer;
     }
@@ -49,11 +47,11 @@
 
 @keyframes move-close-button {
     from {
-        left: 0px;
+        right: 100%;
     }
 
     to {
-        left: 140px;
+        right: 1px;
     }
 }
 
