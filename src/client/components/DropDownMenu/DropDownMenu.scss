@@ -34,12 +34,16 @@
 }
 
 .dropDownButton {
-    min-height: 40px;
+    cursor: pointer;
+    min-height: 25px;
     min-width: 120px;
     color: $darkGrey;
     background-color: $lightGreen;
     border: none;
     border-radius: 5px;
+    &:hover {
+        background-color: colorWithAlpha($lightGreen, 0.8);
+    }
 }
 
 .downArrow {
