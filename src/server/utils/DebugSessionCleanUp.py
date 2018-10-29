@@ -5,30 +5,33 @@ from utils.DebugSessionCache import getAllSessionIds, getSession, isSessionExpir
 
 import threading as thrd
 
-PROCESS_EXPIRY_LIMIT = 600  # 10 mins in seconds
+PROCESS_EXPIRY_LIMIT = 600  # 10 mins
 
 RUN_EVERY = 300  # 5 mins
 
 def _cleanSessions():
-    time.sleep(RUN_EVERY)
-    killed = []
-    for seshId in getAllSessionIds():
-        if isSessionExpired(seshId):
-            continue
-        session = getSession(seshId)
-        lastInteraction = session['lastInteraction']
-        if time.time() - lastInteraction >= PROCESS_EXPIRY_LIMIT:
-            session['proc'].terminate()
-            session['accumThread'].terminate()
-            fname = session['filename']
-            if os.path.exists(fname):
-                os.remove(fname)
-            session['expired'] = True
-            killed.append(seshId)
-    if len(killed) > 0:
-        print 'Killed Debug Threads:'
-        for victim in killed:
-            print victim
+    while True:
+        time.sleep(RUN_EVERY)
+        killed = []
+        for seshId in getAllSessionIds():
+            if isSessionExpired(seshId):
+                continue
+            session = getSession(seshId)
+            lastInteraction = session['lastInteraction']
+            if time.time() - lastInteraction >= PROCESS_EXPIRY_LIMIT:
+                session['proc'].terminate()
+                session['accumThread'].terminate()
+                fname = session['filename']
+                if os.path.exists(fname):
+                    os.remove(fname)
+                session['expired'] = True
+                killed.append(seshId)
+        if len(killed) > 0:
+            # this should be logged, not 'printed'
+            # but we'd have to have logging set up for that
+            print 'Killed Debug Threads:'
+            for victim in killed:
+                print victim
 
 def startCleanUpThread():
     cleanUpThread = thrd.Thread(target=_cleanSessions)
