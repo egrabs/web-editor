@@ -2,6 +2,7 @@ import icepick from 'icepick';
 import ActionTypes from './RootActionTypes';
 
 const initialState = Object.freeze({
+    executionResults: {},
     executing: false,
     autoComplete: true,
     debugMode: false,
@@ -42,6 +43,8 @@ export default function rootReducer(state = initialState, action) {
         return icepick.setIn(state, ['ast'], action.payload);
     case ActionTypes.SET_EDITOR_MODE:
         return icepick.setIn(state, ['editorMode'], action.payload);
+    case ActionTypes.SET_EXECUTION_RESULTS:
+        return icepick.setIn(state, ['executionResults'], action.payload);
     default:
         return state;
     }

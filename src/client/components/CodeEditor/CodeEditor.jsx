@@ -4,7 +4,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
-import OutputWindow from '../OutputWindow/OutputWindow';
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import ButtonBar from '../ButtonBar/ButtonBar';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
@@ -15,6 +14,7 @@ import {
     stopExecutionAnimation,
     startDebugMode,
     setDebugOutput,
+    setExecutionResults,
 } from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
@@ -81,16 +81,16 @@ export default class CodeEditor extends React.Component {
             .then(res => res.json())
             .then((json) => {
                 const { executionResults } = json;
-                this.setState({
-                    executionResults,
-                });
+                dispatch(setExecutionResults(executionResults));
                 dispatch(stopExecutionAnimation);
             })
             .catch((err) => {
                 dispatch(stopExecutionAnimation);
-                this.setState({
-                    executionResults: `Error!\n>>> ${err}`,
-                });
+                dispatch(setExecutionResults({
+                    err: null,
+                    exc: null,
+                    content: `Error!\n>>> ${err}`,
+                }));
             });
     };
 
@@ -175,7 +175,6 @@ export default class CodeEditor extends React.Component {
     render() {
         const {
             userCode,
-            executionResults,
             suggestions,
             selectedSuggestion,
             top,
@@ -187,6 +186,7 @@ export default class CodeEditor extends React.Component {
         return (
             <div className={styles.container}>
                 <CodeMirror
+                    className={styles.codeEditor}
                     value={userCode}
                     options={{
                         mode: editorMode,
@@ -197,8 +197,6 @@ export default class CodeEditor extends React.Component {
                     onKeyDown={this.possiblySelectSuggestion}
                     onBeforeChange={this.onType}
                 />
-                <hr className={styles.divider} />
-                <OutputWindow executionResults={executionResults} />
                 {!!suggestions && !!autoComplete && (
                     <AutoCompleteTooltip
                         suggestions={suggestions}

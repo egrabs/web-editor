@@ -1,5 +1,10 @@
 import ActionTypes from './RootActionTypes';
 
+export const setExecutionResults = execResults => ({
+    type: ActionTypes.SET_EXECUTION_RESULTS,
+    payload: execResults,
+});
+
 export const startExecutionAnimation = {
     type: ActionTypes.START_EXECUTION_ANIMATION,
 };
