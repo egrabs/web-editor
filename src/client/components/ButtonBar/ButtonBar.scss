@@ -1,4 +1,7 @@
 .btnContainer {
     display: flex;
     flex-direction: row;
+    width: 60%;
+    justify-content: space-evenly;
+    margin: 5px auto;
 }

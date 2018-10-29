@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 
+import OutputWindow from '../OutputWindow/OutputWindow';
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import ButtonBar from '../ButtonBar/ButtonBar';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
@@ -185,26 +186,31 @@ export default class CodeEditor extends React.Component {
 
         return (
             <div className={styles.container}>
-                <CodeMirror
-                    className={styles.codeEditor}
-                    value={userCode}
-                    options={{
-                        mode: editorMode,
-                        theme: '3024-night',
-                        autoRefresh: true,
-                        lineNumbers: true,
-                    }}
-                    onKeyDown={this.possiblySelectSuggestion}
-                    onBeforeChange={this.onType}
-                />
-                {!!suggestions && !!autoComplete && (
-                    <AutoCompleteTooltip
-                        suggestions={suggestions}
-                        selectedSuggestion={selectedSuggestion}
-                        top={top}
-                        left={left}
-                    />
-                )}
+                <div className={styles.codeContainer}>
+                    <div className={styles.inputContainer}>
+                        <CodeMirror
+                            className={styles.codeEditor}
+                            value={userCode}
+                            options={{
+                                mode: editorMode,
+                                theme: '3024-night',
+                                autoRefresh: true,
+                                lineNumbers: true,
+                            }}
+                            onKeyDown={this.possiblySelectSuggestion}
+                            onBeforeChange={this.onType}
+                        />
+                        {!!suggestions && !!autoComplete && (
+                            <AutoCompleteTooltip
+                                suggestions={suggestions}
+                                selectedSuggestion={selectedSuggestion}
+                                top={top}
+                                left={left}
+                            />
+                        )}
+                    </div>
+                    <OutputWindow />
+                </div>
                 <ButtonBar buttons={this.buttons} />
             </div>
         );

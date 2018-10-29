@@ -1,9 +1,18 @@
 @import '../../styles/_colors';
 
 .container {
-    position: relative; 
+    width: 100%;
+}
+
+.inputContainer {
+    position: relative;
+    width: 100%;
 }
 
 .codeEditor {
     width: 100%;
+}
+
+.codeContainer {
+    display: flex;
 }

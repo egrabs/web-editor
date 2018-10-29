@@ -3,7 +3,6 @@
 import React from 'react';
 
 import CodeEditor from '../CodeEditor/CodeEditor';
-import OutputWindow from '../OutputWindow/OutputWindow';
 import Header from '../Header/Header';
 
 import styles from './CenterContainer.scss';
@@ -15,7 +14,6 @@ export default class CenterContainer extends React.Component {
                 <Header />
                 <div className={styles.body}>
                     <CodeEditor />
-                    <OutputWindow />
                 </div>
             </div>
         );
