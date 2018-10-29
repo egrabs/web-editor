@@ -72,13 +72,16 @@ export default class CodeEditor extends React.Component {
     disable = () => this.props.debugMode;
 
     onExecute = () => {
-        const { dispatch } = this.props;
+        const { dispatch, editorMode } = this.props;
         const { userCode } = this.state;
 
         dispatch(startExecutionAnimation);
 
         request('POST', 'execute/')
-            .body({ code: userCode })
+            .body({
+                code: userCode,
+                mode: editorMode,
+            })
             .then(res => res.json())
             .then((json) => {
                 const { executionResults } = json;

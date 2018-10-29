@@ -1,5 +1,9 @@
 import multiprocessing as mp
 import sys
+import uuid
+import subprocess as sp
+import time
+import os
 
 from utils.StreamRedirectors import redirectStdOut
 from utils.ValidateCode import validateCode
@@ -19,7 +23,51 @@ class Timeout(Exception):
         return self.__repr__()
 
 
-def execCode(code):
+def execCode(code, mode):
+    if mode == 'python':
+        return execPython(code)
+    elif mode == 'javascript':
+        return execJs(code)
+    else:
+        raise ValueError('Invalid language: {}'.format(mode))
+
+
+def execJs(code):
+    validateCode(code)
+    filename = '{}.js'.format(str(uuid.uuid4()))
+
+    with open(filename, 'w') as fh:
+        fh.write(code)
+
+    proc = sp.Popen(['node', filename], stdout=sp.PIPE, stderr=sp.PIPE, stdin=sp.PIPE)
+    # bleh -- need to refactor this
+    # shouldn't have to wait 1/100th of a second if js script runs faster
+    # than that
+    delay = 0.01
+    runTime = 0
+    while proc.poll() is None:
+        print 'polly', proc.poll()
+        time.sleep(delay)
+        runTime += delay
+        if runTime >= PROCESS_TIMEOUT:
+            proc.terminate()
+            if os.path.exists(filename):
+                os.remove(filename)
+            raise Timeout
+
+    (stdout, stderr) = proc.communicate()
+
+    os.remove(filename)
+
+    return {
+        'executionResults':{
+            'out': stdout,
+            'err': stderr,
+            'exc': ''
+        }
+    }
+
+def execPython(code):
     validateCode(code)  # raises ValueError
 
     listenPipe, sendPipe = mp.Pipe(duplex=False)
