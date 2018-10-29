@@ -1,22 +1,22 @@
 import time
 import os
 
-from utils.DebugSessionCache import getAllSessionIds, getSession, isSessionExpired
+from utils.DebugSessionCache import getAllSessionIds, _cache, isSessionExpired
 
-import threading as thrd
+import multiprocessing as mp
 
-PROCESS_EXPIRY_LIMIT = 600  # 10 mins
+PROCESS_EXPIRY_LIMIT = 10  # 10 mins
 
-RUN_EVERY = 300  # 5 mins
+RUN_EVERY = 10  # 5 mins
 
-def _cleanSessions():
+def _cleanSessions(cache):
     while True:
         time.sleep(RUN_EVERY)
         killed = []
         for seshId in getAllSessionIds():
             if isSessionExpired(seshId):
                 continue
-            session = getSession(seshId)
+            session = cache[seshId]
             lastInteraction = session['lastInteraction']
             if time.time() - lastInteraction >= PROCESS_EXPIRY_LIMIT:
                 session['proc'].terminate()
@@ -34,6 +34,6 @@ def _cleanSessions():
                 print victim
 
 def startCleanUpThread():
-    cleanUpThread = thrd.Thread(target=_cleanSessions)
+    cleanUpThread = mp.Process(target=_cleanSessions, args=(_cache,))
     cleanUpThread.start()
     return cleanUpThread

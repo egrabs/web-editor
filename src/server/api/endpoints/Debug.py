@@ -1,6 +1,6 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
-from api.processing.DebugExecutor import debugCode, executeDebugAction
+from api.processing.DebugExecutor import debugCode, executeDebugAction, SessionExpired
 
 class Debug:
     @acceptJSON('data')
@@ -18,7 +18,16 @@ class DebugAction:
     def POST(self, data):
         action = data['action']
         seshId = data['seshId']
-        return executeDebugAction(seshId, action)
+        try:
+            return executeDebugAction(seshId, action)
+        except SessionExpired as se:
+            return {
+                'err': {
+                    'type': 'sessionExpired',
+                    'content': str(se)
+                }
+            }
+
 
 
 urls = (

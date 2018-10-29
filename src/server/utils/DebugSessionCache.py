@@ -29,7 +29,7 @@ def hasSession(seshId):
     return seshId in _cache
 
 def isSessionExpired(seshId):
-    sesh = getSession(seshId)
+    sesh = _cache.get(seshId)
     return sesh is None or sesh['expired']
 
 def unmountSession(seshId):

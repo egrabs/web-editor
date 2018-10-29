@@ -46,7 +46,13 @@ export default class DebugHeader extends React.Component {
                 action,
             })
             .then(res => res.json())
-            .then(({ result }) => {
+            .then(({ result, err }) => {
+                if (err) {
+                    if (err.type === 'sessionExpired') {
+                        window.alert(err.content);
+                        dispatch(stopDebugMode);
+                    }
+                }
                 dispatch(setDebugOutput(result));
                 if (additionalAction) additionalAction();
             });
