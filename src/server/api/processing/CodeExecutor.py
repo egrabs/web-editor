@@ -46,7 +46,6 @@ def execJs(code):
     delay = 0.01
     runTime = 0
     while proc.poll() is None:
-        print 'polly', proc.poll()
         time.sleep(delay)
         runTime += delay
         if runTime >= PROCESS_TIMEOUT:
