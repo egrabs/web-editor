@@ -37,7 +37,7 @@
     height: 15px;
     animation-name: move-close-button;
     animation-duration: 1s;
-    animation-timing-function: $smoothTransition;
+    animation-timing-function: linear;
     right: 1px;
     top: 1px;
     &:hover {
@@ -47,11 +47,11 @@
 
 @keyframes move-close-button {
     from {
-        left: 0px;
+        right: 100%;
     }
 
     to {
-        left: 140px;
+        right: 1px;
     }
 }
 
