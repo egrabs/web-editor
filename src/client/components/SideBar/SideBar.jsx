@@ -15,7 +15,7 @@ import styles from './SideBar.scss';
 @connect(state => ({ autoComplete: state.autoComplete }))
 export default class SideBar extends React.Component {
     state = {
-        shrunk: true,
+        shrunk: false,
     };
 
     get sideBarItems() {
