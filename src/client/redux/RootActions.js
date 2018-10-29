@@ -40,3 +40,8 @@ export const setEditorMode = editorMode => ({
     type: ActionTypes.SET_EDITOR_MODE,
     payload: editorMode,
 });
+
+export const setEditorTheme = editorTheme => ({
+    type: ActionTypes.SET_EDITOR_THEME,
+    payload: editorTheme,
+});
