@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import DropDownMenu from '../../DropDownMenu/DropDownMenu';
 import { setEditorMode } from '../../../redux/RootActions';
 
 import styles from './StandardHeader.scss';
@@ -8,22 +9,24 @@ import styles from './StandardHeader.scss';
 function StandardHeader(props) {
     const { editorMode, dispatch } = props;
 
-    const onChange = (event) => {
-        const mode = event.currentTarget.value;
-        dispatch(setEditorMode(mode));
-    };
-
     return (
         <div className={styles.header}>
-            Header
-            <select
-                className={styles.selectDropdown}
-                value={editorMode}
-                onChange={onChange}
-            >
-                <option value="python">Python</option>
-                <option value="javascript">Javascript</option>
-            </select>
+            <DropDownMenu
+                label="Select Language"
+                className={styles.languageDropdown}
+                menuItems={[
+                    {
+                        label: 'python',
+                        onClick: () => dispatch(setEditorMode('python')),
+                        selected: () => editorMode === 'python',
+                    },
+                    {
+                        label: 'javascript',
+                        onClick: () => dispatch(setEditorMode('javascript')),
+                        selected: () => editorMode === 'javascript',
+                    },
+                ]}
+            />
         </div>
     );
 }
