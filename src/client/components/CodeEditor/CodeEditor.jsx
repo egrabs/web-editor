@@ -22,8 +22,10 @@ import styles from './CodeEditor.scss';
 
 import 'codemirror/lib/codemirror';
 import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css';
+import 'codemirror/theme/3024-day.css';
 import 'codemirror/theme/3024-night.css';
+import 'codemirror/theme/base16-light.css';
+import 'codemirror/theme/base16-dark.css';
 
 import 'codemirror/mode/python/python';
 import 'codemirror/mode/javascript/javascript';
@@ -32,6 +34,7 @@ import 'codemirror/mode/javascript/javascript';
     autoComplete: state.autoComplete,
     debugMode: state.debugMode,
     editorMode: state.editorMode,
+    editorTheme: state.editorTheme,
 }))
 export default class CodeEditor extends React.Component {
     state = {
@@ -185,7 +188,7 @@ export default class CodeEditor extends React.Component {
             left,
         } = this.state;
 
-        const { autoComplete, editorMode } = this.props;
+        const { autoComplete, editorMode, editorTheme } = this.props;
 
         return (
             <div className={styles.container}>
@@ -196,7 +199,7 @@ export default class CodeEditor extends React.Component {
                             value={userCode}
                             options={{
                                 mode: editorMode,
-                                theme: '3024-night',
+                                theme: editorTheme,
                                 autoRefresh: true,
                                 lineNumbers: true,
                             }}

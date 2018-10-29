@@ -10,6 +10,7 @@ const initialState = Object.freeze({
     debugOutput: '',
     ast: '',
     editorMode: 'python',
+    editorTheme: '3024-night',
 });
 
 // Ok, it's officially time to split this into subject-matter
@@ -43,6 +44,8 @@ export default function rootReducer(state = initialState, action) {
         return icepick.setIn(state, ['ast'], action.payload);
     case ActionTypes.SET_EDITOR_MODE:
         return icepick.setIn(state, ['editorMode'], action.payload);
+    case ActionTypes.SET_EDITOR_THEME:
+        return icepick.setIn(state, ['editorTheme'], action.payload);
     case ActionTypes.SET_EXECUTION_RESULTS:
         return icepick.setIn(state, ['executionResults'], action.payload);
     default:
