@@ -61,15 +61,15 @@ export default class SideBar extends React.Component {
                 </div>
                 {!shrunk && (
                     <div>
-                        {this.sideBarItems.map(sbi => (
-                            <label htmlFor="ssst">
+                        {this.sideBarItems.map((sbi, idx) => (
+                            <label htmlFor={`sbi-${idx}`}>
                                 <Switch
                                     height={15}
                                     width={30}
                                     className={styles.toggleSwitch}
                                     onChange={sbi.onClick}
                                     checked={sbi.on}
-                                    id="ssst"
+                                    id={`sbi-${idx}`}
                                 />
                                 <span className={styles.sideBarItemLabel}>{sbi.label}</span>
                             </label>
