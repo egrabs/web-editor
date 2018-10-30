@@ -33,7 +33,7 @@ export default class DebugHeader extends React.Component {
                 src: closeCross,
                 action: 'quit',
                 title: 'quit',
-                additionalAction: () => dispatch(stopDebugMode),
+                additionalAction: () => dispatch(stopDebugMode()),
             },
         ];
     }
@@ -50,7 +50,7 @@ export default class DebugHeader extends React.Component {
                 if (err) {
                     if (err.type === 'sessionExpired') {
                         window.alert(err.content);
-                        dispatch(stopDebugMode);
+                        dispatch(stopDebugMode());
                     }
                 }
                 dispatch(setDebugOutput(result));

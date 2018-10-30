@@ -6,7 +6,7 @@ from utils.StreamRedirectors import redirectStdOut
 import utils.DebugSessionCache as debugCache
 from utils.ValidateCode import validateCode
 import subprocess as sp
-import threading as thrd
+import multiprocessing as mp
 import StringIO
 from Queue import Queue, Empty
 
@@ -43,7 +43,7 @@ def debugCode(code):
             break
 
     keew = Queue()
-    accumThread = thrd.Thread(target=accumOutput, args=(proc.stdout, keew))
+    accumThread = mp.Process(target=accumOutput, args=(proc.stdout, keew))
     accumThread.start()
 
     return {
@@ -58,7 +58,7 @@ class SessionExpired(Exception):
     def __repr__(self):
         return '{} was accessed but is expired'.format(self.seshId)
 
-    def __string__(self):
+    def __str__(self):
         return (
             'That session is no longer running because' +
             'it was not interacted with for over 10 minutes.' +
