@@ -26,6 +26,7 @@
     "icepick": "^2.3.1",
     "mirrarray": "^2.0.0",
     "react": "^16.5.2",
+    "react-bootstrap": "^0.32.4",
     "react-codemirror2": "^5.1.0",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
