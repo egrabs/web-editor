@@ -2,7 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import DropDownMenu from '../../DropDownMenu/DropDownMenu';
-import { setEditorMode, setEditorTheme } from '../../../redux/RootActions';
+import SexyButton from '../../SexyButton/SexyButton';
+
+import { setEditorMode, setEditorTheme, restoreDefaults } from '../../../redux/RootActions';
 
 import styles from './StandardHeader.scss';
 
@@ -52,6 +54,11 @@ function StandardHeader(props) {
                         selected: () => editorTheme === 'base16-light',
                     },
                 ]}
+            />
+            <SexyButton
+                text="Restore Defaults"
+                onClick={() => dispatch(restoreDefaults())}
+                customClass={styles.resetButton}
             />
         </div>
     );

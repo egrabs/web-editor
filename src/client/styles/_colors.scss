@@ -9,6 +9,9 @@ $darkGrey: #222629;
 $medGrey: #474B4F;
 $lightGrey: #6B6E70;
 
+$orangeRed: #FF4500;
+$fireBrick: #B22222; 
+
 @function colorWithAlpha($color, $alpha) {
     @return rgba($color, $alpha)
 }

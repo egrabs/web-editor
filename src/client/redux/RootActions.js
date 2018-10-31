@@ -45,3 +45,7 @@ export const setEditorTheme = editorTheme => ({
     type: ActionTypes.SET_EDITOR_THEME,
     payload: editorTheme,
 });
+
+export const restoreDefaults = () => ({
+    type: ActionTypes.RESTORE_DEFAULTS,
+});
