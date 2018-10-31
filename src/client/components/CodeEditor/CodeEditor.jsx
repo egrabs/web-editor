@@ -7,6 +7,7 @@ import { Controlled as CodeMirror } from 'react-codemirror2';
 import OutputWindow from '../OutputWindow/OutputWindow';
 import AutoCompleteTooltip from '../AutoCompleteTooltip/AutoCompleteTooltip';
 import ButtonBar from '../ButtonBar/ButtonBar';
+import ASTTree from '../ASTTree/ASTTree';
 import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import request from '../../utils/requests';
 import annotateWithReactKeys from '../../utils/reactAnnotations';
@@ -16,6 +17,7 @@ import {
     startDebugMode,
     setDebugOutput,
     setExecutionResults,
+    setAST,
 } from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
@@ -44,6 +46,7 @@ export default class CodeEditor extends React.Component {
         selectedSuggestion: '',
         suggDex: -1,
         left: 0,
+        showingAst: false,
     };
 
     constructor(props) {
@@ -66,7 +69,7 @@ export default class CodeEditor extends React.Component {
             },
             {
                 text: 'COMPILE',
-                onClick: () => window.alert('HA! U thought this did sumthin? 😂'),
+                onClick: this.onCompile,
                 disable: this.disable,
             },
         ]);
@@ -98,6 +101,19 @@ export default class CodeEditor extends React.Component {
                     exc: null,
                     content: `Error!\n>>> ${err}`,
                 }));
+            });
+    };
+
+    onCompile = () => {
+        const { userCode } = this.state;
+        const { dispatch } = this.props;
+        request('POST', '/compile/')
+            .body({ code: userCode })
+            .then(res => res.json())
+            .then((res) => {
+                const { ast } = res;
+                dispatch(setAST(ast));
+                this.setState({ showingAst: true });
             });
     };
 
@@ -186,12 +202,15 @@ export default class CodeEditor extends React.Component {
             selectedSuggestion,
             top,
             left,
+            showingAst,
         } = this.state;
 
         const { autoComplete, editorMode, editorTheme } = this.props;
+        const onAstClose = () => { this.setState({ showingAst: false }); };
 
         return (
             <div className={styles.container}>
+                <ASTTree showing={showingAst} onClose={onAstClose} />
                 <div className={styles.codeContainer}>
                     <div className={styles.inputContainer}>
                         <CodeMirror

@@ -7,6 +7,7 @@ import { createStore } from 'redux';
 import rootReducer from '../redux/RootReducer';
 import AppContainer from './AppContainer';
 
+
 /* eslint-disable no-underscore-dangle */
 const rootStore = createStore(
     rootReducer,
