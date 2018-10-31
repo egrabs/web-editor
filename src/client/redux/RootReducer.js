@@ -48,6 +48,12 @@ export default function rootReducer(state = initialState, action) {
         return icepick.setIn(state, ['editorTheme'], action.payload);
     case ActionTypes.SET_EXECUTION_RESULTS:
         return icepick.setIn(state, ['executionResults'], action.payload);
+    case ActionTypes.RESTORE_DEFAULTS:
+        return icepick.chain(state)
+            .setIn(['autoComplete'], true)
+            .setIn(['editorMode'], 'python')
+            .setIn(['editorTheme'], '3024-night')
+            .value();
     default:
         return state;
     }
