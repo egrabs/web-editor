@@ -40,5 +40,6 @@ def _cleanSessions(cache):
 
 def startCleanUpThread():
     cleanUpThread = thrd.Thread(target=_cleanSessions, args=(_cache,))
+    cleanUpThread.daemon = True
     cleanUpThread.start()
     return cleanUpThread

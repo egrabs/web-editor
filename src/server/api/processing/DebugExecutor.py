@@ -44,6 +44,7 @@ def debugCode(code):
 
     keew = Queue()
     accumThread = mp.Process(target=accumOutput, args=(proc.stdout, keew))
+    accumThread.daemon = True
     accumThread.start()
 
     return {

@@ -1,6 +1,7 @@
 import ast
+import json
+from ast2json import ast2json
 
 def compileScript(code):
     rootNode = ast.parse(code)
-    tree = dump(rootNode, annotate_fields=False, include_attributes=True)
-    return { 'ast': rootNode }
+    return { 'ast': ast2json(rootNode) }

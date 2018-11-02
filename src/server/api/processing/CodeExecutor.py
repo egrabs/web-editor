@@ -72,6 +72,7 @@ def execPython(code):
     listenPipe, sendPipe = mp.Pipe(duplex=False)
 
     proc = mp.Process(target=_execCode, args=(code, sendPipe))
+    proc.daemon = True
     proc.start()
 
     # would use proc.join(PROCESS_TIMEOUT)
