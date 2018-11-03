@@ -14,14 +14,35 @@ export default class DropDownMenu extends React.Component {
         itemClass: '',
     };
 
+    containerRef = React.createRef();
+
     state = {
         expanded: false,
     };
+
+    componentDidMount() {
+        document.addEventListener('mousedown', this.wasClickInsideMe);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.wasClickInsideMe);
+    }
 
     toggleExpanded = () => {
         this.setState(prevState => ({
             expanded: !prevState.expanded,
         }));
+    };
+
+    /**
+    * Close the dropdown if it's open and the user clicks
+    * somewhere outside our dropdown
+    */
+    wasClickInsideMe = (event) => {
+        const { current } = this.containerRef;
+        if (!current.contains(event.target)) {
+            this.setState({ expanded: false });
+        }
     };
 
     render() {
@@ -36,7 +57,10 @@ export default class DropDownMenu extends React.Component {
         } = this.props;
 
         return (
-            <div className={cx(styles.dropDownContainer, className)}>
+            <div
+                className={cx(styles.dropDownContainer, className)}
+                ref={this.containerRef}
+            >
                 <button
                     type="button"
                     className={cx(styles.dropDownButton, buttonClass)}

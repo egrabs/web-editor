@@ -1,3 +1,5 @@
+@import '../../../styles/_colors';
+
 .header {
     height: 15%;
     border: 1px solid black;
@@ -5,6 +7,23 @@
     flex-direction: row;
 }
 
-.languageDropdown {
+.dropdownTab {
     margin-left: 10px;
+}
+
+.resetButton {
+    height: 25px;
+    margin-left: 10px;
+    background-color: $orangeRed;
+    border: 1px solid $fireBrick;
+    font-size: 10px;
+    text-align: center;
+    color: $white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+        background-color: colorWithAlpha($orangeRed, 0.8);
+        color: $white;
+    }
 }

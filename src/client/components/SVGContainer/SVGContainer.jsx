@@ -3,7 +3,7 @@ import React from 'react';
 import styles from './SVGContainer.scss';
 
 export default class SVGContainer extends React.Component {
-    svgId = 'component-svg';
+    svg = React.createRef();
 
     componentDidMount() {
         this.executeSVGController();
@@ -16,7 +16,7 @@ export default class SVGContainer extends React.Component {
     executeSVGController = () => {
         const { controller } = this.props;
         controller({
-            svgElem: document.getElementById(this.svgId),
+            svgElem: this.svg,
             ...this.props,
         });
     };
@@ -24,7 +24,7 @@ export default class SVGContainer extends React.Component {
     render() {
         return (
             <div className={styles.svgContainer}>
-                <svg id={this.svgId} />
+                <svg className={styles.svg} ref={this.svg} />
             </div>
         );
     }

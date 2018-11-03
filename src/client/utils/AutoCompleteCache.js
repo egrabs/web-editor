@@ -103,7 +103,7 @@ function searchPrefix(prefix) {
 /*
 Handles all possible responses to any given
 keystroke, parsing when appropriate and handing off work to
-a subroutine: cacheWord(), searchPrefix(), or cleanUp().
+a subroutine: cacheWord(), searchPrefix(), or cleanCache().
 */
 export function registerKeyStroke(data, text) {
     const eventKey = data.text[0];

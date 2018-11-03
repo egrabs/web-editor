@@ -9,7 +9,9 @@ const ActionTypes = keymirror([
     'SET_DEBUG_OUTPUT',
     'SET_AST',
     'SET_EDITOR_MODE',
+    'SET_EDITOR_THEME',
     'SET_EXECUTION_RESULTS',
+    'RESTORE_DEFAULTS',
 ]);
 
 export default ActionTypes;

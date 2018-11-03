@@ -8,8 +8,9 @@ class Execute:
     @withAuth
     def POST(self, data):
         code = data['code']
+        mode = data['mode']
         try:
-            return execCode(code)
+            return execCode(code, mode)
         except Timeout as te:
             return { 
                 'executionResults': {

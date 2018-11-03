@@ -1,5 +1,7 @@
 import uuid
 
+import time
+
 _cache = {}
 
 def cacheSession(proc, accumThread, outputQueue, filename):
@@ -8,15 +10,27 @@ def cacheSession(proc, accumThread, outputQueue, filename):
         'proc': proc,
         'accumThread': accumThread,
         'outputQueue': outputQueue,
-        'filename': filename
+        'filename': filename,
+        'lastInteraction': time.time(),
+        'expired': False
     }
     return seshId
 
 def getSession(seshId):
-    return _cache.get(seshId)
+    sesh = _cache.get(seshId)
+    if sesh is not None:
+        sesh['lastInteraction'] = time.time()
+    return sesh
+
+def getAllSessionIds():
+    return _cache.keys()
 
 def hasSession(seshId):
     return seshId in _cache
+
+def isSessionExpired(seshId):
+    sesh = _cache.get(seshId)
+    return sesh is None or sesh['expired']
 
 def unmountSession(seshId):
     del _cache[id]

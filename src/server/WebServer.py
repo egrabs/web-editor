@@ -4,7 +4,7 @@ import api.endpoints.ScriptAnalyze as ScriptAnalyze
 import api.endpoints.Execute as Execute
 import api.endpoints.Debug as Debug
 import api.endpoints.ScriptCompile as ScriptCompile
-import utils.DebugSessionCache as debugCache
+from utils.DebugSessionCleanUp import startCleanUpThread
 
 
 urls = (
@@ -17,5 +17,5 @@ urls = (
 app = web.application(urls, locals())
 
 if __name__ == "__main__":
-    # debugCache.initCache()
+    cleanUpThread = startCleanUpThread()
     app.run()

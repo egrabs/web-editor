@@ -26,4 +26,5 @@ export default function SexyButton(props) {
 }
 SexyButton.defaultProps = {
     customClass: '',
+    disable: () => false,
 };

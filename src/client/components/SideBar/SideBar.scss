@@ -56,14 +56,16 @@
 }
 
 .toggleSwitch {
-    display: inline-block;
+    display: inline;
     margin-left: 10px;
     margin-right: 10px;
     vertical-align: middle;
 }
 
 .sideBarItemLabel {
+    display: inline;
     font-size: 9px;
     color: $white;
+    white-space: nowrap;
 }
 

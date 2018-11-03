@@ -6,7 +6,7 @@ from utils.StreamRedirectors import redirectStdOut
 import utils.DebugSessionCache as debugCache
 from utils.ValidateCode import validateCode
 import subprocess as sp
-import threading as thrd
+import multiprocessing as mp
 import StringIO
 from Queue import Queue, Empty
 
@@ -43,7 +43,8 @@ def debugCode(code):
             break
 
     keew = Queue()
-    accumThread = thrd.Thread(target=accumOutput, args=(proc.stdout, keew))
+    accumThread = mp.Process(target=accumOutput, args=(proc.stdout, keew))
+    accumThread.daemon = True
     accumThread.start()
 
     return {
@@ -51,11 +52,34 @@ def debugCode(code):
         'result': output
      }
 
+class SessionExpired(Exception):
+    def __init__(self, id):
+        self.seshId = id
+
+    def __repr__(self):
+        return '{} was accessed but is expired'.format(self.seshId)
+
+    def __str__(self):
+        return (
+            'That session is no longer running because' +
+            'it was not interacted with for over 10 minutes.' +
+            '\nPlease start a new debugging session.'
+        )
+
 
 # TODO: delete file when debug session is over
 def executeDebugAction(id, action):
+    if debugCache.isSessionExpired(id):
+        raise SessionExpired(id)
     procConfig = debugCache.getSession(id)
     proc = procConfig['proc']
+    if action == 'quit':
+        accumThread = procConfig['accumThread']
+        accumThread.terminate()
+        proc.terminate()
+        filename = procConfig['filename']
+        os.remove(filename)
+        return {}
     queue = procConfig['outputQueue']
     proc.stdin.write('{}\n'.format(action))
     proc.stdin.flush()
@@ -68,11 +92,6 @@ def executeDebugAction(id, action):
             tries += 1
             if tries == 2:
                 break
-    if action == 'quit':
-        accumThread = procConfig['accumThread']
-        accumThread.terminate()
-        filename = procConfig['filename']
-        os.remove(filename)
     return { 'result': result.getvalue() }
 
 # TODO: this should wrap the user's code in an exec
