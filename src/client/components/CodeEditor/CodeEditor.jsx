@@ -118,8 +118,8 @@ export default class CodeEditor extends React.Component {
     };
 
     setAutoCompleteTooltipPosition = (editor) => {
-        const { display: { cursorDiv } } = editor;
-        const { top, left } = cursorDiv.firstChild.getBoundingClientRect();
+        const { display: { cursorDiv: { firstChild } } } = editor;
+        const { top, left } = firstChild ? firstChild.getBoundingClientRect() : { top: 0, left: 0 };
         this.setState({
             top,
             left,

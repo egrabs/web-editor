@@ -7,12 +7,56 @@ import * as d3 from 'd3';
 * object comes from redux state and is therefore immutable
 */
 function processAst(ast) {
-    const { body, ...rest } = ast;
+    // TODO: body isn't the only special value that should be interpreted as children
+    const {
+        body,
+        value,
+        ...rest
+    } = ast;
     const newObj = { ...rest };
+    newObj.children = [];
     if (body && body.length > 0) {
         newObj.children = body.map(chld => processAst(chld));
     }
+    if (value) {
+        const { func, args } = value;
+        if (func) {
+            newObj.children.push(func);
+            if (args) {
+                args.forEach(a => newObj.children.push(a));
+            }
+        }
+    }
     return newObj;
+}
+
+function buildNodeSummary(data) {
+    const text = [data.id || data.n || data._type];
+    // TODO: handle all possible data properties
+    if (data.values) text.push(`values: ${data.values.map(v => v.s).join(',')}`);
+    // if (data.func) text.push(`function: ${data.func.id}()`);
+    if (data.args) {
+        if (data.args.args.length > 0) text.push(`args: ${data.args.args.map(a => a.id).join(',')}`);
+    }
+    return text;
+}
+
+/**
+* Now this is confusing
+*
+*/
+function buildNodeText(textElems) {
+    const yDisp = 12;
+    textElems.each(function (el) {
+        const textLines = buildNodeSummary(el.data);
+        textLines.forEach((tl, idx) => {
+            d3.select(this)
+                .append('tspan')
+                .attr('y', idx * yDisp)
+                .attr('x', 8)
+                .text(tl);
+        });
+    });
 }
 
 const margin = {
@@ -29,6 +73,8 @@ export default function ASTTreeController(props) {
     const svg = d3.select(current);
 
     const transformed = processAst(ast);
+
+    console.log(transformed);
 
     const root = d3.hierarchy(transformed, d => d.children);
 
@@ -74,13 +120,13 @@ export default function ASTTreeController(props) {
 
         nodeEnter.append('circle')
             .attr('r', 2.5)
-            .attr('fill', d => d._children ? '#555' : '#999');
+            .attr('fill', '#999');
 
         nodeEnter.append('text')
             .attr('dy', '0.31em')
             .attr('x', 6)
             .attr('text-anchor', 'start')
-            .text(d => d.data._type);
+            .call(buildNodeText);
 
         const link = gLink.selectAll('path')
             .data(links, d => d.target.id);
