@@ -45,6 +45,18 @@ export default class DropDownMenu extends React.Component {
         }
     };
 
+    renderButtonContents = () => {
+        const { label } = this.props;
+        return (
+            <div className={styles.buttonContents}>
+                <span>{label}</span>
+                <span className={styles.arrowContainer}>
+                    <span className={styles.downArrow} />
+                </span>
+            </div>
+        );
+    };
+
     render() {
         const { expanded } = this.state;
         const {
@@ -53,7 +65,6 @@ export default class DropDownMenu extends React.Component {
             dropDownClass,
             buttonClass,
             itemClass,
-            label,
         } = this.props;
 
         return (
@@ -66,8 +77,7 @@ export default class DropDownMenu extends React.Component {
                     className={cx(styles.dropDownButton, buttonClass)}
                     onClick={this.toggleExpanded}
                 >
-                    {label}
-                    <span className={styles.downArrow} />
+                    {this.renderButtonContents()}
                 </button>
                 {expanded && (
                     <ul

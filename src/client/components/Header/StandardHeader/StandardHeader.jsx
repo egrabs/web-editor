@@ -13,8 +13,13 @@ function StandardHeader(props) {
 
     return (
         <div className={styles.header}>
+            <SexyButton
+                text="Restore Defaults"
+                onClick={() => dispatch(restoreDefaults())}
+                customClass={styles.resetButton}
+            />
             <DropDownMenu
-                label="Select Language"
+                label="Language"
                 className={styles.dropdownTab}
                 menuItems={[
                     {
@@ -30,7 +35,7 @@ function StandardHeader(props) {
                 ]}
             />
             <DropDownMenu
-                label="Select Theme"
+                label="Theme"
                 className={styles.dropdownTab}
                 menuItems={[
                     {
@@ -54,11 +59,6 @@ function StandardHeader(props) {
                         selected: () => editorTheme === 'base16-light',
                     },
                 ]}
-            />
-            <SexyButton
-                text="Restore Defaults"
-                onClick={() => dispatch(restoreDefaults())}
-                customClass={styles.resetButton}
             />
         </div>
     );

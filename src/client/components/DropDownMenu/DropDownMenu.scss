@@ -18,15 +18,15 @@
     list-style: none;
     font-size: 14px;
     text-align: left;
-    background-color: $lightGrey;
-    border: 1px solid $darkGreen;
+    background-color: $faintGrey;
+    border: 1px solid $darkGrey;
     border-radius: 4px;
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
 .listItem {
-    text-align: left;
-    color: $lightGreen;
+    text-align: center;
+    color: $darkGrey;
     cursor: pointer;
     &:hover {
         background-color: $medGrey;
@@ -35,28 +35,38 @@
 
 .dropDownButton {
     cursor: pointer;
-    min-height: 25px;
-    min-width: 120px;
-    color: $darkGrey;
-    background-color: $lightGreen;
+    min-height: 15px;
+    min-width: 80px;
+    // color: $darkGrey;
+    background: colorWithAlpha($faintGrey, 0.5);
     border: none;
-    border-radius: 5px;
+    // border-radius: 5px;
     &:hover {
-        background-color: colorWithAlpha($lightGreen, 0.8);
+        background: colorWithAlpha($faintGrey, 1);
     }
 }
 
+.buttonContents {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}
+
+.arrowContainer {
+    display: inline-flex;
+    align-items: center;
+    padding-top: 3px;
+}
+
 .downArrow {
-    position: absolute;
-    vertical-align: middle;
-    margin: 0 2px 0 2px;
-    top: 45%;
-    right: 3px;
+    margin: 0 0 0 3px;
     width: 0; 
     height: 0; 
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-top: 5px solid $darkGrey;
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-top: 3px solid $darkGrey;
 }
 
 .checkMark {
