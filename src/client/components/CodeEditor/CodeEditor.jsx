@@ -49,6 +49,8 @@ export default class CodeEditor extends React.Component {
         showingAst: false,
     };
 
+    codeContainer = React.createRef();
+
     constructor(props) {
         super(props);
         this.buttons = annotateWithReactKeys([
@@ -120,9 +122,11 @@ export default class CodeEditor extends React.Component {
     setAutoCompleteTooltipPosition = (editor) => {
         const { display: { cursorDiv: { firstChild } } } = editor;
         const { top, left } = firstChild ? firstChild.getBoundingClientRect() : { top: 0, left: 0 };
+        const { current } = this.codeContainer;
+        const containerDimensions = current.getBoundingClientRect();
         this.setState({
-            top,
-            left,
+            top: top - containerDimensions.top,
+            left: left - containerDimensions.left,
         });
     };
 
@@ -211,7 +215,7 @@ export default class CodeEditor extends React.Component {
         return (
             <div className={styles.container}>
                 <ASTTree showing={showingAst} onClose={onAstClose} />
-                <div className={styles.codeContainer}>
+                <div ref={this.codeContainer} className={styles.codeContainer}>
                     <div className={styles.inputContainer}>
                         <CodeMirror
                             className={styles.codeEditor}

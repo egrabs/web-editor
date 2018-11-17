@@ -3,8 +3,8 @@ import cx from 'classnames';
 
 import styles from './AutoCompleteTooltip.scss';
 
-const TOP_DISP = -10;
-const LEFT_DISP = -10;
+const TOP_DISP = 15;
+const LEFT_DISP = 15;
 
 export default function AutoCompleteTooltip(props) {
     const {
