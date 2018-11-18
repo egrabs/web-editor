@@ -61,7 +61,7 @@ export default class CodeEditor extends React.Component {
             },
             {
                 text: 'ANALYZE',
-                onClick: this.onAnalyze,
+                onClick: () => window.alert('coming soon . . . maybe'),
                 disable: this.disable,
             },
             {

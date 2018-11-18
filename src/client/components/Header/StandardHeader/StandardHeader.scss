@@ -5,27 +5,7 @@
     border: 1px solid black;
     display: flex;
     flex-direction: row;
-    align-items: baseline;
+    align-items: center;
+    justify-content: space-between;
     background: colorWithAlpha($faintGrey, 0.5);
-}
-
-.dropdownTab {
-    margin-left: 10px;
-}
-
-.resetButton {
-    height: 25px;
-    margin-left: 10px;
-    background-color: $orangeRed;
-    border: 1px solid $fireBrick;
-    font-size: 10px;
-    text-align: center;
-    color: $white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    &:hover {
-        background-color: colorWithAlpha($orangeRed, 0.8);
-        color: $white;
-    }
 }

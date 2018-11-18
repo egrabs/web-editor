@@ -12,6 +12,8 @@ const ActionTypes = keymirror([
     'SET_EDITOR_THEME',
     'SET_EXECUTION_RESULTS',
     'RESTORE_DEFAULTS',
+    'HANDLE_NEW_REGISTRATION',
+    'HANDLE_LOGIN_ATTEMPT',
 ]);
 
 export default ActionTypes;

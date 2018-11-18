@@ -4,11 +4,12 @@ import cx from 'classnames';
 import SVGInline from 'react-svg-inline';
 import Switch from 'react-switch';
 
-import { toggleAutoComplete } from '../../redux/RootActions';
+import { toggleAutoComplete, restoreDefaults } from '../../redux/RootActions';
 
 import hamburgerIcon from '../../images/hamburger.svg';
 import closeIcon from '../../images/closeButton.svg';
 import styles from './SideBar.scss';
+import SexyButton from '../SexyButton/SexyButton';
 
 /* eslint-disable */
 
@@ -37,6 +38,7 @@ export default class SideBar extends React.Component {
 
     render() {
         const { shrunk } = this.state;
+        const { dispatch } = this.props;
         const containerClasses = cx({
             [styles.sideBarShrunk]: shrunk,
             [styles.sideBarExpanded]: !shrunk,
@@ -74,6 +76,11 @@ export default class SideBar extends React.Component {
                                 <span className={styles.sideBarItemLabel}>{sbi.label}</span>
                             </label>
                         ))}
+                        <SexyButton
+                            text="Restore Defaults"
+                            onClick={() => dispatch(restoreDefaults())}
+                            customClass={styles.resetButton}
+                        />
                     </div>
                 )}
             </div>

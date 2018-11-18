@@ -1,0 +1,37 @@
+.signInBox {
+
+}
+
+.signIn {
+    margin-right: 15px;
+}
+
+.registerButton {
+    border: none;
+    text-decoration: underline;
+    background-color: transparent;
+    color: blue;
+    cursor: pointer;
+    &:focus {
+        outline: none;
+    }
+}
+
+.innerContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.signInButton {
+    float: right;
+    margin: 2px 3px 0 0;
+}
+
+.inputBox {
+    margin: 2px 5px;
+}
+
+.registerBox {
+
+}

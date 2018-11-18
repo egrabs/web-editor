@@ -12,6 +12,8 @@ export default class DropDownMenu extends React.Component {
         dropDownClass: '',
         buttonClass: '',
         itemClass: '',
+        menuItems: [],
+        downArrow: true,
     };
 
     containerRef = React.createRef();
@@ -46,25 +48,59 @@ export default class DropDownMenu extends React.Component {
     };
 
     renderButtonContents = () => {
-        const { label } = this.props;
+        const { label, downArrow } = this.props;
         return (
             <div className={styles.buttonContents}>
                 <span>{label}</span>
-                <span className={styles.arrowContainer}>
-                    <span className={styles.downArrow} />
-                </span>
+                {downArrow && (
+                    <span className={styles.arrowContainer}>
+                        <span className={styles.downArrow} />
+                    </span>
+                )}
             </div>
         );
     };
 
+    renderDefaultDropdownContents = () => {
+        const {
+            menuItems,
+            itemClass,
+        } = this.props;
+        return menuItems.map(item => (
+            <li
+                role="presentation"
+                className={cx(styles.listItem, itemClass)}
+                onClick={() => {
+                    item.onClick();
+                    this.setState({ expanded: false });
+                }}
+            >
+                {item.label}
+                {item.selected && item.selected() && (
+                    <SVGInline
+                        className={styles.checkMark}
+                        svg={checkMark}
+                    />
+                )}
+            </li>
+        ));
+    }
+
+    renderDropdownContents = () => {
+        const { children } = this.props;
+        console.log(children);
+        if (children) {
+            return children;
+        }
+        return this.renderDefaultDropdownContents();
+    }
+
     render() {
         const { expanded } = this.state;
         const {
-            menuItems,
             className,
-            dropDownClass,
             buttonClass,
-            itemClass,
+            dropDownClass,
         } = this.props;
 
         return (
@@ -83,26 +119,8 @@ export default class DropDownMenu extends React.Component {
                     <ul
                         className={cx(styles.dropDown, dropDownClass)}
                         role="menu"
-
                     >
-                        {menuItems.map(item => (
-                            <li
-                                role="presentation"
-                                className={cx(styles.listItem, itemClass)}
-                                onClick={() => {
-                                    item.onClick();
-                                    this.setState({ expanded: false });
-                                }}
-                            >
-                                {item.label}
-                                {item.selected() && (
-                                    <SVGInline
-                                        className={styles.checkMark}
-                                        svg={checkMark}
-                                    />
-                                )}
-                            </li>
-                        ))}
+                        {this.renderDropdownContents()}
                     </ul>
                 )}
             </div>
