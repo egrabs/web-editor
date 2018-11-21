@@ -1,10 +1,12 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
-from api.processing.LoginValidator import validateLogin, InvalidLogin
+from api.processing.LoginValidator import validateLogin, register, InvalidLogin, UserExists
 
 class Login:
     @acceptJSON('data')
     @returnJSON
+    # haha lol . . . uyyy TODO
+    @withAuth
     def POST(self, data):
         username = data.get('username', '')
         password = data.get('password', '')
@@ -18,10 +20,26 @@ class Login:
             }
 
 class Register:
-    pass
+    @acceptJSON('data')
+    @returnJSON
+    @withAuth
+    def POST(self, data):
+        username = data.get('username', '')
+        password = data.get('password', '')
+        email = data.get('email', '')
+        try:
+            return {
+                'token': register(username, password, email)
+            }
+        except UserExists:
+            return {
+                'err': 'user_exists'
+            }
+
 
 urls = (
     '', 'Login',
+    'register/', 'Register'
 )
 
 subapp = web.application(urls, locals())

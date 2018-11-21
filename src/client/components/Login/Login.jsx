@@ -25,8 +25,8 @@ export default class Login extends React.Component {
             email,
         } = this.state;
         const { dispatch } = this.props;
-        if (password !== passwordConfirm) {
-            request('POST', '/register/')
+        if (password === passwordConfirm) {
+            request('POST', '/login/register/')
                 .body({
                     username,
                     password,

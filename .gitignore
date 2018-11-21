@@ -4,3 +4,4 @@ src/client/node_modules/*
 dist/*
 src/client/dist/*
 src/server/webeditorenv/*
+src/server/web-editor/*
