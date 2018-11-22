@@ -6,7 +6,7 @@ class Login:
     @acceptJSON('data')
     @returnJSON
     # haha lol . . . uyyy TODO
-    @withAuth
+    @withAuth(checkAuth=False)
     def POST(self, data):
         username = data.get('username', '')
         password = data.get('password', '')
@@ -22,7 +22,7 @@ class Login:
 class Register:
     @acceptJSON('data')
     @returnJSON
-    @withAuth
+    @withAuth(checkAuth=False)
     def POST(self, data):
         username = data.get('username', '')
         password = data.get('password', '')

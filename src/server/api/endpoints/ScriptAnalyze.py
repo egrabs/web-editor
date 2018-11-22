@@ -5,7 +5,7 @@ from api.processing.ScriptAnalyzer import analyzeScript
 class ScriptStats:
     @acceptJSON('json_blob')
     @returnJSON
-    @withAuth
+    @withAuth()
     def POST(self, json_blob):
         code = json_blob['code']
         return { 'codeLength': analyzeScript(code) }

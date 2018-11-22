@@ -5,7 +5,7 @@ from api.processing.ScriptCompiler import compileScript
 class ScriptCompile:
     @acceptJSON('data')
     @returnJSON
-    @withAuth
+    @withAuth()
     def POST(self, data):
         code = data['code']
         return compileScript(code)

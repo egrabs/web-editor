@@ -2,9 +2,10 @@ import hashlib as hl
 import bson
 
 from utils.MongoUtils import userColl
+from utils.security.Auth import getToken
 
-_salt = '\xcaA\x92\xa8\xca\xa0\xb5\xab68\xc5\xe9\x16\xfb\xd7\x13'
-rounds = 100000
+_SALT = '\xcaA\x92\xa8\xca\xa0\xb5\xab68\xc5\xe9\x16\xfb\xd7\x13'
+_ROUNDS = 100000
 
 class InvalidLogin(Exception):
     pass
@@ -13,11 +14,7 @@ class UserExists(Exception):
     pass
 
 def _hashPwd(password):
-    return hl.pbkdf2_hmac('sha256', password, _salt, rounds)
-
-def _generateToken():
-    # TODO
-    return 'hehe Im a fake token'
+    return hl.pbkdf2_hmac('sha256', password, _SALT, _ROUNDS)
 
 def validateLogin(username, password):
     user = userColl.find_one({ 'username': username })
@@ -26,7 +23,7 @@ def validateLogin(username, password):
     pwdHash = _hashPwd(password)
     if str(user['pwdhash']) != pwdHash:
         raise InvalidLogin()
-    return _generateToken()
+    return getToken()
 
 def register(username, password, email):
     user = userColl.find_one({ 'username': username })
@@ -38,4 +35,4 @@ def register(username, password, email):
         'pwdhash': bson.Binary(pwdHash),
         'email': email    
     })
-    return _generateToken()
+    return getToken()

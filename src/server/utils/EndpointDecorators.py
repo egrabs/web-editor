@@ -2,6 +2,8 @@ import web
 import json
 import uuid
 
+from utils.security.Auth import validateToken
+
 def acceptJSON(*args):
     def _acceptJSON(endpoint):
         if len(args) == 0:
@@ -35,15 +37,17 @@ def returnJSON(endpoint):
         return json.dumps(retVal, cls=CustomJSONEncoder)
     return _returnJSON
 
-# once we have user log-in this will handle authorization headers
-# it's also going to handle misc headers -- and that'll be its sole
-# job for now
-def withAuth(endpoint):
-    def _withAuth(*args, **kwargs):
-        # TODO: origin url should come from request headers
-        web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
-        return endpoint(*args, **kwargs)
-    return _withAuth
+def withAuth(checkAuth=True):
+    def decorator(endpoint):
+        def _withAuth(*args, **kwargs):
+            # TODO: remove this when development is done
+            web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
+            return endpoint(*args, **kwargs)
+            if checkAuth:
+                token = web.ctx.env.get('Authorization')
+                validateToken(token)
+        return _withAuth
+    return decorator
 
 # if this gets really big it should go in its own file
 class CustomJSONEncoder(json.JSONEncoder):
