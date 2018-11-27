@@ -13,6 +13,7 @@ const ActionTypes = keymirror([
     'SET_EXECUTION_RESULTS',
     'RESTORE_DEFAULTS',
     'LOGIN_SUCCESS',
+    'LOGOUT',
 ]);
 
 export default ActionTypes;

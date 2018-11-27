@@ -36,6 +36,10 @@ export const loginSuccess = ({ username }) => ({
     payload: { username },
 });
 
+export const logout = {
+    type: ActionTypes.LOGOUT,
+};
+
 export const setAST = ast => ({
     type: ActionTypes.SET_AST,
     payload: ast,

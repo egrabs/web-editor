@@ -4,12 +4,11 @@ import cx from 'classnames';
 import SVGInline from 'react-svg-inline';
 import Switch from 'react-switch';
 
-import { toggleAutoComplete, restoreDefaults } from '../../redux/RootActions';
+import { toggleAutoComplete } from '../../redux/RootActions';
 
 import hamburgerIcon from '../../images/hamburger.svg';
 import closeIcon from '../../images/closeButton.svg';
 import styles from './SideBar.scss';
-import SexyButton from '../SexyButton/SexyButton';
 
 /* eslint-disable */
 
@@ -76,11 +75,6 @@ export default class SideBar extends React.Component {
                                 <span className={styles.sideBarItemLabel}>{sbi.label}</span>
                             </label>
                         ))}
-                        <SexyButton
-                            text="Restore Defaults"
-                            onClick={() => dispatch(restoreDefaults())}
-                            customClass={styles.resetButton}
-                        />
                     </div>
                 )}
             </div>

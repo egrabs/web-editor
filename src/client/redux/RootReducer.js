@@ -63,6 +63,12 @@ export default function rootReducer(state = initialState, action) {
             .setIn(['authed'], true)
             .value();
     }
+    case ActionTypes.LOGOUT: {
+        return icepick.chain(state)
+            .setIn(['username'], '')
+            .setIn(['authed'], false)
+            .value();
+    }
     default:
         return state;
     }

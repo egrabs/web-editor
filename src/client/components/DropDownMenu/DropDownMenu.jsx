@@ -48,7 +48,8 @@ export default class DropDownMenu extends React.Component {
     };
 
     renderButtonContents = () => {
-        const { label, downArrow } = this.props;
+        const { label, downArrow, buttonContents } = this.props;
+        if (buttonContents) return buttonContents;
         return (
             <div className={styles.buttonContents}>
                 <span>{label}</span>
