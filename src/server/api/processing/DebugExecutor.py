@@ -1,5 +1,5 @@
 import os
-
+import sys
 import uuid
 
 from utils.StreamRedirectors import redirectStdOut
@@ -7,15 +7,17 @@ import utils.DebugSessionCache as debugCache
 from utils.ValidateCode import validateCode
 import subprocess as sp
 import multiprocessing as mp
+from threading import Lock
 import StringIO
 from Queue import Queue, Empty
 
-def accumOutput(stdout, queue):
-    # idk why this is necessary but dear lord dont remove it
-    queue.put('')
+def accumOutput(stdout, queue, lock):
     while True:
         line = stdout.readline()
-        queue.put(line)
+        if line and not line.startswith('(Pdb) >'):
+            lock.acquire()
+            queue.put(line)
+            lock.release()
 
 def debugCode(code):
     validateCode(code)
@@ -36,19 +38,21 @@ def debugCode(code):
 
     proc = sp.Popen(['python', '-u', filename], stdout=sp.PIPE, stdin=sp.PIPE)
 
+    startCollecting = False
     output = ''
     while True:
         output = proc.stdout.readline()
         if output.startswith('->'):
             break
-
-    keew = Queue()
-    accumThread = mp.Process(target=accumOutput, args=(proc.stdout, keew))
+    lochness = Lock()
+    manager = mp.Manager()
+    keew = manager.Queue()
+    accumThread = mp.Process(target=accumOutput, args=(proc.stdout, keew, lochness))
     accumThread.daemon = True
     accumThread.start()
 
     return {
-        'seshId': debugCache.cacheSession(proc, accumThread, keew, filename),
+        'seshId': debugCache.cacheSession(proc, accumThread, keew, lochness, filename),
         'result': output
      }
 
@@ -80,18 +84,22 @@ def executeDebugAction(id, action):
         filename = procConfig['filename']
         os.remove(filename)
         return {}
-    queue = procConfig['outputQueue']
     proc.stdin.write('{}\n'.format(action))
     proc.stdin.flush()
     result = StringIO.StringIO()
-    tries = 0
-    while True:
+    queue = procConfig['outputQueue']
+    lock = procConfig['queueLock']
+    while queue.qsize() < 1:
+        pass
+    lock.acquire()
+    while queue.qsize() > 0:
+        # additional try / except because qsize is approximate
         try:
-            result.write(queue.get(timeout=0.1))
+            item = queue.get(block=True, timeout=0.1)
+            result.write(item)
         except Empty:
-            tries += 1
-            if tries == 2:
-                break
+            pass
+    lock.release()
     return { 'result': result.getvalue() }
 
 # TODO: this should wrap the user's code in an exec
