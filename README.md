@@ -1,15 +1,26 @@
 # Python Web Editor
 ## yeah there's already a million of 'em, but this one is _ours_
 
-## Install
+## Install / Run Instructions (Mac)
 
-### from project directory:
+### from `src/client` directory:
 
 1. `npm install`
 2. `npm run start`
-3. in a separate terminal window navigate to src/server directory
-    1. run `source webeditorenv/bin/activate`
-    2. then run `python WebServer.py 1234`
+
+### Install + Run MongoDB
+
+1. `brew install mongodb`
+2. `mkdir -p /data/db`
+3. `sudo chown -R `id -un` /data/db`
+4. `mongod`
+
+### from `src/server` directory in separate terminal window
+
+1. `virtualenv webeditorenv`
+2. `source webeditorenv/bin/activate`
+3. `pip install -r requirements.txt`
+2. `python WebServer.py 1234`
 4. navigate to `localhost:8080` in your browser
 
 # Shameless Plug
