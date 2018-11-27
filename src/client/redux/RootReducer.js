@@ -11,6 +11,8 @@ const initialState = Object.freeze({
     ast: '',
     editorMode: 'python',
     editorTheme: '3024-night',
+    username: '',
+    authed: false,
 });
 
 // Ok, it's officially time to split this into subject-matter
@@ -54,6 +56,13 @@ export default function rootReducer(state = initialState, action) {
             .setIn(['editorMode'], 'python')
             .setIn(['editorTheme'], '3024-night')
             .value();
+    case ActionTypes.LOGIN_SUCCESS: {
+        const { username } = action.payload;
+        return icepick.chain(state)
+            .setIn(['username'], username)
+            .setIn(['authed'], true)
+            .value();
+    }
     default:
         return state;
     }

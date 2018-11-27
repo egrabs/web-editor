@@ -2,7 +2,7 @@ import React from 'react';
 
 import FileNameInput from '../FileNameInput/FileNameInput';
 import HeaderDropdownBar from './HeaderDropdownBar/HeaderDropdownBar';
-import Login from '../../Login/Login';
+import AuthWidget from '../../AuthWidget/AuthWidget';
 
 import styles from './StandardHeader.scss';
 
@@ -11,7 +11,7 @@ export default function StandardHeader() {
         <div className={styles.header}>
             <FileNameInput />
             <HeaderDropdownBar />
-            <Login />
+            <AuthWidget />
         </div>
     );
 }

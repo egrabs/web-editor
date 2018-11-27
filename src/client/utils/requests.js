@@ -2,7 +2,25 @@
 
 import config from '../config/config';
 
+import { rootStore } from '../app/App';
+import { getAuthToken } from './auth';
+
 const { server: { baseUrl } } = config;
+
+const commonOpts = () => {
+    const opts = {
+        mode: 'cors',
+    };
+    const { authed } = rootStore.getState();
+    const token = getAuthToken();
+    if (authed) {
+        opts.headers = {
+            Authorization: token,
+        };
+        console.log(token);
+    }
+    return opts;
+};
 
 function buildUrl(path, queryString = '') {
     const sepChar = path.startsWith('/') ? '' : '/';
@@ -55,7 +73,7 @@ function addGetBody(path) {
 function POST(path) {
     const pseudoRequest = {
         options: {
-            mode: 'cors',
+            ...commonOpts(),
             method: 'POST',
         },
     };
@@ -66,7 +84,7 @@ function POST(path) {
 function GET(path) {
     const pseudoRequest = {
         options: {
-            mode: 'cors',
+            ...commonOpts(),
             method: 'GET',
         },
     };
@@ -75,13 +93,13 @@ function GET(path) {
 }
 
 // TODO: should probably support PUT too whenever it comes up
-const supportedTypes = ['GET', 'POST'];
-export default function request(type, path) {
-    const upperType = type.toUpperCase();
-    if (!supportedTypes.includes(upperType)) {
-        throw new Error(`${type} requests are not supported!`);
+const supportedMethods = ['GET', 'POST'];
+export default function request(method, path) {
+    const upperMethod = method.toUpperCase();
+    if (!supportedMethods.includes(upperMethod)) {
+        throw new Error(`${method} requests are not supported!`);
     }
-    switch (upperType) {
+    switch (upperMethod) {
     case 'POST':
         return POST(path);
     case 'GET':

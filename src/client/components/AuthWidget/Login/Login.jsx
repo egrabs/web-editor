@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import DropDownMenu from '../DropDownMenu/DropDownMenu';
-import { handleRegister, handleLoginAttempt } from '../../redux/RootActions';
-import request from '../../utils/requests';
+import DropDownMenu from '../../DropDownMenu/DropDownMenu';
+import { loginSuccess } from '../../../redux/RootActions';
+import request from '../../../utils/requests';
+import { setAuthToken } from '../../../utils/auth';
 
 import styles from './Login.scss';
 
@@ -24,7 +25,6 @@ export default class Login extends React.Component {
             passwordConfirm,
             email,
         } = this.state;
-        const { dispatch } = this.props;
         if (password === passwordConfirm) {
             request('POST', '/login/register/')
                 .body({
@@ -32,10 +32,9 @@ export default class Login extends React.Component {
                     password,
                     email,
                 })
-                .then(res => res.json())
-                .then((res) => {
-                    dispatch(handleRegister(res));
-                });
+                .then(this.authenticate)
+                // TODO
+                .catch(() => undefined);
         } else {
             // TODO
         }
@@ -43,16 +42,23 @@ export default class Login extends React.Component {
 
     signIn = () => {
         const { username, password } = this.state;
-        const { dispatch } = this.props;
         request('POST', '/login/')
             .body({
                 username,
                 password,
             })
             .then(res => res.json())
-            .then((res) => {
-                dispatch(handleLoginAttempt(res));
-            });
+            .then(this.authenticate)
+            // TODO
+            .catch(() => undefined);
+    };
+
+    authenticate = (res) => {
+        // TODO handle case where auth fails
+        const { username, token } = res;
+        const { dispatch } = this.props;
+        setAuthToken(token);
+        dispatch(loginSuccess({ username }));
     };
 
     renderSignInBox = () => {

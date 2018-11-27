@@ -9,7 +9,7 @@ import AppContainer from './AppContainer';
 
 
 /* eslint-disable no-underscore-dangle */
-const rootStore = createStore(
+export const rootStore = createStore(
     rootReducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );

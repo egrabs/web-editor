@@ -31,14 +31,9 @@ export const setDebugOutput = debugOutput => ({
     payload: debugOutput,
 });
 
-export const handleRegister = () => ({
-    // TODO
-    type: ActionTypes.HANDLE_NEW_REGISTRATION,
-});
-
-export const handleLoginAttempt = () => ({
-    // TODO
-    type: ActionTypes.HANDLE_LOGIN_ATTEMPS,
+export const loginSuccess = ({ username }) => ({
+    type: ActionTypes.LOGIN_SUCCESS,
+    payload: { username },
 });
 
 export const setAST = ast => ({

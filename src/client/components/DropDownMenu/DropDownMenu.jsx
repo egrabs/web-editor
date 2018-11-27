@@ -88,7 +88,6 @@ export default class DropDownMenu extends React.Component {
 
     renderDropdownContents = () => {
         const { children } = this.props;
-        console.log(children);
         if (children) {
             return children;
         }
