@@ -1,11 +1,8 @@
-import hashlib as hl
 import bson
+import uuid
 
 from utils.MongoUtils import userColl
-from utils.security.Auth import getToken
-
-_SALT = '\xcaA\x92\xa8\xca\xa0\xb5\xab68\xc5\xe9\x16\xfb\xd7\x13'
-_ROUNDS = 100000
+from utils.security.Auth import getToken, hashPwd
 
 class InvalidLogin(Exception):
     pass
@@ -13,26 +10,29 @@ class InvalidLogin(Exception):
 class UserExists(Exception):
     pass
 
-def _hashPwd(password):
-    return hl.pbkdf2_hmac('sha256', password, _SALT, _ROUNDS)
-
 def validateLogin(username, password):
     user = userColl.find_one({ 'username': username })
-    if not user:
+    pwdHash = hashPwd(password)
+    if not user or str(user['pwdhash']) != pwdHash:
         raise InvalidLogin()
-    pwdHash = _hashPwd(password)
-    if str(user['pwdhash']) != pwdHash:
-        raise InvalidLogin()
-    return getToken()
+    return {
+        'token': getToken(),
+        'username': username
+    }
 
 def register(username, password, email):
     user = userColl.find_one({ 'username': username })
     if user:
         raise UserExists()
-    pwdHash = _hashPwd(password)
+    # TODO: validate username, password & email w/ regexes
+    pwdHash = hashPwd(password)
     user = userColl.insert_one({
         'username': username,
         'pwdhash': bson.Binary(pwdHash),
-        'email': email    
+        'email': email,
+        '_id': str(uuid.uuid4())
     })
-    return getToken()
+    return {
+        'token': getToken(),
+        'username': username
+    }

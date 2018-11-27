@@ -11,9 +11,7 @@ class Login:
         username = data.get('username', '')
         password = data.get('password', '')
         try:
-            return {
-                'token': validateLogin(username, password)
-            }
+            return validateLogin(username, password)
         except InvalidLogin:
             return {
                 'err': True
@@ -28,9 +26,7 @@ class Register:
         password = data.get('password', '')
         email = data.get('email', '')
         try:
-            return {
-                'token': register(username, password, email)
-            }
+            return register(username, password, email)
         except UserExists:
             return {
                 'err': 'user_exists'

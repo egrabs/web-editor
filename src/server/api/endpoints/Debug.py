@@ -5,7 +5,7 @@ from api.processing.DebugExecutor import debugCode, executeDebugAction, SessionE
 class Debug:
     @acceptJSON('data')
     @returnJSON
-    @withAuth
+    @withAuth()
     def POST(self, data):
         code = data['code']
         return debugCode(code)
@@ -14,7 +14,7 @@ class Debug:
 class DebugAction:
     @acceptJSON('data')
     @returnJSON
-    @withAuth
+    @withAuth()
     def POST(self, data):
         action = data['action']
         seshId = data['seshId']

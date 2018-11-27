@@ -4,12 +4,13 @@ import time
 
 _cache = {}
 
-def cacheSession(proc, accumThread, outputQueue, filename):
+def cacheSession(proc, accumThread, outputQueue, lock, filename):
     seshId = str(uuid.uuid4())
     _cache[seshId] = {
         'proc': proc,
         'accumThread': accumThread,
         'outputQueue': outputQueue,
+        'queueLock': lock,
         'filename': filename,
         'lastInteraction': time.time(),
         'expired': False
