@@ -3,11 +3,6 @@
 
 ## Install / Run Instructions (Mac)
 
-### from `src/client` directory:
-
-1. `npm install`
-2. `npm run start`
-
 ### Install + Run MongoDB
 
 1. `brew install mongodb`
@@ -15,13 +10,18 @@
 3. `sudo chown -R `id -un` /data/db`
 4. `mongod`
 
-### from `src/server` directory in separate terminal window
+### from `src/server` directory
 
 1. `virtualenv webeditorenv`
 2. `source webeditorenv/bin/activate`
 3. `pip install -r requirements.txt`
 2. `python WebServer.py 1234`
-4. navigate to `localhost:8080` in your browser
+
+### from `src/client` directory:
+
+1. `npm install`
+2. `npm run start`
+3. navigate to `localhost:8080` in your browser
 
 # Shameless Plug
 ## Authors:
