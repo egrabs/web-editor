@@ -37,15 +37,18 @@ def returnJSON(endpoint):
         return json.dumps(retVal, cls=CustomJSONEncoder)
     return _returnJSON
 
-def withAuth(checkAuth=True):
+def withAuth(checkAuth=True, requireUserContext=False):
     def decorator(endpoint):
         def _withAuth(*args, **kwargs):
-            # TODO: remove this when development is done
+            web.header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
             web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
-            return endpoint(*args, **kwargs)
+            web.header("Access-Control-Allow-Credentials", "true")
+            if requireUserContext:
+                pass
             if checkAuth:
-                token = web.ctx.env.get('Authorization')
+                token = web.ctx.env.get('HTTP_AUTHORIZATION')
                 validateToken(token)
+            return endpoint(*args, **kwargs)
         return _withAuth
     return decorator
 

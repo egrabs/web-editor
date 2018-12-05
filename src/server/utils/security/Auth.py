@@ -35,11 +35,14 @@ def getToken():
     )
     return token
 
-def validateToken(token):
-    if not token:
+def validateToken(rawToken):
+    if not rawToken:
         raise SecurityError
+    bearer, b64str = rawToken.split(' ')
+    username, token = b64str.decode('base64').split(':')
     try:
         decoded = jwt.decode(token, _jwtSecret(), algorithms='HS256')
     except jwt.ExpiredSignatureError:
         raise SecurityError
-    # TOOD
+
+
