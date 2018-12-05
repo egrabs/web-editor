@@ -1,8 +1,9 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
+from api.endpoints.BaseEndpoint import BaseEndpoint
 from api.processing.CodeExecutor import execCode, Timeout
 
-class Execute:
+class Execute(BaseEndpoint):
     @acceptJSON('data')
     @returnJSON
     @withAuth()

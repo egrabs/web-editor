@@ -1,11 +1,11 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
+from api.endpoints.BaseEndpoint import BaseEndpoint
 from api.processing.LoginValidator import validateLogin, register, InvalidLogin, UserExists
 
-class Login:
+class Login(BaseEndpoint):
     @acceptJSON('data')
     @returnJSON
-    # haha lol . . . uyyy TODO
     @withAuth(checkAuth=False)
     def POST(self, data):
         username = data.get('username', '')
@@ -17,7 +17,7 @@ class Login:
                 'err': True
             }
 
-class Register:
+class Register(BaseEndpoint):
     @acceptJSON('data')
     @returnJSON
     @withAuth(checkAuth=False)

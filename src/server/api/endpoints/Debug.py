@@ -1,8 +1,9 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
+from api.endpoints.BaseEndpoint import BaseEndpoint
 from api.processing.DebugExecutor import debugCode, executeDebugAction, SessionExpired
 
-class Debug:
+class Debug(BaseEndpoint):
     @acceptJSON('data')
     @returnJSON
     @withAuth()
@@ -11,7 +12,7 @@ class Debug:
         return debugCode(code)
 
 
-class DebugAction:
+class DebugAction(BaseEndpoint):
     @acceptJSON('data')
     @returnJSON
     @withAuth()

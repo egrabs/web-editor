@@ -1,8 +1,9 @@
 import web
 from utils.EndpointDecorators import acceptJSON, returnJSON, withAuth
+from api.endpoints.BaseEndpoint import BaseEndpoint
 from api.processing.ScriptAnalyzer import analyzeScript
 
-class ScriptStats:
+class ScriptStats(BaseEndpoint):
     @acceptJSON('json_blob')
     @returnJSON
     @withAuth()
