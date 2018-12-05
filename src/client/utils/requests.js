@@ -11,13 +11,13 @@ const commonOpts = () => {
     const opts = {
         mode: 'cors',
     };
-    const { authed } = rootStore.getState();
+    /* eslint-disable */
+    const { authed, username } = rootStore.getState();
     const token = getAuthToken();
     if (authed) {
         opts.headers = {
-            Authorization: token,
+            Authorization: `Basic ${btoa(`${username}:${token}`)}`,
         };
-        console.log(token);
     }
     return opts;
 };
@@ -77,6 +77,7 @@ function POST(path) {
             method: 'POST',
         },
     };
+    console.log(pseudoRequest.options);
     pseudoRequest.body = addPostBody(path).bind(pseudoRequest);
     return pseudoRequest;
 }
