@@ -67,24 +67,25 @@ export default class DropDownMenu extends React.Component {
             menuItems,
             itemClass,
         } = this.props;
-        return menuItems.map(item => (
-            <li
-                role="presentation"
-                className={cx(styles.listItem, itemClass)}
-                onClick={() => {
-                    item.onClick();
-                    this.setState({ expanded: false });
-                }}
-            >
-                {item.label}
-                {item.selected && item.selected() && (
-                    <SVGInline
-                        className={styles.checkMark}
-                        svg={checkMark}
-                    />
-                )}
-            </li>
-        ));
+        return menuItems.filter(item => !item.hidden || !item.hidden())
+            .map(item => (
+                <li
+                    role="presentation"
+                    className={cx(styles.listItem, itemClass)}
+                    onClick={() => {
+                        item.onClick();
+                        this.setState({ expanded: false });
+                    }}
+                >
+                    {item.label}
+                    {item.selected && item.selected() && (
+                        <SVGInline
+                            className={styles.checkMark}
+                            svg={checkMark}
+                        />
+                    )}
+                </li>
+            ));
     }
 
     renderDropdownContents = () => {

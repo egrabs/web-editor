@@ -45,6 +45,11 @@ export const setAST = ast => ({
     payload: ast,
 });
 
+export const setUserCode = code => ({
+    type: ActionTypes.SET_USER_CODE,
+    payload: code,
+});
+
 export const setEditorMode = editorMode => ({
     type: ActionTypes.SET_EDITOR_MODE,
     payload: editorMode,

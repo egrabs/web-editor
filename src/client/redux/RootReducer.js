@@ -13,6 +13,7 @@ const initialState = Object.freeze({
     editorTheme: '3024-night',
     username: '',
     authed: false,
+    userCode: '',
 });
 
 // Ok, it's officially time to split this into subject-matter
@@ -69,6 +70,8 @@ export default function rootReducer(state = initialState, action) {
             .setIn(['authed'], false)
             .value();
     }
+    case ActionTypes.SET_USER_CODE:
+        return icepick.setIn(state, ['userCode'], action.payload);
     default:
         return state;
     }

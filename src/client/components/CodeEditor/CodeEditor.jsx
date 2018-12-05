@@ -18,6 +18,7 @@ import {
     setDebugOutput,
     setExecutionResults,
     setAST,
+    setUserCode,
 } from '../../redux/RootActions';
 
 import styles from './CodeEditor.scss';
@@ -37,10 +38,10 @@ import 'codemirror/mode/javascript/javascript';
     debugMode: state.debugMode,
     editorMode: state.editorMode,
     editorTheme: state.editorTheme,
+    userCode: state.userCode,
 }))
 export default class CodeEditor extends React.Component {
     state = {
-        userCode: '',
         suggestions: [],
         top: 0,
         selectedSuggestion: '',
@@ -80,8 +81,7 @@ export default class CodeEditor extends React.Component {
     disable = () => this.props.debugMode;
 
     onExecute = () => {
-        const { dispatch, editorMode } = this.props;
-        const { userCode } = this.state;
+        const { dispatch, editorMode, userCode } = this.props;
 
         dispatch(startExecutionAnimation);
 
@@ -107,8 +107,7 @@ export default class CodeEditor extends React.Component {
     };
 
     onCompile = () => {
-        const { userCode } = this.state;
-        const { dispatch } = this.props;
+        const { dispatch, userCode } = this.props;
         request('POST', '/compile/')
             .body({ code: userCode })
             .then(res => res.json())
@@ -133,8 +132,9 @@ export default class CodeEditor extends React.Component {
     onType = (editor, data, value) => {
         // cleanCache(value);
         this.setAutoCompleteTooltipPosition(editor);
+        const { dispatch } = this.props;
+        dispatch(setUserCode(value));
         this.setState({
-            userCode: value,
             suggestions: registerKeyStroke(data, value),
         });
     };
@@ -157,10 +157,11 @@ export default class CodeEditor extends React.Component {
                 });
             } else if (event.key === 'Tab') {
                 this.setState((prevState) => {
-                    const { suggDex, selectedSuggestion, userCode } = prevState;
+                    const { dispatch, userCode } = this.props;
+                    const { suggDex, selectedSuggestion } = prevState;
+                    dispatch(setUserCode(`${userCode}${selectedSuggestion.remaining} `));
                     if (suggDex !== -1 && selectedSuggestion !== '') {
                         return {
-                            userCode: `${userCode}${selectedSuggestion.remaining} `,
                             suggestions: [],
                             suggDex: -1,
                             selectedSuggestion: '',
@@ -173,23 +174,20 @@ export default class CodeEditor extends React.Component {
     };
 
     onAnalyze = () => {
-        const { dispatch } = this.props;
-        const { userCode } = this.state;
+        const { dispatch, userCode } = this.props;
 
         dispatch(startExecutionAnimation);
 
         request('POST', 'analyze/')
             .body({ code: userCode })
-            .then(res => res.json())
-            .then((res) => {
-                console.log(res);
+            // .then(res => res.json())
+            .then(() => {
                 dispatch(stopExecutionAnimation);
             });
     };
 
     onDebug = () => {
-        const { dispatch } = this.props;
-        const { userCode } = this.state;
+        const { dispatch, userCode } = this.props;
         request('POST', 'debug/')
             .body({ code: userCode })
             .then(res => res.json())
@@ -201,7 +199,6 @@ export default class CodeEditor extends React.Component {
 
     render() {
         const {
-            userCode,
             suggestions,
             selectedSuggestion,
             top,
@@ -209,7 +206,13 @@ export default class CodeEditor extends React.Component {
             showingAst,
         } = this.state;
 
-        const { autoComplete, editorMode, editorTheme } = this.props;
+        const {
+            autoComplete,
+            editorMode,
+            editorTheme,
+            userCode,
+        } = this.props;
+
         const onAstClose = () => { this.setState({ showingAst: false }); };
 
         return (

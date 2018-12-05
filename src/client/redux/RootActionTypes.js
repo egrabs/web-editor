@@ -14,6 +14,7 @@ const ActionTypes = keymirror([
     'RESTORE_DEFAULTS',
     'LOGIN_SUCCESS',
     'LOGOUT',
+    'SET_USER_CODE',
 ]);
 
 export default ActionTypes;
