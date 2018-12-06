@@ -17,7 +17,8 @@ def validateLogin(username, password):
         raise InvalidLogin()
     return {
         'token': getToken(),
-        'username': username
+        'username': username,
+        'userid': user['_id']
     }
 
 def register(username, password, email):
@@ -34,5 +35,6 @@ def register(username, password, email):
     })
     return {
         'token': getToken(),
-        'username': username
+        'username': username,
+        'userid': user['_id']
     }

@@ -1,8 +1,8 @@
 import web
 import json
 import uuid
-
-from utils.security.Auth import validateToken
+import bson
+from utils.security.Auth import validateToken, getUsernameAndToken
 
 def acceptJSON(*args):
     def _acceptJSON(endpoint):
@@ -43,10 +43,11 @@ def withAuth(checkAuth=True, requireUserContext=False):
             web.header("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization")
             web.header('Access-Control-Allow-Origin', 'http://localhost:8080')
             web.header("Access-Control-Allow-Credentials", "true")
+            token = web.ctx.env.get('HTTP_AUTHORIZATION')
             if requireUserContext:
-                pass
+                username, _ = getUsernameAndToken(token)
+                kwargs['username'] = username
             if checkAuth:
-                token = web.ctx.env.get('HTTP_AUTHORIZATION')
                 validateToken(token)
             return endpoint(*args, **kwargs)
         return _withAuth
@@ -56,5 +57,7 @@ def withAuth(checkAuth=True, requireUserContext=False):
 class CustomJSONEncoder(json.JSONEncoder):
     def default(self, o):
         if type(o) == uuid.UUID:
+            return str(o)
+        if type(o) == bson.objectid.ObjectId:
             return str(o)
         return json.JSONEncoder.default(self, o)

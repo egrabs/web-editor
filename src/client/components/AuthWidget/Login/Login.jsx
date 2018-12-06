@@ -55,10 +55,10 @@ export default class Login extends React.Component {
 
     authenticate = (res) => {
         // TODO handle case where auth fails
-        const { username, token } = res;
+        const { username, token, userid } = res;
         const { dispatch } = this.props;
         setAuthToken(token);
-        dispatch(loginSuccess({ username }));
+        dispatch(loginSuccess({ username, userid }));
     };
 
     renderSignInBox = () => {

@@ -1,12 +1,17 @@
 import web
 from api.endpoints.BaseEndpoint import BaseEndpoint
+from api.processing.Saver import saveFile
 
 class Save(BaseEndpoint):
-    @withAuth()
-    def POST(self, data, user):
-        pass
-        # filename = data['filename']
-        # filecontents = data['filecontents']
+    @withAuth(checkAuth=True, requireUserContext=True)
+    def POST(self, data, user=None):
+        filename = data['filename']
+        contents = data['contents']
+        saveFile(filename, contents, user)
+        # this needs error handling but first I
+        # gotta flesh out what the error cases are
+        # TODO
+        return { 'filename': filename }
 
 urls = (
     '', 'Save'

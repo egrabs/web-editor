@@ -31,9 +31,9 @@ export const setDebugOutput = debugOutput => ({
     payload: debugOutput,
 });
 
-export const loginSuccess = ({ username }) => ({
+export const loginSuccess = ({ username, userid }) => ({
     type: ActionTypes.LOGIN_SUCCESS,
-    payload: { username },
+    payload: { username, userid },
 });
 
 export const logout = {

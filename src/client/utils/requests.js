@@ -11,12 +11,11 @@ const commonOpts = () => {
     const opts = {
         mode: 'cors',
     };
-    /* eslint-disable */
-    const { authed, username } = rootStore.getState();
+    const { authed, userid } = rootStore.getState();
     const token = getAuthToken();
     if (authed) {
         opts.headers = {
-            Authorization: `Basic ${btoa(`${username}:${token}`)}`,
+            Authorization: `Basic ${btoa(`${userid}:${token}`)}`,
         };
     }
     return opts;
