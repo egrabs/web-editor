@@ -7,7 +7,7 @@
 
 1. `brew install mongodb`
 2. `mkdir -p /data/db`
-3. `sudo chown -R `id -un` /data/db`
+3. ``sudo chown -R `id -un` /data/db``
 4. `mongod`
 
 ### from `src/server` directory
