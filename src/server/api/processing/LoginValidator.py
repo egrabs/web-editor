@@ -27,12 +27,13 @@ def register(username, password, email):
         raise UserExists()
     # TODO: validate username, password & email w/ regexes
     pwdHash = hashPwd(password)
-    user = userColl.insert_one({
+    user = {
         'username': username,
         'pwdhash': bson.Binary(pwdHash),
         'email': email,
         '_id': str(uuid.uuid4())
-    })
+    }
+    userColl.insert_one(user)
     return {
         'token': getToken(),
         'username': username,
