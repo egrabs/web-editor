@@ -53,8 +53,9 @@ export default class DebugHeader extends React.Component {
                         window.alert(err.content);
                         dispatch(stopDebugMode());
                     }
+                } else {
+                    dispatch(setDebugOutput(result));
                 }
-                dispatch(setDebugOutput(result));
                 if (additionalAction) additionalAction();
             });
     };
