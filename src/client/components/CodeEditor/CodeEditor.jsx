@@ -12,14 +12,24 @@ import { registerKeyStroke } from '../../utils/AutoCompleteCache';
 import request from '../../utils/requests';
 import annotateWithReactKeys from '../../utils/reactAnnotations';
 import {
-    startExecutionAnimation,
-    stopExecutionAnimation,
     startDebugMode,
     setDebugOutput,
     setExecutionResults,
+} from '../../redux/Execution/ExecutionActions';
+
+import {
+    startExecutionAnimation,
+    stopExecutionAnimation,
     setAST,
-    setUserCode,
-} from '../../redux/RootActions';
+} from '../../redux/UI/UIActions';
+
+import { setUserCode } from '../../redux/FileSystem/FileSystemActions';
+
+import { getUIState } from '../../redux/UI/UIReducer';
+
+import { getExecutionState } from '../../redux/Execution/ExecutionReducer';
+
+import { getFileSystemState } from '../../redux/FileSystem/FileSystemReducer';
 
 import styles from './CodeEditor.scss';
 
@@ -33,13 +43,18 @@ import 'codemirror/theme/base16-dark.css';
 import 'codemirror/mode/python/python';
 import 'codemirror/mode/javascript/javascript';
 
-@connect(state => ({
-    autoComplete: state.autoComplete,
-    debugMode: state.debugMode,
-    editorMode: state.editorMode,
-    editorTheme: state.editorTheme,
-    userCode: state.userCode,
-}))
+@connect((state) => {
+    const { autoComplete, editorMode, editorTheme } = getUIState(state);
+    const { userCode } = getFileSystemState(state);
+    const { debugMode } = getExecutionState(state);
+    return {
+        autoComplete,
+        debugMode,
+        editorMode,
+        editorTheme,
+        userCode,
+    };
+})
 export default class CodeEditor extends React.Component {
     state = {
         suggestions: [],

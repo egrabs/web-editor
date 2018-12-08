@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import cx from 'classnames';
 
+import { getExecutionState } from '../../redux/Execution/ExecutionReducer';
+
 import styles from './OutputWindow.scss';
 
 import 'codemirror/lib/codemirror';
@@ -12,11 +14,14 @@ import 'codemirror/theme/idea.css';
 
 import './CodeMirror.css';
 
-@connect(state => ({
-    debugMode: state.debugMode,
-    debugOutput: state.debugOutput,
-    executionResults: state.executionResults,
-}))
+@connect((state) => {
+    const { debugMode, debugOutput, executionResults } = getExecutionState(state);
+    return {
+        debugMode,
+        debugOutput,
+        executionResults,
+    };
+})
 export default class OutputWindow extends React.Component {
     parseValue = () => {
         const { executionResults: { err, out, exc } } = this.props;

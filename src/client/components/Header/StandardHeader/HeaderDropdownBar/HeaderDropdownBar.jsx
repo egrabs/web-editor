@@ -2,17 +2,25 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import DropDownMenu from '../../../DropDownMenu/DropDownMenu';
-import { setEditorMode, setEditorTheme } from '../../../../redux/RootActions';
+import { setEditorMode, setEditorTheme } from '../../../../redux/UI/UIActions';
+import { getUIState } from '../../../../redux/UI/UIReducer';
+import { getAuthState } from '../../../../redux/Auth/AuthReducer';
+import { getFileSystemState } from '../../../../redux/FileSystem/FileSystemReducer';
 import request from '../../../../utils/requests';
 
 import styles from './HeaderDropdownBar.scss';
 
-const mapStateToProps = state => ({
-    editorMode: state.editorMode,
-    editorTheme: state.editorTheme,
-    authed: state.authed,
-    userCode: state.userCode,
-});
+const mapStateToProps = (state) => {
+    const { editorMode, editorTheme } = getUIState(state);
+    const { userCode } = getFileSystemState(state);
+    const { authed } = getAuthState(state);
+    return {
+        editorMode,
+        editorTheme,
+        authed,
+        userCode,
+    };
+};
 
 @connect(mapStateToProps)
 export default class HeaderDropdownBar extends React.Component {

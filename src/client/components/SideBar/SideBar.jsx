@@ -4,7 +4,8 @@ import cx from 'classnames';
 import SVGInline from 'react-svg-inline';
 import Switch from 'react-switch';
 
-import { toggleAutoComplete } from '../../redux/RootActions';
+import { toggleAutoComplete } from '../../redux/UI/UIActions';
+import { getUIState } from '../../redux/UI/UIReducer';
 
 import hamburgerIcon from '../../images/hamburger.svg';
 import closeIcon from '../../images/closeButton.svg';
@@ -12,7 +13,7 @@ import styles from './SideBar.scss';
 
 /* eslint-disable */
 
-@connect(state => ({ autoComplete: state.autoComplete }))
+@connect(state => ({ autoComplete: getUIState(state).autoComplete }))
 export default class SideBar extends React.Component {
     state = {
         shrunk: true,
