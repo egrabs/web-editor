@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import DropDownMenu from '../../DropDownMenu/DropDownMenu';
-import { loginSuccess } from '../../../redux/RootActions';
+import { loginSuccess } from '../../../redux/Auth/AuthActions';
 import request from '../../../utils/requests';
 import { setAuthToken } from '../../../utils/auth';
 

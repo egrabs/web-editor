@@ -5,7 +5,8 @@ import SVGInline from 'react-svg-inline';
 import cx from 'classnames';
 
 import request from '../../../utils/requests';
-import { setDebugOutput, stopDebugMode } from '../../../redux/RootActions';
+import { setDebugOutput, stopDebugMode } from '../../../redux/Execution/ExecutionActions';
+import { getExecutionState } from '../../../redux/Execution/ExecutionReducer';
 
 import styles from './DebugHeader.scss';
 
@@ -13,7 +14,7 @@ import curvedArrow from '../../../images/curvedArrow.svg';
 import closeCross from '../../../images/closeButton.svg';
 import downArrow from '../../../images/downArrow.svg';
 
-@connect(state => ({ seshId: state.debugSeshId }))
+@connect(state => ({ seshId: getExecutionState(state).debugSeshId }))
 export default class DebugHeader extends React.Component {
     get debugOptions() {
         const { dispatch } = this.props;

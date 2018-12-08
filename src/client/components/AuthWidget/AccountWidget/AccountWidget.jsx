@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SVGInline from 'react-svg-inline';
 
 import DropDownMenu from '../../DropDownMenu/DropDownMenu';
-import { logout } from '../../../redux/RootActions';
+import { logout } from '../../../redux/Auth/AuthActions';
 import { setAuthToken } from '../../../utils/auth';
 
 import styles from './AccountWidget.scss';

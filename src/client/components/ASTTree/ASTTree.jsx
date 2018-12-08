@@ -5,8 +5,9 @@ import { Modal } from 'react-bootstrap';
 import ASTController from './ASTTreeController';
 import SVGContainer from '../SVGContainer/SVGContainer';
 import SexyButton from '../SexyButton/SexyButton';
+import { getUIState } from '../../redux/UI/UIReducer';
 
-@connect(state => ({ ast: state.ast }))
+@connect(state => ({ ast: getUIState(state).ast }))
 export default class ASTTree extends React.Component {
     render() {
         const { ast, showing, onClose } = this.props;
