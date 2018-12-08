@@ -12,26 +12,27 @@ import styles from './HeaderDropdownBar.scss';
 
 const mapStateToProps = (state) => {
     const { editorMode, editorTheme } = getUIState(state);
-    const { userCode } = getFileSystemState(state);
+    const { userCode, filename } = getFileSystemState(state);
     const { authed } = getAuthState(state);
     return {
         editorMode,
         editorTheme,
         authed,
         userCode,
+        filename,
     };
 };
 
 @connect(mapStateToProps)
 export default class HeaderDropdownBar extends React.Component {
     saveCurrentFile = () => {
-        const { userCode } = this.props;
+        const { userCode, filename } = this.props;
         request('POST', '/save')
             .body({
-                fileContents: userCode,
+                filename,
+                contents: userCode,
             })
             .then(res => res.json());
-        // .then(res => )
     }
 
     render() {
@@ -49,7 +50,7 @@ export default class HeaderDropdownBar extends React.Component {
                     menuItems={[
                         {
                             label: 'save',
-                            onClick: () => undefined,
+                            onClick: this.saveCurrentFile,
                             hidden: () => !authed,
                         },
                     ]}

@@ -3,7 +3,7 @@ import ActionTypes from './FileSystemActionTypes';
 
 const initialState = Object.freeze({
     userCode: '',
-    fileName: '',
+    filename: '',
 });
 
 export default function fileSystemReducer(state = initialState, action) {
@@ -11,7 +11,7 @@ export default function fileSystemReducer(state = initialState, action) {
     case ActionTypes.SET_USER_CODE:
         return icepick.setIn(state, ['userCode'], action.payload);
     case ActionTypes.SET_CURRENT_FILENAME:
-        return icepick.setIn(state, ['fileName'], action.payload);
+        return icepick.setIn(state, ['filename'], action.payload);
     default:
         return state;
     }

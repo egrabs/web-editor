@@ -3,6 +3,7 @@
 import config from '../config/config';
 
 import { rootStore } from '../app/App';
+import { getAuthState } from '../redux/Auth/AuthReducer';
 import { getAuthToken } from './auth';
 
 const { server: { baseUrl } } = config;
@@ -11,9 +12,9 @@ const commonOpts = () => {
     const opts = {
         mode: 'cors',
     };
-    const { authed, userid } = rootStore.getState();
-    const token = getAuthToken();
+    const { authed, userid } = getAuthState(rootStore.getState());
     if (authed) {
+        const token = getAuthToken();
         opts.headers = {
             Authorization: `Basic ${btoa(`${userid}:${token}`)}`,
         };
@@ -76,7 +77,6 @@ function POST(path) {
             method: 'POST',
         },
     };
-    console.log(pseudoRequest.options);
     pseudoRequest.body = addPostBody(path).bind(pseudoRequest);
     return pseudoRequest;
 }

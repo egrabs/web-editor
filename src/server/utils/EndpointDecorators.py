@@ -2,7 +2,7 @@ import web
 import json
 import uuid
 import bson
-from utils.security.Auth import validateToken, getUsernameAndToken
+from utils.security.Auth import validateToken, getUserIdAndToken
 
 def acceptJSON(*args):
     def _acceptJSON(endpoint):
@@ -45,8 +45,8 @@ def withAuth(checkAuth=True, requireUserContext=False):
             web.header("Access-Control-Allow-Credentials", "true")
             token = web.ctx.env.get('HTTP_AUTHORIZATION')
             if requireUserContext:
-                username, _ = getUsernameAndToken(token)
-                kwargs['username'] = username
+                userid, _ = getUserIdAndToken(token)
+                kwargs['userid'] = userid
             if checkAuth:
                 validateToken(token)
             return endpoint(*args, **kwargs)
