@@ -41,7 +41,7 @@ function addPostBody(path) {
 }
 
 function encodeQueryString(body) {
-    const keys = Object.getOwnProperties(body);
+    const keys = Object.getOwnPropertyNames(body);
     if (keys.length < 1) {
         return '';
     }
@@ -88,7 +88,7 @@ function GET(path) {
             method: 'GET',
         },
     };
-    pseudoRequest.body = addGetBody(path).bind(this);
+    pseudoRequest.body = addGetBody(path).bind(pseudoRequest);
     return pseudoRequest;
 }
 
