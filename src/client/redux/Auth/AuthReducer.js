@@ -23,6 +23,7 @@ export default function authReducer(state = initialState, action) {
         return icepick.chain(state)
             .setIn(['username'], '')
             .setIn(['userid'], '')
+            .setIn(['email'], '')
             .setIn(['authed'], false)
             .value();
     default:
