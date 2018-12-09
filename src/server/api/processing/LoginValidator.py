@@ -18,7 +18,8 @@ def validateLogin(username, password):
     return {
         'token': getToken(),
         'username': username,
-        'userid': user['_id']
+        'email': user['email'],
+        'userid': user['_id'],
     }
 
 def register(username, password, email):
@@ -37,5 +38,6 @@ def register(username, password, email):
     return {
         'token': getToken(),
         'username': username,
+        'email': user['email'],
         'userid': user['_id']
     }

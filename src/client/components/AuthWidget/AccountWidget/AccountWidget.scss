@@ -1,8 +1,8 @@
 @import '../../../styles/_colors';
 
 .accountIcon {
-    height: 15px;
-    width: 15px;
+    height: 12px;
+    width: 12px;
 }
 
 .accountContainer {
@@ -21,7 +21,7 @@
     align-items: center;
 }
 
-.userName {
+.accountInfo {
     width: fit-content;
     color: $lightGreen;
     margin: 5px 0;

@@ -11,7 +11,7 @@ import styles from './AccountWidget.scss';
 import userIcon from '../../../images/user.svg';
 
 function AccountWidget(props) {
-    const { dispatch, username } = props;
+    const { dispatch, username, email } = props;
     return (
         <div className={styles.accountContainer}>
             <DropDownMenu
@@ -23,7 +23,8 @@ function AccountWidget(props) {
                 )}
             >
                 <div className={styles.accountInfoContainer}>
-                    <div className={styles.userName}>{username}</div>
+                    <div className={styles.accountInfo}>{username}</div>
+                    <div className={styles.accountInfo}>{email}</div>
                     <hr className={styles.separator} />
                     <button
                         type="button"
@@ -40,9 +41,10 @@ function AccountWidget(props) {
 }
 
 const mapStateToProps = (state) => {
-    const { username } = getAuthState(state);
+    const { username, email } = getAuthState(state);
     return {
         username,
+        email,
     };
 };
 

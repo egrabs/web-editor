@@ -5,15 +5,17 @@ const initialState = Object.freeze({
     username: '',
     userid: '',
     authed: false,
+    email: '',
 });
 
 export default function authReducer(state = initialState, action) {
     switch (action.type) {
     case ActionTypes.LOGIN_SUCCESS: {
-        const { username, userid } = action.payload;
+        const { username, userid, email } = action.payload;
         return icepick.chain(state)
             .setIn(['username'], username)
             .setIn(['userid'], userid)
+            .setIn(['email'], email)
             .setIn(['authed'], true)
             .value();
     }

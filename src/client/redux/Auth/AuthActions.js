@@ -2,9 +2,9 @@ import ActionTypes from './AuthActionTypes';
 
 import { setAuthToken } from '../../utils/auth';
 
-export const loginSuccess = ({ username, userid }) => ({
+export const loginSuccess = ({ username, userid, email }) => ({
     type: ActionTypes.LOGIN_SUCCESS,
-    payload: { username, userid },
+    payload: { username, userid, email },
 });
 
 export const logout = () => {
