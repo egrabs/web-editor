@@ -18,7 +18,8 @@ export default class Login extends React.Component {
         register: false,
     };
 
-    createAccount = () => {
+    createAccount = (e) => {
+        e.preventDefault();
         const {
             username,
             password,
@@ -40,7 +41,8 @@ export default class Login extends React.Component {
         }
     };
 
-    signIn = () => {
+    signIn = (e) => {
+        e.preventDefault();
         const { username, password } = this.state;
         request('POST', '/login/')
             .body({
@@ -65,27 +67,28 @@ export default class Login extends React.Component {
         const { username, password } = this.state;
         return (
             <div className={styles.signInBox}>
-                <input
-                    className={styles.inputBox}
-                    value={username}
-                    placeholder="username"
-                    type="text"
-                    onChange={(e) => { this.setState({ username: e.currentTarget.value }); }}
-                />
-                <input
-                    className={styles.inputBox}
-                    value={password}
-                    type="password"
-                    placeholder="password"
-                    onChange={(e) => { this.setState({ password: e.currentTarget.value }); }}
-                />
-                <button
-                    type="button"
-                    onClick={this.signIn}
-                    className={styles.signInButton}
-                >
-                    Sign in
-                </button>
+                <form onSubmit={this.signIn}>
+                    <input
+                        className={styles.inputBox}
+                        value={username}
+                        placeholder="username"
+                        type="text"
+                        onChange={(e) => { this.setState({ username: e.currentTarget.value }); }}
+                    />
+                    <input
+                        className={styles.inputBox}
+                        value={password}
+                        type="password"
+                        placeholder="password"
+                        onChange={(e) => { this.setState({ password: e.currentTarget.value }); }}
+                    />
+                    <button
+                        type="submit"
+                        className={styles.signInButton}
+                    >
+                        Sign in
+                    </button>
+                </form>
             </div>
         );
     };
@@ -99,41 +102,44 @@ export default class Login extends React.Component {
         } = this.state;
         return (
             <div className={styles.registerBox}>
-                <input
-                    className={styles.inputBox}
-                    value={username}
-                    placeholder="create a username"
-                    type="text"
-                    onChange={(e) => { this.setState({ username: e.currentTarget.value }); }}
-                />
-                <input
-                    className={styles.inputBox}
-                    value={password}
-                    type="password"
-                    placeholder="password"
-                    onChange={(e) => { this.setState({ password: e.currentTarget.value }); }}
-                />
-                <input
-                    className={styles.inputBox}
-                    value={passwordConfirm}
-                    type="password"
-                    placeholder="confirm"
-                    onChange={(e) => { this.setState({ passwordConfirm: e.currentTarget.value }); }}
-                />
-                <input
-                    className={styles.inputBox}
-                    value={email}
-                    placeholder="email"
-                    type="text"
-                    onChange={(e) => { this.setState({ email: e.currentTarget.value }); }}
-                />
-                <button
-                    type="button"
-                    onClick={this.createAccount}
-                    className={styles.signInButton}
-                >
+                <form onSubmit={this.createAccount}>
+                    <input
+                        className={styles.inputBox}
+                        value={username}
+                        placeholder="create a username"
+                        type="text"
+                        onChange={(e) => { this.setState({ username: e.currentTarget.value }); }}
+                    />
+                    <input
+                        className={styles.inputBox}
+                        value={password}
+                        type="password"
+                        placeholder="password"
+                        onChange={(e) => { this.setState({ password: e.currentTarget.value }); }}
+                    />
+                    <input
+                        className={styles.inputBox}
+                        value={passwordConfirm}
+                        type="password"
+                        placeholder="confirm"
+                        onChange={(e) => {
+                            this.setState({ passwordConfirm: e.currentTarget.value });
+                        }}
+                    />
+                    <input
+                        className={styles.inputBox}
+                        value={email}
+                        placeholder="email"
+                        type="text"
+                        onChange={(e) => { this.setState({ email: e.currentTarget.value }); }}
+                    />
+                    <button
+                        type="submit"
+                        className={styles.signInButton}
+                    >
                     Create Account
-                </button>
+                    </button>
+                </form>
             </div>
         );
     };

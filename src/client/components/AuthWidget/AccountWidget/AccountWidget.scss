@@ -1,8 +1,22 @@
+@import '../../../styles/_colors';
+
 .accountIcon {
     height: 15px;
     width: 15px;
 }
 
 .accountContainer {
+    height: 25px;
+}
 
+.accountInfoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userName {
+    width: fit-content;
+    color: $lightGreen;
+    margin: 5px 0;
 }

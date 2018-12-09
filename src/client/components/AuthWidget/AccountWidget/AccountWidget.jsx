@@ -4,14 +4,14 @@ import SVGInline from 'react-svg-inline';
 
 import DropDownMenu from '../../DropDownMenu/DropDownMenu';
 import { logout } from '../../../redux/Auth/AuthActions';
-import { setAuthToken } from '../../../utils/auth';
+import { getAuthState } from '../../../redux/Auth/AuthReducer';
 
 import styles from './AccountWidget.scss';
 
 import userIcon from '../../../images/user.svg';
 
 function AccountWidget(props) {
-    const { dispatch } = props;
+    const { dispatch, username } = props;
     return (
         <div className={styles.accountContainer}>
             <DropDownMenu
@@ -21,18 +21,27 @@ function AccountWidget(props) {
                     </span>
                 )}
             >
-                <button
-                    type="button"
-                    onClick={() => {
-                        setAuthToken('');
-                        dispatch(logout);
-                    }}
-                >
-                    Sign Out
-                </button>
+                <div className={styles.accountInfoContainer}>
+                    <div className={styles.userName}>{username}</div>
+                    <button
+                        type="button"
+                        onClick={() => {
+                            dispatch(logout());
+                        }}
+                    >
+                        Sign Out
+                    </button>
+                </div>
             </DropDownMenu>
         </div>
     );
 }
 
-export default connect()(AccountWidget);
+const mapStateToProps = (state) => {
+    const { username } = getAuthState(state);
+    return {
+        username,
+    };
+};
+
+export default connect(mapStateToProps)(AccountWidget);
