@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
 export default class HeaderDropdownBar extends React.Component {
     saveCurrentFile = () => {
         const { userCode, filename } = this.props;
-        request('POST', '/save')
+        request('POST', '/files/save')
             .body({
                 filename,
                 contents: userCode,

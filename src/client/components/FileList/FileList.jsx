@@ -1,43 +1,38 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-import request from '../../utils/requests';
+import { getFileSystemState } from '../../redux/FileSystem/FileSystemReducer';
+import { setCurrentFile } from '../../redux/FileSystem/FileSystemActions';
 import accordionWrap from '../HigherOrder/AccordionWrap/AccordionWrap';
 
 import styles from './FileList.scss';
 
-class FileList extends React.Component {
-    state = {
-        files: [],
-        loaded: false,
-    };
+function FileList(props) {
+    const { files, dispatch } = props;
 
-    componentDidMount() {
-        request('GET', '/files')
-            .body({})
-            .then(res => res.json())
-            .then((res) => {
-                const { files } = res;
-                this.setState({
-                    loaded: true,
-                    files,
-                });
-            });
-    }
+    const onFileClick = (file) => { dispatch(setCurrentFile(file)); };
 
-    render() {
-        const { loaded, files } = this.state;
-        if (!loaded) return null;
-
-        return (
-            <div className={styles.fileList}>
-                {files.map(file => (
-                    <div className={styles.fileName}>
-                        {file.filename}
-                    </div>
-                ))}
-            </div>
-        );
-    }
+    return (
+        <div className={styles.fileList}>
+            {files.map(file => (
+                <div
+                    role="button"
+                    tabIndex={0}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            onFileClick(file);
+                        }
+                    }}
+                    onClick={() => onFileClick(file)}
+                    className={styles.fileName}
+                >
+                    {file.filename}
+                </div>
+            ))}
+        </div>
+    );
 }
 
-export default accordionWrap(FileList, 'Files');
+const mapStateToProps = state => ({ files: getFileSystemState(state).files });
+
+export default accordionWrap(connect(mapStateToProps)(FileList), 'Files');

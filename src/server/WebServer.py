@@ -17,7 +17,6 @@ urls = (
     '/debug', Debug.subapp,
     '/compile', ScriptCompile.subapp,
     '/login', Login.subapp,
-    '/save', Save.subapp,
     '/files', Files.subapp
 )
 

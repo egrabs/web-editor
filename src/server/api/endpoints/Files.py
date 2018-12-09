@@ -1,7 +1,8 @@
 import web
-from utils.EndpointDecorators import returnJSON, withAuth
+from utils.EndpointDecorators import returnJSON, acceptJSON, withAuth
 from api.endpoints.BaseEndpoint import BaseEndpoint
-from api.processing.FileService import getFiles
+from api.processing.FileService import getFiles, renameFile
+
 
 class Files(BaseEndpoint):
     @returnJSON
@@ -9,8 +10,34 @@ class Files(BaseEndpoint):
     def GET(self, userid):
         return getFiles(userid)
 
+
+class Save(BaseEndpoint):
+    @acceptJSON('data')
+    @returnJSON
+    @withAuth(checkAuth=True, requireUserContext=True)
+    def POST(self, data, userid=None):
+        filename = data['filename']
+        contents = data['contents']
+        saveFile(filename, contents, userid)
+        # this needs error handling but first I
+        # gotta flesh out what the error cases are
+        # TODO
+        return { 'filename': filename }
+
+
+class Rename(BaseEndpoint):
+    @returnJSON
+    @acceptJSON('data')
+    @withAuth(requireUserContext=True)
+    def POST(self, data, userid):
+        oldname = data['oldname']
+        newname = data['newname']
+        return renameFile(userid, oldname=oldname, newname=newname)
+
 urls = (
-    '', 'Files'
+    '', 'Files',
+    '/save', 'Save',
+    '/rename', 'Rename'
 )
 
 subapp = web.application(urls, locals())

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SVGInline from 'react-svg-inline';
 
-import { setCurrentFileName } from '../../../redux/FileSystem/FileSystemActions';
+import { renameFile } from '../../../redux/FileSystem/FileSystemActions';
 import { getFileSystemState } from '../../../redux/FileSystem/FileSystemReducer';
 
 import styles from './FileNameInput.scss';
@@ -10,7 +10,7 @@ import styles from './FileNameInput.scss';
 import closeIcon from '../../../images/closeButton.svg';
 import checkMark from '../../../images/checkMark.svg';
 
-@connect(state => ({ fileName: getFileSystemState(state).fileName }))
+@connect(state => ({ filename: getFileSystemState(state).filename }))
 export default class FileNameInput extends React.Component {
     container = React.createRef();
 
@@ -18,15 +18,26 @@ export default class FileNameInput extends React.Component {
 
     constructor(props) {
         super(props);
-        const { fileName } = this.props;
+        const { filename } = this.props;
         this.state = {
-            modifiedFileName: fileName,
+            modifiedFileName: filename,
             focused: false,
         };
     }
 
     componentDidMount() {
         document.addEventListener('mousedown', this.wasClickInsideMe);
+    }
+
+    componentDidUpdate(prevProps) {
+        const { filename } = this.props;
+        if (filename !== prevProps.filename) {
+            /* eslint-disable */
+            this.setState({
+                modifiedFileName: filename,
+            });
+            /* eslint-enable */
+        }
     }
 
     componentWillUnmount() {
@@ -49,16 +60,16 @@ export default class FileNameInput extends React.Component {
         // don't let the event bubble to the containing div or it'll cause the
         // whole thing to be re-focused
         e.stopPropagation();
-        const { fileName } = this.props;
-        this.setState({ modifiedFileName: fileName, focused: false });
+        const { filename } = this.props;
+        this.setState({ modifiedFileName: filename, focused: false });
     };
 
     onSave = (e) => {
         e.stopPropagation();
         const { modifiedFileName } = this.state;
-        const { dispatch } = this.props;
+        const { dispatch, filename } = this.props;
         this.setState({ focused: false });
-        dispatch(setCurrentFileName(modifiedFileName));
+        if (filename !== modifiedFileName) dispatch(renameFile(filename, modifiedFileName));
     };
 
     render() {
