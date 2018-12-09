@@ -9,6 +9,7 @@
         "react/jsx-indent": ["error", 4],
         "react/jsx-indent-props": "off",
         "react/prop-types": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "camelcase": "off"
     }
 }
