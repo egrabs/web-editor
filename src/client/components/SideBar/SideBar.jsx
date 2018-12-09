@@ -7,12 +7,16 @@ import Switch from 'react-switch';
 import FileList from '../FileList/FileList';
 import { toggleAutoComplete } from '../../redux/UI/UIActions';
 import { getUIState } from '../../redux/UI/UIReducer';
+import { getAuthState } from '../../redux/Auth/AuthReducer';
 
 import hamburgerIcon from '../../images/hamburger.svg';
 import closeIcon from '../../images/closeButton.svg';
 import styles from './SideBar.scss';
 
-@connect(state => ({ autoComplete: getUIState(state).autoComplete }))
+@connect(state => ({
+    autoComplete: getUIState(state).autoComplete,
+    authed: getAuthState(state).authed,
+}))
 export default class SideBar extends React.Component {
     state = {
         shrunk: true,
@@ -37,6 +41,7 @@ export default class SideBar extends React.Component {
 
     render() {
         const { shrunk } = this.state;
+        const { authed } = this.props;
         const containerClasses = cx({
             [styles.sideBarShrunk]: shrunk,
             [styles.sideBarExpanded]: !shrunk,
@@ -77,7 +82,7 @@ export default class SideBar extends React.Component {
                             </label>
                         ))}
                         <hr className={styles.separator} />
-                        <FileList title="Files" titleClass={styles.fileListTitle} />
+                        {authed && <FileList title="Files" titleClass={styles.fileListTitle} />}
                     </div>
                 )}
             </div>
