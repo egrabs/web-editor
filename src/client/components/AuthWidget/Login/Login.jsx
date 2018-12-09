@@ -156,6 +156,7 @@ export default class Login extends React.Component {
                 label="Sign in"
                 downArrow={false}
                 className={styles.signIn}
+                hangLeft
             >
                 <div className={styles.innerContainer}>
                     {this.renderContents()}

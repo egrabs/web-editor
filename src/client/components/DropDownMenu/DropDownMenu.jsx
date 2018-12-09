@@ -14,6 +14,7 @@ export default class DropDownMenu extends React.Component {
         itemClass: '',
         menuItems: [],
         downArrow: true,
+        hangLeft: false,
     };
 
     containerRef = React.createRef();
@@ -102,8 +103,13 @@ export default class DropDownMenu extends React.Component {
             className,
             buttonClass,
             dropDownClass,
+            hangLeft,
         } = this.props;
 
+        const dropDownBaseClass = cx({
+            [styles.dropDownLeft]: hangLeft,
+            [styles.dropDownRight]: !hangLeft,
+        });
         return (
             <div
                 className={cx(styles.dropDownContainer, className)}
@@ -118,7 +124,7 @@ export default class DropDownMenu extends React.Component {
                 </button>
                 {expanded && (
                     <ul
-                        className={cx(styles.dropDown, dropDownClass)}
+                        className={cx(dropDownBaseClass, dropDownClass)}
                         role="menu"
                     >
                         {this.renderDropdownContents()}

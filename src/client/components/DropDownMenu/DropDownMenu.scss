@@ -8,7 +8,6 @@
 .dropDown {
     position: absolute;
     top: 100%;
-    left: 0;
     z-index: 1000;
     float: left;
     min-width: 100px;
@@ -21,6 +20,16 @@
     border: 1px solid $darkGrey;
     border-radius: 4px;
     box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+.dropDownLeft {
+    composes: dropDown;
+    right: 0;
+}
+
+.dropDownRight {
+    composes: dropDown;
+    left: 0;
 }
 
 .listItem {

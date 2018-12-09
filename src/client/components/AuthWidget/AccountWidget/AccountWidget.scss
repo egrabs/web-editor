@@ -9,6 +9,12 @@
     height: 25px;
 }
 
+.separator {
+    margin: 0 0 8px 0;
+    width: 100%;
+    border-color: $black;
+}
+
 .accountInfoContainer {
     display: flex;
     flex-direction: column;
