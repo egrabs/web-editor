@@ -6,7 +6,7 @@ from api.processing.CodeExecutor import execCode, Timeout
 class Execute(BaseEndpoint):
     @acceptJSON('data')
     @returnJSON
-    @withAuth()
+    @withAuth(checkAuth=False)
     def POST(self, data):
         code = data['code']
         mode = data['mode']
