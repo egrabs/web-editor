@@ -2,7 +2,7 @@ import bson
 import uuid
 
 from utils.MongoUtils import userColl
-from utils.security.Auth import getToken, hashPwd
+from utils.security.Auth import getToken, hashPwd, getUserIdAndToken, validateToken
 
 class InvalidLogin(Exception):
     pass
@@ -21,6 +21,22 @@ def validateLogin(username, password):
         'email': user['email'],
         'userid': user['_id'],
     }
+
+def validateLoginFromToken(rawToken):
+    validateToken(rawToken)
+    userId, token = getUserIdAndToken(rawToken)
+    user = userColl.find_one({ '_id': userId })
+    if not user:
+        raise InvalidLogin()
+    # go ahead and set the frontend up with a new token
+    newToken = getToken()
+    return {
+        'token': newToken,
+        'username': user['username'],
+        'email': user['email'],
+        'userid': user['_id']
+    }
+
 
 def register(username, password, email):
     user = userColl.find_one({ 'username': username })

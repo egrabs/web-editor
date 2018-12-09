@@ -64,7 +64,7 @@ export default class Login extends React.Component {
             email,
         } = res;
         const { dispatch } = this.props;
-        setAuthToken(token);
+        setAuthToken(`Basic ${btoa(`${userid}:${token}`)}`);
         dispatch(loginSuccess({ username, userid, email }));
     };
 

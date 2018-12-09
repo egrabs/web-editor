@@ -2,19 +2,16 @@
 
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 
-import rootReducer from '../redux/RootReducer';
+import rootStore from '../redux/RootStore';
+import bootstrap from '../utils/bootstrap';
 import AppContainer from './AppContainer';
 
-
-/* eslint-disable no-underscore-dangle */
-export const rootStore = createStore(
-    rootReducer,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-);
-
 export default class App extends React.Component {
+    componentDidMount() {
+        bootstrap();
+    }
+
     render() {
         return (
             <Provider store={rootStore}>

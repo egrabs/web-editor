@@ -2,7 +2,7 @@
 
 import config from '../config/config';
 
-import { rootStore } from '../app/App';
+import rootStore from '../redux/RootStore';
 import { getAuthState } from '../redux/Auth/AuthReducer';
 import { getAuthToken } from './auth';
 
@@ -12,11 +12,11 @@ const commonOpts = () => {
     const opts = {
         mode: 'cors',
     };
-    const { authed, userid } = getAuthState(rootStore.getState());
+    const { authed } = getAuthState(rootStore.getState());
     if (authed) {
         const token = getAuthToken();
         opts.headers = {
-            Authorization: `Basic ${btoa(`${userid}:${token}`)}`,
+            Authorization: token,
         };
     }
     return opts;
