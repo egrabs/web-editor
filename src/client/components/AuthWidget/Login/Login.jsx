@@ -27,7 +27,7 @@ export default class Login extends React.Component {
             email,
         } = this.state;
         if (password === passwordConfirm) {
-            request('POST', '/login/register/')
+            request('POST', '/login/register')
                 .body({
                     username,
                     password,
@@ -44,7 +44,7 @@ export default class Login extends React.Component {
     signIn = (e) => {
         e.preventDefault();
         const { username, password } = this.state;
-        request('POST', '/login/')
+        request('POST', '/login')
             .body({
                 username,
                 password,

@@ -100,7 +100,7 @@ export default class CodeEditor extends React.Component {
 
         dispatch(startExecutionAnimation);
 
-        request('POST', 'execute/')
+        request('POST', 'execute')
             .body({
                 code: userCode,
                 mode: editorMode,
@@ -123,7 +123,7 @@ export default class CodeEditor extends React.Component {
 
     onCompile = () => {
         const { dispatch, userCode } = this.props;
-        request('POST', '/compile/')
+        request('POST', '/compile')
             .body({ code: userCode })
             .then(res => res.json())
             .then((res) => {
@@ -193,7 +193,7 @@ export default class CodeEditor extends React.Component {
 
         dispatch(startExecutionAnimation);
 
-        request('POST', 'analyze/')
+        request('POST', 'analyze')
             .body({ code: userCode })
             // .then(res => res.json())
             .then(() => {
@@ -203,7 +203,7 @@ export default class CodeEditor extends React.Component {
 
     onDebug = () => {
         const { dispatch, userCode } = this.props;
-        request('POST', 'debug/')
+        request('POST', 'debug')
             .body({ code: userCode })
             .then(res => res.json())
             .then(({ seshId, result }) => {

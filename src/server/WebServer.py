@@ -12,11 +12,11 @@ from utils.DebugSessionCleanUp import startCleanUpThread
 
 
 urls = (
-    '/execute/', Execute.subapp,
-    '/analyze/', ScriptAnalyze.subapp,
-    '/debug/', Debug.subapp,
-    '/compile/', ScriptCompile.subapp,
-    '/login/', Login.subapp,
+    '/execute', Execute.subapp,
+    '/analyze', ScriptAnalyze.subapp,
+    '/debug', Debug.subapp,
+    '/compile', ScriptCompile.subapp,
+    '/login', Login.subapp,
     '/save', Save.subapp,
     '/files', Files.subapp
 )

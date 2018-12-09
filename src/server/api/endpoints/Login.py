@@ -50,8 +50,8 @@ class Register(BaseEndpoint):
 
 urls = (
     '', 'Login',
-    'token', 'TokenLogin',
-    'register/', 'Register'
+    '/token', 'TokenLogin',
+    '/register', 'Register'
 )
 
 subapp = web.application(urls, locals())

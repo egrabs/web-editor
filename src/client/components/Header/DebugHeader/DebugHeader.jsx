@@ -41,7 +41,7 @@ export default class DebugHeader extends React.Component {
 
     makeDebugActionRequest = (action, additionalAction) => {
         const { seshId, dispatch } = this.props;
-        request('POST', 'debug/debug_action/')
+        request('POST', 'debug/debug_action')
             .body({
                 seshId,
                 action,

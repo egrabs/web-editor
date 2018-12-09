@@ -33,7 +33,7 @@ class DebugAction(BaseEndpoint):
 
 urls = (
     '', 'Debug',
-    'debug_action/', 'DebugAction'
+    '/debug_action', 'DebugAction'
 )
 
 subapp = web.application(urls, locals())
