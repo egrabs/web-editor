@@ -5,3 +5,4 @@ dist/*
 src/client/dist/*
 src/server/webeditorenv/*
 src/server/web-editor/*
+src/server/utils/security/jwt_secret.json
