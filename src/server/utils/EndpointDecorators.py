@@ -2,6 +2,7 @@ import web
 import json
 import uuid
 import bson
+from datetime import datetime
 from utils.security.Auth import validateToken, getUserIdAndToken
 
 def acceptJSON(*args):
@@ -60,4 +61,6 @@ class CustomJSONEncoder(json.JSONEncoder):
             return str(o)
         if type(o) == bson.objectid.ObjectId:
             return str(o)
+        if type(o) == datetime:
+            return o.isoformat()
         return json.JSONEncoder.default(self, o)

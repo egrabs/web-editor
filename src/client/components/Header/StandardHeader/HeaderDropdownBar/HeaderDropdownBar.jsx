@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import DropDownMenu from '../../../DropDownMenu/DropDownMenu';
 import { setEditorMode, setEditorTheme } from '../../../../redux/UI/UIActions';
+import { loadFiles } from '../../../../redux/FileSystem/FileSystemActions';
 import { getUIState } from '../../../../redux/UI/UIReducer';
 import { getAuthState } from '../../../../redux/Auth/AuthReducer';
 import { getFileSystemState } from '../../../../redux/FileSystem/FileSystemReducer';
@@ -26,13 +27,13 @@ const mapStateToProps = (state) => {
 @connect(mapStateToProps)
 export default class HeaderDropdownBar extends React.Component {
     saveCurrentFile = () => {
-        const { userCode, filename } = this.props;
+        const { userCode, filename, dispatch } = this.props;
         request('POST', '/files/save')
             .body({
                 filename,
                 contents: userCode,
             })
-            .then(res => res.json());
+            .then(dispatch(loadFiles()));
     }
 
     render() {

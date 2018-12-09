@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime
 
 from utils.MongoUtils import fileColl
 
@@ -15,7 +16,8 @@ def renameFile(userId, oldname, newname):
         },
         {
             '$set': {
-                'filename': newname
+                'filename': newname,
+                'last_modified': datetime.utcnow()
             }
         },
         upsert=False
@@ -36,14 +38,20 @@ def saveFile(filename, contents, userId):
                 'owner': userId
             },
             {
-                '$set': { 'contents': contents }
+                '$set': {
+                    'contents': contents,
+                    'last_modified': datetime.utcnow()
+                }
             }
         )
 
 
 def saveNewFile(filename, contents, userId):
+    time = datetime.utcnow()
     file = {
         'filename': filename,
+        'created': time,
+        'last_modified': time,
         'contents': contents,
         'owner': userId,
         '_id': str(uuid.uuid4())

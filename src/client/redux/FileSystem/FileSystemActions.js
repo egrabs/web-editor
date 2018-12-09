@@ -1,5 +1,6 @@
 import ActionTypes from './FileSystemActionTypes';
 import request from '../../utils/requests';
+import { hydrateFiles, lastModifiedSorter } from '../../utils/FileUtils';
 
 export const setUserCode = code => ({
     type: ActionTypes.SET_USER_CODE,
@@ -11,7 +12,8 @@ export const loadFiles = () => dispatch => (
         .body({})
         .then(res => res.json())
         .then((res) => {
-            const { files } = res;
+            let { files } = res;
+            files = hydrateFiles(files);
             dispatch({
                 type: ActionTypes.SET_FILES,
                 payload: files,
@@ -20,10 +22,13 @@ export const loadFiles = () => dispatch => (
         })
 );
 
-export const setDefaultFile = files => ({
-    type: ActionTypes.SET_DEFAULT_FILE,
-    payload: { files },
-});
+export const setDefaultFile = files => (dispatch) => {
+    files.sort(lastModifiedSorter);
+    dispatch({
+        type: ActionTypes.SET_DEFAULT_FILE,
+        payload: { files },
+    });
+};
 
 export const renameFile = (oldname, newname) => (dispatch) => {
     request('POST', '/files/rename')

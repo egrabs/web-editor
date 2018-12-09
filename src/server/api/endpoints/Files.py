@@ -1,7 +1,7 @@
 import web
 from utils.EndpointDecorators import returnJSON, acceptJSON, withAuth
 from api.endpoints.BaseEndpoint import BaseEndpoint
-from api.processing.FileService import getFiles, renameFile
+from api.processing.FileService import getFiles, renameFile, saveFile
 
 
 class Files(BaseEndpoint):
