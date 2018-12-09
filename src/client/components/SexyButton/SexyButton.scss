@@ -1,14 +1,18 @@
 @import '../../styles/_colors';
 
-.sexyButton {
-    background-color: $lightGreen;
-    color: $medGrey;
+.sexyButtonCommon {
     width: 100px;
     height: 30px;
     border: none;
     border-radius: 10px;
     margin: 1px 3px 1px 3px;
     font-size: 12px;
+}
+
+.sexyButton {
+    composes: sexyButtonCommon;
+    background-color: $lightGreen;
+    color: $medGrey;
     cursor: pointer;
     &:hover {
         background-color: $medGrey;
@@ -20,4 +24,11 @@
         transition-property: background-color color border;
         transition-timing-function: linear;
     }
+}
+
+.disabled {
+    composes: sexyButtonCommon;
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
 }

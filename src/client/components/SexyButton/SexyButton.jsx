@@ -10,7 +10,10 @@ export default function SexyButton(props) {
         customClass,
         disable,
     } = props;
-    const buttonClasses = cx(styles.sexyButton, customClass);
+    const buttonClasses = cx(
+        { [styles.disabled]: disable(), [styles.sexyButton]: !disable() },
+        customClass,
+    );
     return (
         <div className={styles.container}>
             <button

@@ -31,6 +31,8 @@ import { getExecutionState } from '../../redux/Execution/ExecutionReducer';
 
 import { getFileSystemState } from '../../redux/FileSystem/FileSystemReducer';
 
+import { getAuthState } from '../../redux/Auth/AuthReducer';
+
 import styles from './CodeEditor.scss';
 
 import 'codemirror/lib/codemirror';
@@ -47,12 +49,14 @@ import 'codemirror/mode/javascript/javascript';
     const { autoComplete, editorMode, editorTheme } = getUIState(state);
     const { userCode } = getFileSystemState(state);
     const { debugMode } = getExecutionState(state);
+    const { authed } = getAuthState(state);
     return {
         autoComplete,
         debugMode,
         editorMode,
         editorTheme,
         userCode,
+        authed,
     };
 })
 export default class CodeEditor extends React.Component {
@@ -78,17 +82,17 @@ export default class CodeEditor extends React.Component {
             {
                 text: 'ANALYZE',
                 onClick: () => window.alert('coming soon . . . maybe'),
-                disable: this.disable,
+                disable: () => this.disable() || !this.props.authed,
             },
             {
                 text: 'DEBUG',
                 onClick: this.onDebug,
-                disable: this.disable,
+                disable: () => this.disable() || !this.props.authed,
             },
             {
                 text: 'COMPILE',
                 onClick: this.onCompile,
-                disable: this.disable,
+                disable: () => this.disable() || !this.props.authed,
             },
         ]);
     }
