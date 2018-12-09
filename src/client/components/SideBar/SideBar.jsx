@@ -4,14 +4,13 @@ import cx from 'classnames';
 import SVGInline from 'react-svg-inline';
 import Switch from 'react-switch';
 
+import FileList from '../FileList/FileList';
 import { toggleAutoComplete } from '../../redux/UI/UIActions';
 import { getUIState } from '../../redux/UI/UIReducer';
 
 import hamburgerIcon from '../../images/hamburger.svg';
 import closeIcon from '../../images/closeButton.svg';
 import styles from './SideBar.scss';
-
-/* eslint-disable */
 
 @connect(state => ({ autoComplete: getUIState(state).autoComplete }))
 export default class SideBar extends React.Component {
@@ -38,11 +37,12 @@ export default class SideBar extends React.Component {
 
     render() {
         const { shrunk } = this.state;
-        const { dispatch } = this.props;
         const containerClasses = cx({
             [styles.sideBarShrunk]: shrunk,
             [styles.sideBarExpanded]: !shrunk,
         });
+        // grrrrr . . .
+        /* eslint-disable jsx-a11y/label-has-for */
         return (
             <div className={containerClasses}>
                 <div className={styles.iconContainer}>
@@ -76,6 +76,8 @@ export default class SideBar extends React.Component {
                                 <span className={styles.sideBarItemLabel}>{sbi.label}</span>
                             </label>
                         ))}
+                        <hr className={styles.separator} />
+                        <FileList title="Files" titleClass={styles.fileListTitle} />
                     </div>
                 )}
             </div>

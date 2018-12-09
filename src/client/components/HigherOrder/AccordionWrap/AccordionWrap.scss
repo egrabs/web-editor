@@ -1,0 +1,33 @@
+@import '../../../styles/_colors';
+
+.arrow {
+    width: 0; 
+    height: 0; 
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+}
+
+.downArrow {
+    composes: arrow;
+    margin: 0 0 0 10px;
+    border-top: 3px solid $white;
+}
+
+.upArrow {
+    composes: arrow;
+    margin: 0 0 0 10px;
+    border-bottom: 3px solid $white;
+}
+
+.accordionBar {
+    display: flex;
+    align-items: center;
+    border: none;
+    background: $medGrey;
+    width: fit-content;
+    padding: 5px;
+}
+
+.accordionContainer {
+    margin-left: 10px;
+}

@@ -6,6 +6,7 @@ import api.endpoints.Debug as Debug
 import api.endpoints.ScriptCompile as ScriptCompile
 import api.endpoints.Login as Login
 import api.endpoints.Save as Save
+import api.endpoints.Files as Files
 
 from utils.DebugSessionCleanUp import startCleanUpThread
 
@@ -16,7 +17,8 @@ urls = (
     '/debug/', Debug.subapp,
     '/compile/', ScriptCompile.subapp,
     '/login/', Login.subapp,
-    '/save', Save.subapp
+    '/save', Save.subapp,
+    '/files', Files.subapp
 )
 
 app = web.application(urls, locals())

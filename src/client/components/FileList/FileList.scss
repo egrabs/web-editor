@@ -1,0 +1,19 @@
+@import '../../styles/_colors';
+
+.fileList {
+    background: $white;
+    max-height: 300px;
+    overflow-y: scroll;
+    margin-right: 10px;
+    margin-top: 10px;
+}
+
+.fileName {
+    color: $black;
+    margin-bottom: 3px;
+    padding-left: 5px;
+    cursor: pointer;
+    &:hover {
+        background: $lightGrey;
+    }
+}
