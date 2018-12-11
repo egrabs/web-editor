@@ -8,6 +8,7 @@ import FileList from '../FileList/FileList';
 import { toggleAutoComplete } from '../../redux/UI/UIActions';
 import { getUIState } from '../../redux/UI/UIReducer';
 import { getAuthState } from '../../redux/Auth/AuthReducer';
+import annotateWithReactKeys from '../../utils/reactAnnotations';
 
 import hamburgerIcon from '../../images/hamburger.svg';
 import closeIcon from '../../images/closeButton.svg';
@@ -22,15 +23,16 @@ export default class SideBar extends React.Component {
         shrunk: true,
     };
 
-    get sideBarItems() {
-        const { dispatch, autoComplete } = this.props;
-        return [
+    constructor(props) {
+        super(props);
+        const { dispatch, autoComplete } = props;
+        this.sideBarItems = annotateWithReactKeys([
             {
                 label: 'Auto Complete',
                 onClick: () => dispatch(toggleAutoComplete),
                 on: autoComplete,
             },
-        ];
+        ]);
     }
 
     toggleShrinkState = () => {
@@ -69,7 +71,7 @@ export default class SideBar extends React.Component {
                 {!shrunk && (
                     <div>
                         {this.sideBarItems.map((sbi, idx) => (
-                            <label htmlFor={`sbi-${idx}`}>
+                            <label htmlFor={`sbi-${idx}`} key={sbi.reactKey}>
                                 <Switch
                                     height={15}
                                     width={30}

@@ -1,6 +1,7 @@
 import ActionTypes from './FileSystemActionTypes';
 import request from '../../utils/requests';
 import { hydrateFiles, lastModifiedSorter } from '../../utils/FileUtils';
+import annotateWithReactKeys from '../../utils/reactAnnotations';
 
 export const setUserCode = code => ({
     type: ActionTypes.SET_USER_CODE,
@@ -11,14 +12,14 @@ export const loadFiles = () => dispatch => (
     request('GET', '/files')
         .params({})
         .then(res => res.json())
-        .then((res) => {
-            let { files } = res;
-            files = hydrateFiles(files);
+        .then(({ files }) => annotateWithReactKeys(files))
+        .then((files) => {
+            const hydrated = hydrateFiles(files);
             dispatch({
                 type: ActionTypes.SET_FILES,
-                payload: files,
+                payload: hydrated,
             });
-            return files;
+            return hydrated;
         })
 );
 

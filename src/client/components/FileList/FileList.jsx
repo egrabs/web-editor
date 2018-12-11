@@ -25,6 +25,7 @@ function FileList(props) {
                     }}
                     onClick={() => onFileClick(file)}
                     className={styles.fileName}
+                    key={file.reactKey}
                 >
                     {file.filename}
                 </div>
