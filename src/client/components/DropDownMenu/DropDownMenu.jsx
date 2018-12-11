@@ -77,6 +77,7 @@ export default class DropDownMenu extends React.Component {
                         item.onClick();
                         this.setState({ expanded: false });
                     }}
+                    key={item.label}
                 >
                     {item.label}
                     {item.selected && item.selected() && (
