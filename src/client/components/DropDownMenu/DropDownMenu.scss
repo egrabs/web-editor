@@ -49,6 +49,7 @@
     // color: $darkGrey;
     background: colorWithAlpha($faintGrey, 0.5);
     border: none;
+    display: block;
     // border-radius: 5px;
     &:hover {
         background: colorWithAlpha($faintGrey, 1);
