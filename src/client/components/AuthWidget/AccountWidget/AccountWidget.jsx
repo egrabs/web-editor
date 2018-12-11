@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import SVGInline from 'react-svg-inline';
 
+import SexyButton from '../../SexyButton/SexyButton';
 import DropDownMenu from '../../DropDownMenu/DropDownMenu';
 import { logout } from '../../../redux/Auth/AuthActions';
 import { getAuthState } from '../../../redux/Auth/AuthReducer';
@@ -23,14 +24,13 @@ function AccountWidget(props) {
                     <div className={styles.accountInfo}>{username}</div>
                     <div className={styles.accountInfo}>{email}</div>
                     <hr className={styles.separator} />
-                    <button
-                        type="button"
+                    <SexyButton
                         onClick={() => {
                             dispatch(logout());
                         }}
                     >
                         Sign Out
-                    </button>
+                    </SexyButton>
                 </div>
             </DropDownMenu>
         </div>

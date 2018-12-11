@@ -6,9 +6,10 @@ import styles from './SexyButton.scss';
 export default function SexyButton(props) {
     const {
         onClick,
-        text,
         customClass,
         disable,
+        text,
+        children,
     } = props;
     const buttonClasses = cx(
         { [styles.disabled]: disable(), [styles.sexyButton]: !disable() },
@@ -22,7 +23,7 @@ export default function SexyButton(props) {
                 className={buttonClasses}
                 type="button"
             >
-                {text}
+                {text || children}
             </button>
         </div>
     );
