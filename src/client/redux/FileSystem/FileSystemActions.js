@@ -9,7 +9,7 @@ export const setUserCode = code => ({
 
 export const loadFiles = () => dispatch => (
     request('GET', '/files')
-        .body({})
+        .params({})
         .then(res => res.json())
         .then((res) => {
             let { files } = res;

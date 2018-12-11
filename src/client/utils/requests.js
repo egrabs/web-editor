@@ -62,7 +62,7 @@ function encodeQueryString(body) {
     return queryString;
 }
 
-function addGetBody(path) {
+function addGetParams(path) {
     return function (bodyObj, otherOptions = {}) {
         this.options = Object.assign(this.options, otherOptions);
         const queryString = encodeQueryString(bodyObj);
@@ -88,7 +88,7 @@ function GET(path) {
             method: 'GET',
         },
     };
-    pseudoRequest.body = addGetBody(path).bind(pseudoRequest);
+    pseudoRequest.params = addGetParams(path).bind(pseudoRequest);
     return pseudoRequest;
 }
 
