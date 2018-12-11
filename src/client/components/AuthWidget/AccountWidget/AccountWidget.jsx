@@ -15,12 +15,9 @@ function AccountWidget(props) {
     return (
         <div className={styles.accountContainer}>
             <DropDownMenu
+                buttonClass={styles.accountButton}
                 hangLeft
-                buttonContents={(
-                    <span className={styles.accountIcon}>
-                        <SVGInline svg={userIcon} />
-                    </span>
-                )}
+                buttonContents={<SVGInline className={styles.accountIcon} svg={userIcon} />}
             >
                 <div className={styles.accountInfoContainer}>
                     <div className={styles.accountInfo}>{username}</div>
