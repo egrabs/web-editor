@@ -27,7 +27,7 @@ function buildUrl(path, queryString = '') {
     return `${baseUrl}${sepChar}${path}${queryString}`;
 }
 
-function addPostBody(path) {
+function addPutPostBody(path) {
     return function (bodyObj, otherOptions = {}) {
         this.options = Object.assign(
             this.options,
@@ -77,7 +77,7 @@ function POST(path) {
             method: 'POST',
         },
     };
-    pseudoRequest.body = addPostBody(path).bind(pseudoRequest);
+    pseudoRequest.body = addPutPostBody(path).bind(pseudoRequest);
     return pseudoRequest;
 }
 
@@ -92,8 +92,18 @@ function GET(path) {
     return pseudoRequest;
 }
 
-// TODO: should probably support PUT too whenever it comes up
-const supportedMethods = ['GET', 'POST'];
+function PUT(path) {
+    const pseudoRequest = {
+        options: {
+            ...commonOpts(),
+            method: 'PUT',
+        },
+    };
+    pseudoRequest.body = addPutPostBody(path).bind(pseudoRequest);
+    return pseudoRequest;
+}
+
+const supportedMethods = ['GET', 'POST', 'PUT'];
 export default function request(method, path) {
     const upperMethod = method.toUpperCase();
     if (!supportedMethods.includes(upperMethod)) {
@@ -104,5 +114,7 @@ export default function request(method, path) {
         return POST(path);
     case 'GET':
         return GET(path);
+    case 'PUT':
+        return PUT(path);
     }
 }
