@@ -2,7 +2,9 @@
 
 .appContainer {
     display: flex;
-    flexDirection: row;
+    flex-direction: row;
+    width: 100%;
+    min-height: 700px;
 }
 
 body {
