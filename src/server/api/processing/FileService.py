@@ -45,6 +45,19 @@ def saveFile(filename, contents, userId):
             }
         )
 
+def createNewFile(userId):
+    time = datetime.utcnow()
+    name = str(uuid.uuid4())
+    file = {
+        'filename': '{}.py'.format(name),
+        'created': time,
+        'last_modified': time,
+        'contents': '',
+        'owner': userId,
+        '_id': name
+    }
+    fileColl.insert(file)
+    return { 'file': file }
 
 def saveNewFile(filename, contents, userId):
     time = datetime.utcnow()

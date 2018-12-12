@@ -11,13 +11,16 @@ const { server: { baseUrl } } = config;
 const commonOpts = () => {
     const opts = {
         mode: 'cors',
+        // maybe one day we'll want to send something other than JSON
+        // but for now this should be fine
+        headers: {
+            'Content-Type': 'application/json',
+        },
     };
     const { authed } = getAuthState(rootStore.getState());
     if (authed) {
         const token = getAuthToken();
-        opts.headers = {
-            Authorization: token,
-        };
+        opts.headers.Authorization = token;
     }
     return opts;
 };

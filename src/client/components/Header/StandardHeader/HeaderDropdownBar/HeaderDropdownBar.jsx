@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import DropDownMenu from '../../../DropDownMenu/DropDownMenu';
 import { setEditorMode, setEditorTheme } from '../../../../redux/UI/UIActions';
-import { loadFiles } from '../../../../redux/FileSystem/FileSystemActions';
+import { loadFiles, newFile } from '../../../../redux/FileSystem/FileSystemActions';
 import { getUIState } from '../../../../redux/UI/UIReducer';
 import { getAuthState } from '../../../../redux/Auth/AuthReducer';
 import { getFileSystemState } from '../../../../redux/FileSystem/FileSystemReducer';
@@ -33,8 +33,13 @@ export default class HeaderDropdownBar extends React.Component {
                 filename,
                 contents: userCode,
             })
-            .then(dispatch(loadFiles()));
-    }
+            .then(() => dispatch(loadFiles()));
+    };
+
+    createNewFile = () => {
+        const { dispatch } = this.props;
+        dispatch(newFile());
+    };
 
     render() {
         const {
@@ -53,6 +58,10 @@ export default class HeaderDropdownBar extends React.Component {
                             label: 'save',
                             onClick: this.saveCurrentFile,
                             hidden: () => !authed,
+                        },
+                        {
+                            label: 'new',
+                            onClick: this.createNewFile,
                         },
                     ]}
                 />

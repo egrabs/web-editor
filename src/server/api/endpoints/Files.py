@@ -1,7 +1,7 @@
 import web
 from utils.EndpointDecorators import returnJSON, acceptJSON, withAuth
 from api.endpoints.BaseEndpoint import BaseEndpoint
-from api.processing.FileService import getFiles, renameFile, saveFile
+from api.processing.FileService import getFiles, renameFile, saveFile, createNewFile
 
 
 class Files(BaseEndpoint):
@@ -23,6 +23,11 @@ class Save(BaseEndpoint):
         # gotta flesh out what the error cases are
         # TODO
         return { 'filename': filename }
+
+    @returnJSON
+    @withAuth(requireUserContext=True)
+    def PUT(self, userid=None):
+        return createNewFile(userid)
 
 
 class Rename(BaseEndpoint):

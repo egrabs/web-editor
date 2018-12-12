@@ -1,6 +1,6 @@
 import ActionTypes from './FileSystemActionTypes';
 import request from '../../utils/requests';
-import { hydrateFiles, lastModifiedSorter } from '../../utils/FileUtils';
+import { hydrateFiles, hydrateFile, lastModifiedSorter } from '../../utils/FileUtils';
 import annotateWithReactKeys from '../../utils/reactAnnotations';
 
 export const setUserCode = code => ({
@@ -31,6 +31,22 @@ export const setDefaultFile = files => (dispatch) => {
     });
 };
 
+export const setCurrentFile = file => ({
+    type: ActionTypes.SET_CURRENT_FILE,
+    payload: file,
+});
+
+export const newFile = () => (dispatch) => {
+    request('PUT', '/files/save')
+        .body({})
+        .then(res => res.json())
+        .then((res) => {
+            const { file } = res;
+            dispatch(loadFiles());
+            dispatch(setCurrentFile(hydrateFile(file)));
+        });
+};
+
 export const renameFile = (oldname, newname) => (dispatch) => {
     request('POST', '/files/rename')
         .body({
@@ -47,11 +63,6 @@ export const renameFile = (oldname, newname) => (dispatch) => {
             });
         });
 };
-
-export const setCurrentFile = file => ({
-    type: ActionTypes.SET_CURRENT_FILE,
-    payload: file,
-});
 
 export const blastFileSystem = () => ({
     type: ActionTypes.BLAST_FILE_SYSTEM,
